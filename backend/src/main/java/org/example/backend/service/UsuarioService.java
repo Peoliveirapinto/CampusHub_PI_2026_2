@@ -15,7 +15,7 @@ public class UsuarioService {
 
     public Usuario getById(UUID id){
         return usuarioRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Usuário não encontrado com id: " + id)
+                () -> new ResourceNotFoundException("usuario.nao-encontrado", "ID", id)
         );
     }
 }
