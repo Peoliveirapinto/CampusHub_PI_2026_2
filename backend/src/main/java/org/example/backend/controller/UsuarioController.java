@@ -1,5 +1,6 @@
 package org.example.backend.controller;
 
+import org.example.backend.dto.UsuarioRespostaDTO;
 import org.example.backend.model.Usuario;
 import org.example.backend.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,9 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getById(@PathVariable UUID id){
-        Usuario usuario = usuarioService.getById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(usuario);
+    public ResponseEntity<UsuarioRespostaDTO> getById(@PathVariable UUID id){
+        UsuarioRespostaDTO usuarioRespostaDTO = usuarioService.getById(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioRespostaDTO);
     }
 }

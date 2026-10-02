@@ -37,4 +37,22 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
+
+    @ExceptionHandler(EmailJaExisteException.class)
+    public ResponseEntity<Map<String, Object>> handleEmailJaExiste(EmailJaExisteException ex){
+        String translatedMessage = messageSource.getMessage(
+                ex.getMessage(),
+                null,
+                ex.getMessage(),
+                this.locale
+        );
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.CONFLICT.value());
+        body.put("error", "Conflict");
+        body.put("message", translatedMessage);
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
 }

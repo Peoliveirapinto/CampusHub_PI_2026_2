@@ -1,5 +1,6 @@
 package org.example.backend.service;
 
+import org.example.backend.dto.UsuarioRespostaDTO;
 import org.example.backend.exception.ResourceNotFoundException;
 import org.example.backend.model.Usuario;
 import org.example.backend.repository.UsuarioRepository;
@@ -13,9 +14,11 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public Usuario getById(UUID id){
-        return usuarioRepository.findById(id).orElseThrow(
+    public UsuarioRespostaDTO getById(UUID id){
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("usuario.nao-encontrado", "ID", id)
         );
+
+        return new UsuarioRespostaDTO(usuario);
     }
 }
