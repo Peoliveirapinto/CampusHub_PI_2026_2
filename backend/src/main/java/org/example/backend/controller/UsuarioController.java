@@ -1,9 +1,7 @@
 package org.example.backend.controller;
 
 import org.example.backend.dto.UsuarioRespostaDTO;
-import org.example.backend.model.Usuario;
 import org.example.backend.service.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +14,11 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
-    @Autowired
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
+
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioRespostaDTO> getById(@PathVariable UUID id){

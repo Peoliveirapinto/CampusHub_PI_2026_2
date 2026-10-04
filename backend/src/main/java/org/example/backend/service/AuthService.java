@@ -4,16 +4,17 @@ import org.example.backend.dto.UsuarioCadastroDTO;
 import org.example.backend.exception.EmailJaExisteException;
 import org.example.backend.model.Usuario;
 import org.example.backend.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final SenhaService senhaService;
 
-    @Autowired
-    private SenhaService senhaService;
+    public AuthService(UsuarioRepository usuarioRepository, SenhaService senhaService) {
+        this.usuarioRepository = usuarioRepository;
+        this.senhaService = senhaService;
+    }
 
     public void cadastrarUsuario(UsuarioCadastroDTO usuarioDTO){
         if(usuarioRepository.existsByEmail(usuarioDTO.email())){
