@@ -55,4 +55,22 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
+
+    @ExceptionHandler(CredenciaisInvalidasException.class)
+    public ResponseEntity<Map<String, Object>> handleCredenciaisInvalidas(CredenciaisInvalidasException ex){
+        String translatedMessage = messageSource.getMessage(
+                ex.getMessage(),
+                null,
+                ex.getMessage(),
+                this.locale
+        );
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.UNAUTHORIZED.value());
+        body.put("error", "Unauthorized");
+        body.put("message", translatedMessage);
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+    }
 }
