@@ -3,6 +3,7 @@ package org.example.backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.backend.dto.UsuarioCadastroDTO;
+import org.example.backend.model.enums.Role;
 
 import java.util.UUID;
 
@@ -30,6 +31,10 @@ public class Usuario {
 
     @Column(name = "senha", nullable = false, length = 255)
     private String senha;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role = Role.USER;
 
     public Usuario(String email, String senha){
         this.email = email;
