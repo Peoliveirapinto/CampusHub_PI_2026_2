@@ -2,9 +2,11 @@ package org.example.backend.service;
 
 import org.example.backend.dto.UsuarioCadastroDTO;
 import org.example.backend.dto.UsuarioLoginDTO;
+import org.example.backend.dto.UsuarioRespostaDTO;
 import org.example.backend.exception.CredenciaisInvalidasException;
 import org.example.backend.exception.EmailJaExisteException;
 import org.example.backend.model.Usuario;
+import org.example.backend.model.enums.Role;
 import org.example.backend.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +22,28 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public void cadastrarUsuario(UsuarioCadastroDTO usuarioCadastroDTO){
+    public UsuarioRespostaDTO cadastrarAdmin(UsuarioCadastroDTO usuarioCadastroDTO){
         if(usuarioRepository.existsByEmail(usuarioCadastroDTO.email())){
             throw new EmailJaExisteException("usuario.email.ja-existe");
         }
 
         String senhaHasheada = senhaService.hash(usuarioCadastroDTO.senha());
 
-        Usuario usuario = new Usuario(usuarioCadastroDTO.email(), senhaHasheada);
+        Usuario usuarioSalvo = usuarioRepository.save(new Usuario(usuarioCadastroDTO.email(), senhaHasheada, Role.ADMIN));
 
-        usuarioRepository.save(usuario);
+        return new UsuarioRespostaDTO(usuarioSalvo);
+    }
+
+    public UsuarioRespostaDTO cadastrarUsuario(UsuarioCadastroDTO usuarioCadastroDTO){
+        if(usuarioRepository.existsByEmail(usuarioCadastroDTO.email())){
+            throw new EmailJaExisteException("usuario.email.ja-existe");
+        }
+
+        String senhaHasheada = senhaService.hash(usuarioCadastroDTO.senha());
+
+        Usuario usuarioSalvo = usuarioRepository.save(new Usuario(usuarioCadastroDTO.email(), senhaHasheada));
+
+        return new UsuarioRespostaDTO(usuarioSalvo);
     }
 
     public String autenticarUsuario(UsuarioLoginDTO usuarioLoginDTO){

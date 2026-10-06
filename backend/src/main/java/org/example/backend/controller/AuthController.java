@@ -2,6 +2,7 @@ package org.example.backend.controller;
 
 import jakarta.validation.Valid;
 import org.example.backend.dto.UsuarioCadastroDTO;
+import org.example.backend.dto.UsuarioRespostaDTO;
 import org.example.backend.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,15 @@ public class AuthController {
         this.authService = authService;
     }
 
+    @PostMapping("/cadastro/admin")
+    public ResponseEntity<UsuarioRespostaDTO> cadastrarAdmin(@RequestBody @Valid UsuarioCadastroDTO usuarioCadastroDTO){
+        UsuarioRespostaDTO usuarioRespostaDTO = authService.cadastrarAdmin(usuarioCadastroDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRespostaDTO);
+    }
+
     @PostMapping("/cadastro")
-    public ResponseEntity<Void> cadastraUsuario(@RequestBody @Valid UsuarioCadastroDTO usuarioDTO){
-        authService.cadastrarUsuario(usuarioDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<UsuarioRespostaDTO> cadastrarUsuario(@RequestBody @Valid UsuarioCadastroDTO usuarioCadastroDTO){
+        UsuarioRespostaDTO usuarioRespostaDTO = authService.cadastrarUsuario(usuarioCadastroDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRespostaDTO);
     }
 }
