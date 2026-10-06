@@ -31,11 +31,6 @@ public class Usuario {
     @Column(name = "senha", nullable = false, length = 255)
     private String senha;
 
-    public Usuario(UsuarioCadastroDTO usuarioCadastroDTO){
-        this.email = usuarioCadastroDTO.email();
-        this.senha = usuarioCadastroDTO.senha();
-    }
-
     public Usuario(String email, String senha){
         this.email = email;
         this.senha = senha;
