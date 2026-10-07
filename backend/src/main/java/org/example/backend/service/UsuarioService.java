@@ -23,4 +23,12 @@ public class UsuarioService {
 
         return new UsuarioRespostaDTO(usuario);
     }
+
+    public void deletarPorId(UUID id){
+        if(!usuarioRepository.existsById(id)){
+            throw new ResourceNotFoundException("usuario.nao-encontrado", "ID", id);
+        }
+
+        usuarioRepository.deleteById(id);
+    }
 }
