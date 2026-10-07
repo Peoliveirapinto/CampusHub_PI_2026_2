@@ -38,6 +38,7 @@ public class SecurityConfig {
                         // 1. Rotas públicas
                         .requestMatchers(HttpMethod.POST, "/auth/cadastro").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/logout").permitAll()
 
                         // 2. Rotas protegidas
 
