@@ -1,6 +1,7 @@
 package org.example.backend.service;
 
 import org.example.backend.dto.UsuarioCadastroDTO;
+import org.example.backend.dto.UsuarioETokenDTO;
 import org.example.backend.dto.UsuarioLoginDTO;
 import org.example.backend.dto.UsuarioRespostaDTO;
 import org.example.backend.exception.CredenciaisInvalidasException;
@@ -46,7 +47,7 @@ public class AuthService {
         return new UsuarioRespostaDTO(usuarioSalvo);
     }
 
-    public String autenticarUsuario(UsuarioLoginDTO usuarioLoginDTO){
+    public UsuarioETokenDTO autenticarUsuario(UsuarioLoginDTO usuarioLoginDTO){
         Usuario usuario = usuarioRepository.findByEmail(usuarioLoginDTO.email())
                 .orElseThrow(() -> new CredenciaisInvalidasException("auth.credenciais-invalidas"));
 
@@ -54,7 +55,7 @@ public class AuthService {
             throw new CredenciaisInvalidasException("auth.credenciais-invalidas");
         }
 
-        // Retorna o token gerado pelo JwtService
-        return jwtService.gerarToken(usuario);
+        // Retorna o usuario e o token gerado pelo JwtService
+        return new UsuarioETokenDTO(usuario, jwtService.gerarToken(usuario));
     }
 }
