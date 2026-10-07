@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.backend.service.JwtService;
 import org.jspecify.annotations.NonNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +19,9 @@ import java.util.List;
 
 @Component
 public class JwtCookieFilter extends OncePerRequestFilter {
+    @Value("${api.security.token.cookie-name}")
+    private String jwtCookieName;
+
     private final JwtService jwtService;
 
     public JwtCookieFilter(JwtService jwtService){
@@ -63,7 +67,7 @@ public class JwtCookieFilter extends OncePerRequestFilter {
         if (request.getCookies() == null) return null;
 
         for (Cookie cookie : request.getCookies()) {
-            if ("jwt_token".equals(cookie.getName())) {
+            if (jwtCookieName.equals(cookie.getName())) {
                 return cookie.getValue();
             }
         }
