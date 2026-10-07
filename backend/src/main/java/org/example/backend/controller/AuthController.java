@@ -55,4 +55,21 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(new UsuarioRespostaDTO(usuarioETokenDTO.usuario()));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+        // Expira o cookie imediatamente enviando maxAge(0)
+        ResponseCookie cookie = ResponseCookie.from("jwt_token", "")
+                .httpOnly(true)
+                .secure(false) // Altere para 'true' em Produção
+                .path("/")
+                .maxAge(0)
+                .sameSite("Strict")
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .build();
+    }
 }
