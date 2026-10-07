@@ -48,7 +48,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/usuarios/{id}").hasRole(Role.ADMIN.name())
 
                         // 4. Outras rotas requerem estar logado
-                        .anyRequest().authenticated()
+                        .anyRequest().hasRole(Role.ADMIN.name())
                 )
                 // 4. Injeta o filtro de Cookie ANTES do filtro padrão de autenticação do Spring
                 .addFilterBefore(jwtCookieFilter, UsernamePasswordAuthenticationFilter.class);
