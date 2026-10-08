@@ -32,4 +32,11 @@ public class UsuarioController {
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<UsuarioRespostaDTO> atualizar(@PathVariable UUID id, @RequestBody @Valid UsuarioPatchDTO usuarioPatchDTO){
+        UsuarioRespostaDTO usuarioAtualizado = usuarioService.atualizarPorId(id, usuarioPatchDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
+    }
 }
