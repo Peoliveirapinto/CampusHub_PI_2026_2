@@ -1,5 +1,7 @@
 package org.example.backend.controller;
 
+import jakarta.validation.Valid;
+import org.example.backend.dto.UsuarioPatchDTO;
 import org.example.backend.dto.UsuarioRespostaDTO;
 import org.example.backend.service.UsuarioService;
 import org.springframework.http.HttpStatus;
@@ -19,9 +21,9 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioRespostaDTO> getById(@PathVariable UUID id){
-        UsuarioRespostaDTO usuarioRespostaDTO = usuarioService.getById(id);
+        UsuarioRespostaDTO usuarioEncontrado = usuarioService.getById(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(usuarioRespostaDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioEncontrado);
     }
 
     @DeleteMapping("/{id}")
