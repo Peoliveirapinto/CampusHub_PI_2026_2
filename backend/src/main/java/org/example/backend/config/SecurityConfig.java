@@ -49,6 +49,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/usuarios/{id}").hasRole(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PATCH, "/usuarios/{id}").hasRole(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.POST, "/perfis").hasRole(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "/perfis/{usuarioId}").hasRole(Role.ADMIN.name())
 
                         // 4. Outras rotas requerem estar logado
                         .anyRequest().hasRole(Role.ADMIN.name())

@@ -10,6 +10,8 @@ import org.example.backend.repository.PerfilRepository;
 import org.example.backend.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class PerfilService {
     private final PerfilRepository perfilRepository;
@@ -32,5 +34,19 @@ public class PerfilService {
         Perfil perfilSalvo = perfilRepository.save(new Perfil(perfilCriarDTO, usuario));
 
         return new PerfilRespostaDTO(perfilSalvo);
+    }
+
+    public PerfilRespostaDTO obterPorUsuarioid(UUID usuarioId){
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(
+                () -> new ResourceNotFoundException("usuario.nao-encontrado", "ID", usuarioId)
+        );
+
+        var perfisEncontrados = perfilRepository.findByUsuario(usuario);
+
+        if(perfisEncontrados == null || perfisEncontrados.isEmpty()){
+            throw new ResourceNotFoundException("perfil.nao-encontrado-para-esse-usuario");
+        }
+
+        return new PerfilRespostaDTO(perfisEncontrados.getFirst());
     }
 }

@@ -6,10 +6,9 @@ import org.example.backend.dto.PerfilRespostaDTO;
 import org.example.backend.service.PerfilService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/perfis")
@@ -25,5 +24,12 @@ public class PerfilController {
         PerfilRespostaDTO perfilSalvo = perfilService.criar(perfilCriarDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(perfilSalvo);
+    }
+
+    @GetMapping("/{usuarioId}")
+    public ResponseEntity<PerfilRespostaDTO> obterPorUsuarioId(@PathVariable UUID usuarioId){
+        PerfilRespostaDTO perfilDoUsuario = perfilService.obterPorUsuarioid(usuarioId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(perfilDoUsuario);
     }
 }
