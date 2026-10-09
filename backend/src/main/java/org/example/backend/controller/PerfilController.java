@@ -32,4 +32,11 @@ public class PerfilController {
 
         return ResponseEntity.status(HttpStatus.OK).body(perfilDoUsuario);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable UUID id){
+        perfilService.deletar(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

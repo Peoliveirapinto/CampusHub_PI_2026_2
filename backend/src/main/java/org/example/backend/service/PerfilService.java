@@ -49,4 +49,12 @@ public class PerfilService {
 
         return new PerfilRespostaDTO(perfisEncontrados.getFirst());
     }
+
+    public void deletar(UUID id){
+        if(!perfilRepository.existsById(id)){
+            throw new ResourceNotFoundException("perfil.nao-encontrado", "ID", id);
+        }
+
+        perfilRepository.deleteById(id);
+    }
 }

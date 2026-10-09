@@ -2,7 +2,10 @@ package org.example.backend.dto;
 
 import org.example.backend.model.Perfil;
 
+import java.util.UUID;
+
 public record PerfilRespostaDTO(
+        UUID id,
         UsuarioRespostaDTO usuario,
         String nome,
         String descricao,
@@ -15,6 +18,7 @@ public record PerfilRespostaDTO(
 ) {
     public PerfilRespostaDTO(Perfil perfil){
         this(
+            perfil.getId(),
             new UsuarioRespostaDTO(perfil.getUsuario()),
             perfil.getNome(),
             perfil.getDescricao(),
