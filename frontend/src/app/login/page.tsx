@@ -15,7 +15,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 flex flex-col justify-between">
+    <div className="min-h-screen bg-[#f1f5f9] text-gray-900 flex flex-col justify-between">
       {/* Cabeçalho */}
       <header className="w-full flex justify-between items-center px-8 py-6">
         <Link href="/" className="flex items-center gap-3">
@@ -29,9 +29,9 @@ export default function LoginPage() {
         </span>
       </header>
 
-      {/* Conteúdo Central / Formulário */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 -mt-12">
-        <div className="w-full max-w-sm flex flex-col items-center">
+      {/* Conteúdo Central / Card de Login */}
+      <main className="flex-1 flex items-center justify-center px-4 py-8">
+        <div className="w-full max-w-md bg-white border border-gray-400/80 rounded-2xl p-8 shadow-sm flex flex-col items-center">
           {/* Ícone de Usuário */}
           <div className="w-20 h-20 rounded-full bg-[#4285f4] flex items-center justify-center text-white mb-4 shadow-sm">
             <User size={48} strokeWidth={2.5} />
@@ -46,11 +46,11 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
             {/* Campo E-mail / RA */}
             <div className="flex flex-col gap-1.5">
-              <label 
-                htmlFor="identifier" 
+              <label
+                htmlFor="identifier"
                 className="text-base font-semibold text-gray-900"
               >
-                Email Institucional ou RA
+                Email
               </label>
               <input
                 id="identifier"
@@ -65,8 +65,8 @@ export default function LoginPage() {
 
             {/* Campo Senha */}
             <div className="flex flex-col gap-1.5">
-              <label 
-                htmlFor="password" 
+              <label
+                htmlFor="password"
                 className="text-base font-semibold text-gray-900"
               >
                 Senha
@@ -110,7 +110,7 @@ export default function LoginPage() {
 
           {/* Link para Criar Conta */}
           <Link
-            href="/cadastro"
+            href="/criar_conta"
             className="text-base font-bold text-[#0c1b40] hover:underline"
           >
             Criar Conta
@@ -118,7 +118,7 @@ export default function LoginPage() {
         </div>
       </main>
 
-      {/* Espaçador inferior para manter o centro balanceado */}
+      {/* Espaçador inferior */}
       <footer className="h-6"></footer>
     </div>
   );
