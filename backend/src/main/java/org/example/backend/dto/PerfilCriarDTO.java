@@ -16,9 +16,9 @@ public record PerfilCriarDTO(
         String curso,
         String especializacao,
         @NotNull
-        int anoDeIngresso,
+        Integer anoDeIngresso,
         @NotNull
-        int semestreDeIngresso,
+        Integer semestreDeIngresso,
         @NotBlank
         String disponibilidade,
         @NotBlank

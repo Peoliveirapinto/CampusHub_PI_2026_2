@@ -2,6 +2,7 @@ package org.example.backend.controller;
 
 import jakarta.validation.Valid;
 import org.example.backend.dto.PerfilCriarDTO;
+import org.example.backend.dto.PerfilPatchDTO;
 import org.example.backend.dto.PerfilRespostaDTO;
 import org.example.backend.service.PerfilService;
 import org.springframework.http.HttpStatus;
@@ -38,5 +39,12 @@ public class PerfilController {
         perfilService.deletar(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping("/{usuarioId}")
+    public ResponseEntity<PerfilRespostaDTO> atualizarPorUsuarioId(@PathVariable UUID usuarioId, @RequestBody PerfilPatchDTO perfilPatchDTO){
+        PerfilRespostaDTO perfilAtualizado =  perfilService.atualizarPorUsuarioId(usuarioId, perfilPatchDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(perfilAtualizado);
     }
 }
