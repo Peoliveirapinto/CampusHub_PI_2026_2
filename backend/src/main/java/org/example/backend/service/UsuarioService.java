@@ -1,9 +1,11 @@
 package org.example.backend.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.UsuarioPatchDTO;
 import org.example.backend.dto.UsuarioRespostaDTO;
 import org.example.backend.exception.JaExisteException;
 import org.example.backend.exception.ResourceNotFoundException;
+import org.example.backend.mapper.UsuarioMapper;
 import org.example.backend.model.Usuario;
 import org.example.backend.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
@@ -11,12 +13,10 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
-
-    public UsuarioService(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
+    private final UsuarioMapper usuarioMapper;
 
     public UsuarioRespostaDTO getById(UUID id){
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(
@@ -39,7 +39,10 @@ public class UsuarioService {
                 () -> new ResourceNotFoundException("usuario.nao-encontrado", "ID", id)
         );
 
+        usuarioMapper.atualizaEntidadePeloDTO(usuarioPatchDTO, usuario);
+
         // Atualiza o email caso o campo tenha sido mandado e o email já não pertença a outro usuário
+        // Atualização do email é feita manualmente (fora do mapper) pois precisa de uma validação que requer acesso ao banco de dados
         if(usuarioPatchDTO.email() != null){
             if(usuarioRepository.existsByEmail(usuarioPatchDTO.email())){
                 throw new JaExisteException("usuario.email.ja-existe");
@@ -47,13 +50,6 @@ public class UsuarioService {
             usuario.setEmail(usuarioPatchDTO.email());
         }
 
-        // Atualiza a role caso ela tenha sido mandada
-        if(usuarioPatchDTO.role() != null){
-            usuario.setRole(usuarioPatchDTO.role());
-        }
-
-        usuarioRepository.save(usuario);
-
-        return new UsuarioRespostaDTO(usuario);
+        return new UsuarioRespostaDTO(usuarioRepository.save(usuario));
     }
 }
