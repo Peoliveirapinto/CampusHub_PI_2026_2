@@ -2,7 +2,7 @@ package org.example.backend.service;
 
 import org.example.backend.dto.UsuarioPatchDTO;
 import org.example.backend.dto.UsuarioRespostaDTO;
-import org.example.backend.exception.EmailJaExisteException;
+import org.example.backend.exception.JaExisteException;
 import org.example.backend.exception.ResourceNotFoundException;
 import org.example.backend.model.Usuario;
 import org.example.backend.repository.UsuarioRepository;
@@ -42,7 +42,7 @@ public class UsuarioService {
         // Atualiza o email caso o campo tenha sido mandado e o email já não pertença a outro usuário
         if(usuarioPatchDTO.email() != null){
             if(usuarioRepository.existsByEmail(usuarioPatchDTO.email())){
-                throw new EmailJaExisteException("usuario.email.ja-existe");
+                throw new JaExisteException("usuario.email.ja-existe");
             }
             usuario.setEmail(usuarioPatchDTO.email());
         }

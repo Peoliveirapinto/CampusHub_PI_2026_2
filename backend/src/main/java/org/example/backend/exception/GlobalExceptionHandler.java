@@ -38,8 +38,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 
-    @ExceptionHandler(EmailJaExisteException.class)
-    public ResponseEntity<Map<String, Object>> handleEmailJaExiste(EmailJaExisteException ex){
+    @ExceptionHandler(JaExisteException.class)
+    public ResponseEntity<Map<String, Object>> handleJaExiste(JaExisteException ex){
         String translatedMessage = messageSource.getMessage(
                 ex.getMessage(),
                 null,

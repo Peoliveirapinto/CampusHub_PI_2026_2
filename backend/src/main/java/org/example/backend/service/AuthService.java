@@ -5,7 +5,7 @@ import org.example.backend.dto.UsuarioETokenDTO;
 import org.example.backend.dto.UsuarioLoginDTO;
 import org.example.backend.dto.UsuarioRespostaDTO;
 import org.example.backend.exception.CredenciaisInvalidasException;
-import org.example.backend.exception.EmailJaExisteException;
+import org.example.backend.exception.JaExisteException;
 import org.example.backend.model.Usuario;
 import org.example.backend.model.enums.Role;
 import org.example.backend.repository.UsuarioRepository;
@@ -25,7 +25,7 @@ public class AuthService {
 
     public UsuarioRespostaDTO cadastrarAdmin(UsuarioCadastroDTO usuarioCadastroDTO){
         if(usuarioRepository.existsByEmail(usuarioCadastroDTO.email())){
-            throw new EmailJaExisteException("usuario.email.ja-existe");
+            throw new JaExisteException("usuario.email.ja-existe");
         }
 
         String senhaHasheada = senhaService.hash(usuarioCadastroDTO.senha());
@@ -37,7 +37,7 @@ public class AuthService {
 
     public UsuarioRespostaDTO cadastrarUsuario(UsuarioCadastroDTO usuarioCadastroDTO){
         if(usuarioRepository.existsByEmail(usuarioCadastroDTO.email())){
-            throw new EmailJaExisteException("usuario.email.ja-existe");
+            throw new JaExisteException("usuario.email.ja-existe");
         }
 
         String senhaHasheada = senhaService.hash(usuarioCadastroDTO.senha());
