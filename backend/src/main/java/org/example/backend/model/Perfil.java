@@ -46,10 +46,10 @@ public class Perfil {
     private String especializacao;
 
     @Column(name = "ano_de_ingresso", nullable = false)
-    private int anoDeIngresso;
+    private Integer anoDeIngresso;
 
     @Column(name = "semestre_de_ingresso", nullable = false)
-    private int semestreDeIngresso;
+    private Integer semestreDeIngresso;
 
     @Column(name = "disponibilidade", nullable = false, columnDefinition = "TEXT")
     private String disponibilidade;
