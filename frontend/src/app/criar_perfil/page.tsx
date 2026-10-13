@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronDown, X, Plus, Search, ChevronUp } from "lucide-react";
 
 // Lista padronizada para facilitar o algoritmo de matching
@@ -138,14 +139,21 @@ export default function CompletePerfilPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f1f5f9] text-gray-900 flex flex-col justify-between">
+    <div className="min-h-screen bg-[#f1f5f9] text-gray-900 flex flex-col justify-between font-sans">
       {/* Cabeçalho */}
-      <header className="w-full flex justify-between items-center px-8 py-6">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="bg-[#1e2b58] text-white font-bold px-2.5 py-1 rounded-md text-sm tracking-wide">
-            CH
-          </div>
-          <span className="font-bold text-gray-900 text-lg">CampusHub</span>
+      <header className="w-full flex justify-between items-center px-6 sm:px-8 py-5">
+        <Link
+          href="/"
+          className="flex items-center group transition-opacity hover:opacity-90"
+        >
+          <Image
+            src="/logo_CampusHub_sem_fundo.png"
+            alt="Logo CampusHub"
+            width={160}
+            height={40}
+            className="h-9 w-auto object-contain"
+            priority
+          />
         </Link>
         <span className="text-gray-900 text-sm font-medium">
           Instituto Mauá de Tecnologia
@@ -155,7 +163,6 @@ export default function CompletePerfilPage() {
       {/* Conteúdo Central / Card Passo 2 */}
       <main className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-lg bg-white border border-gray-400/80 rounded-2xl p-8 shadow-sm">
-          
           {/* Topo do Card */}
           <div className="flex justify-between items-start mb-2">
             <div>
@@ -175,8 +182,7 @@ export default function CompletePerfilPage() {
 
           {/* Formulário */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            
-            {/* MINI BIO/ RESUMO (descricao TEXT) */}
+            {/* MINI BIO / RESUMO */}
             <div className="flex flex-col gap-1">
               <label
                 htmlFor="descricao"
@@ -228,7 +234,7 @@ export default function CompletePerfilPage() {
                     id="semestreIngresso"
                     value={semestreIngresso}
                     onChange={(e) => setSemestreIngresso(e.target.value)}
-                    className="w-full bg-[#dedede] text-gray-800 px-3.5 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-sm appearance-none cursor-pointer"
+                    className="w-full bg-[#dedede] text-gray-800 px-3.5 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-sm appearance-none cursor-pointer pr-10"
                     required
                   >
                     <option value="1">1º Semestre</option>
@@ -242,7 +248,7 @@ export default function CompletePerfilPage() {
               </div>
             </div>
 
-            {/* CONTATO (contato VARCHAR(100) NOT NULL) */}
+            {/* CONTATO */}
             <div className="flex flex-col gap-1">
               <label
                 htmlFor="contato"
@@ -261,12 +267,12 @@ export default function CompletePerfilPage() {
               />
             </div>
 
-            {/* SUAS HABILIDADES (HARD SKILLS COM MENU PADRONIZADO) */}
+            {/* SUAS HABILIDADES (HARD SKILLS) */}
             <div className="flex flex-col gap-1 relative">
               <label className="text-xs font-semibold text-gray-800 tracking-wider uppercase">
                 Suas Habilidades (Hard Skills)
               </label>
-              
+
               <div className="w-full bg-[#dedede] p-2.5 rounded-xl flex flex-wrap items-center gap-2 min-h-11.5">
                 {skills.map((skill) => (
                   <span
@@ -278,6 +284,7 @@ export default function CompletePerfilPage() {
                       type="button"
                       onClick={() => handleRemoveSkill(skill)}
                       className="hover:text-blue-900 transition"
+                      title={`Remover ${skill}`}
                     >
                       <X size={13} />
                     </button>
@@ -287,14 +294,14 @@ export default function CompletePerfilPage() {
                 <button
                   type="button"
                   onClick={() => setIsAddingSkill(!isAddingSkill)}
-                  className="text-xs text-gray-700 hover:text-gray-950 inline-flex items-center gap-1 font-semibold px-2 py-1 rounded-lg hover:bg-black/5 transition"
+                  className="text-xs text-gray-700 hover:text-gray-950 inline-flex items-center gap-1 font-semibold px-2 py-1 rounded-lg hover:bg-black/5 transition cursor-pointer"
                 >
                   <Plus size={13} />
                   Adicionar habilidade
                 </button>
               </div>
 
-              {/* DROPDOWN / LISTA DE HABILIDADES PADRONIZADAS */}
+              {/* DROPDOWN FLUTUANTE DE HABILIDADES */}
               {isAddingSkill && (
                 <div className="mt-1 rounded-xl border border-gray-300 bg-white p-3 shadow-lg z-20">
                   <div className="flex items-center gap-2 border-b border-gray-200 pb-2 mb-2">
@@ -303,6 +310,12 @@ export default function CompletePerfilPage() {
                       type="text"
                       value={skillSearch}
                       onChange={(e) => setSkillSearch(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleAddCustomSkill();
+                        }
+                      }}
                       placeholder="Pesquise ou digite uma habilidade..."
                       className="w-full text-xs outline-none bg-transparent placeholder-gray-400 text-gray-800"
                       autoFocus
@@ -311,7 +324,7 @@ export default function CompletePerfilPage() {
                       <button
                         type="button"
                         onClick={handleAddCustomSkill}
-                        className="text-[11px] bg-blue-600 text-white px-2 py-0.5 rounded font-semibold whitespace-nowrap"
+                        className="text-[11px] bg-blue-600 text-white px-2 py-0.5 rounded font-semibold whitespace-nowrap cursor-pointer hover:bg-blue-700"
                       >
                         + Adicionar
                       </button>
@@ -329,14 +342,14 @@ export default function CompletePerfilPage() {
                           key={item}
                           type="button"
                           onClick={() => handleSelectSkill(item)}
-                          className="text-xs bg-slate-100 hover:bg-blue-100 hover:text-blue-900 text-gray-700 px-2.5 py-1 rounded-md transition text-left"
+                          className="text-xs bg-slate-100 hover:bg-blue-100 hover:text-blue-900 text-gray-700 px-2.5 py-1 rounded-md transition text-left cursor-pointer"
                         >
                           + {item}
                         </button>
                       ))
                     ) : (
                       <span className="text-xs text-gray-400 italic">
-                        Nenhuma correspondência padrão. Pressione "+ Adicionar" acima para incluir.
+                        Nenhuma correspondência padrão. Pressione &quot;+ Adicionar&quot; acima para incluir.
                       </span>
                     )}
                   </div>
@@ -348,7 +361,7 @@ export default function CompletePerfilPage() {
               </span>
             </div>
 
-            {/* ÁREAS DE INTERESSE PARA PROJETOS COM "OUTROS" EXPANSÍVEL */}
+            {/* ÁREAS DE INTERESSE PARA PROJETOS */}
             <div className="flex flex-col gap-1.5 mt-1">
               <label className="text-xs font-semibold text-gray-800 tracking-wider uppercase">
                 Áreas de Interesse para Projetos
@@ -363,7 +376,7 @@ export default function CompletePerfilPage() {
                       type="button"
                       key={area}
                       onClick={() => toggleInteresse(area)}
-                      className={`flex items-center gap-2.5 p-3 rounded-xl border text-left text-xs font-medium transition ${
+                      className={`flex items-center gap-2.5 p-3 rounded-xl border text-left text-xs font-medium transition cursor-pointer ${
                         selected
                           ? "bg-white border-blue-600 text-blue-950 shadow-xs"
                           : "bg-[#dedede] border-transparent text-gray-800 hover:bg-[#d5d5d5]"
@@ -383,11 +396,11 @@ export default function CompletePerfilPage() {
                   );
                 })}
 
-                {/* Botão "Outros" com indicador abre/fecha */}
+                {/* Botão Outros */}
                 <button
                   type="button"
                   onClick={() => setShowOutros(!showOutros)}
-                  className={`flex items-center justify-between p-3 rounded-xl border text-left text-xs font-semibold transition ${
+                  className={`flex items-center justify-between p-3 rounded-xl border text-left text-xs font-semibold transition cursor-pointer ${
                     showOutros || interesses.some((i) => AREAS_EXTRAS.includes(i))
                       ? "bg-white border-blue-600 text-blue-950"
                       : "bg-[#dedede] border-transparent text-gray-800 hover:bg-[#d5d5d5]"
@@ -413,7 +426,7 @@ export default function CompletePerfilPage() {
                           type="button"
                           key={extraArea}
                           onClick={() => toggleInteresse(extraArea)}
-                          className={`flex items-center gap-2 p-2 rounded-lg text-left text-xs font-medium border transition ${
+                          className={`flex items-center gap-2 p-2 rounded-lg text-left text-xs font-medium border transition cursor-pointer ${
                             selected
                               ? "bg-white border-blue-600 text-blue-950 shadow-2xs"
                               : "bg-white/80 border-gray-200 text-gray-700 hover:bg-white"
@@ -505,7 +518,6 @@ export default function CompletePerfilPage() {
               Pular esta etapa por enquanto
             </Link>
           </div>
-
         </div>
       </main>
 

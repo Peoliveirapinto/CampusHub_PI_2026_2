@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { User } from "lucide-react";
 
 export default function LoginPage() {
@@ -15,14 +16,21 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f1f5f9] text-gray-900 flex flex-col justify-between">
+    <div className="min-h-screen bg-[#f1f5f9] text-gray-900 flex flex-col justify-between font-sans">
       {/* Cabeçalho */}
-      <header className="w-full flex justify-between items-center px-8 py-6">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="bg-[#1e2b58] text-white font-bold px-2.5 py-1 rounded-md text-sm tracking-wide">
-            CH
-          </div>
-          <span className="font-bold text-gray-900 text-lg">CampusHub</span>
+      <header className="w-full flex justify-between items-center px-6 sm:px-8 py-5">
+        <Link 
+          href="/" 
+          className="flex items-center group transition-opacity hover:opacity-90"
+        >
+          <Image
+            src="/logo_CampusHub_sem_fundo.png"
+            alt="Logo CampusHub"
+            width={160}
+            height={40}
+            className="h-9 w-auto object-contain"
+            priority
+          />
         </Link>
         <span className="text-gray-900 text-sm font-medium">
           Instituto Mauá de Tecnologia
@@ -95,7 +103,7 @@ export default function LoginPage() {
             {/* Botão de Login */}
             <button
               type="submit"
-              className="w-full mt-2 bg-[#2f6ff7] hover:bg-[#255cd4] text-white font-semibold py-3 rounded-xl transition duration-150 shadow-sm text-lg"
+              className="w-full mt-2 bg-[#2f6ff7] hover:bg-[#255cd4] text-white font-semibold py-3 rounded-xl transition duration-150 shadow-sm text-lg cursor-pointer"
             >
               Login
             </button>
