@@ -6,6 +6,12 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+
+// Chave usada para levar nome e curso até o Passo 2 (criar_perfil).
+// A senha NUNCA é guardada aqui.
+const CHAVE_DADOS_CADASTRO = "campushub:dadosCadastro";
+
 export default function CriarContaPage() {
   const router = useRouter();
 
@@ -13,13 +19,79 @@ export default function CriarContaPage() {
   const [email, setEmail] = useState("");
   const [curso, setCurso] = useState("");
   const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState<string | null>(null);
+  const [carregando, setCarregando] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Dados do cadastro:", { nome, email, curso, senha });
+    if (carregando) return;
 
-    // Redireciona para o Passo 2
-    router.push("/criar_perfil");
+    setErro(null);
+    setCarregando(true);
+
+    const emailLimpo = email.trim().toLowerCase();
+
+    try {
+      // 1) Cria o usuário (o backend recebe apenas e-mail e senha)
+      const respostaCadastro = await fetch(`${API_URL}/auth/cadastro`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email: emailLimpo, senha }),
+      });
+
+      if (!respostaCadastro.ok) {
+        if (respostaCadastro.status === 409) {
+          setErro("Já existe uma conta com esse e-mail. Tente fazer login.");
+        } else if (respostaCadastro.status === 400) {
+          setErro("Confira o e-mail e a senha (mínimo de 8 caracteres).");
+        } else {
+          setErro("Não foi possível criar a conta agora. Tente novamente.");
+        }
+        return;
+      }
+
+      // 2) Faz login automático para que o Passo 2 já tenha o cookie com o JWT
+      const respostaLogin = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email: emailLimpo, senha }),
+      });
+
+      if (!respostaLogin.ok) {
+        // A conta foi criada, só o login automático falhou
+        router.replace("/login");
+        return;
+      }
+
+      // O login devolve o id do usuário, que o Passo 2 precisa para criar o perfil
+      let usuarioId: string | undefined;
+      try {
+        const usuarioLogado = await respostaLogin.json();
+        usuarioId = usuarioLogado?.id;
+      } catch {
+        // sem id, o Passo 2 pedirá para refazer o Passo 1
+      }
+
+      // 3) Guarda nome, curso e id para o Passo 2 e segue
+      try {
+        sessionStorage.setItem(
+          CHAVE_DADOS_CADASTRO,
+          JSON.stringify({ nome: nome.trim(), curso, usuarioId })
+        );
+      } catch {
+        // sessionStorage indisponível: o Passo 2 simplesmente não vem pré-preenchido
+      }
+
+      router.push("/criar_perfil");
+    } catch {
+      setErro(
+        "Não foi possível conectar ao servidor. Verifique se o backend está rodando."
+      );
+    } finally {
+      setCarregando(false);
+    }
   };
 
   return (
@@ -78,6 +150,7 @@ export default function CriarContaPage() {
                 placeholder="Ex: Mario Bros"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
+                autoComplete="name"
                 className="w-full bg-[#dedede] text-gray-800 placeholder-gray-500 px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 required
               />
@@ -97,6 +170,7 @@ export default function CriarContaPage() {
                 placeholder="Ex: 21.1111-1@maua.br"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
                 className="w-full bg-[#dedede] text-gray-800 placeholder-gray-500 px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 required
               />
@@ -161,18 +235,30 @@ export default function CriarContaPage() {
                 placeholder="Mínimo de 8 caracteres"
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
+                autoComplete="new-password"
                 className="w-full bg-[#dedede] text-gray-800 placeholder-gray-500 px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 required
                 minLength={8}
               />
             </div>
 
+            {/* Mensagem de erro */}
+            {erro && (
+              <p
+                role="alert"
+                className="text-sm font-medium text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2"
+              >
+                {erro}
+              </p>
+            )}
+
             {/* Botão de Envio / Navegação */}
             <button
               type="submit"
-              className="w-full mt-2 bg-[#2f6ff7] hover:bg-[#255cd4] text-white font-semibold py-3 rounded-xl transition duration-150 shadow-sm text-sm cursor-pointer"
+              disabled={carregando}
+              className="w-full mt-2 bg-[#2f6ff7] hover:bg-[#255cd4] disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition duration-150 shadow-sm text-sm cursor-pointer"
             >
-              Continuar para Passo 2
+              {carregando ? "Criando conta..." : "Continuar para Passo 2"}
             </button>
           </form>
 

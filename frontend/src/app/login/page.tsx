@@ -3,24 +3,68 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { User } from "lucide-react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+
+// Rota da página do Hub (a segunda page.tsx). Ajuste para o nome da sua pasta.
+const ROTA_APOS_LOGIN = "/home_c/login";
+
 export default function LoginPage() {
+  const router = useRouter();
+
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
+  const [erro, setErro] = useState<string | null>(null);
+  const [carregando, setCarregando] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Tentativa de login:", { identifier, password });
-    // Aqui conectaremos com a rota da equipe de Java futuramente
+    if (carregando) return;
+
+    setErro(null);
+    setCarregando(true);
+
+    try {
+      const resposta = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        // Necessário para o navegador aceitar o cookie com o JWT enviado pelo backend
+        credentials: "include",
+        body: JSON.stringify({
+          email: identifier.trim(),
+          senha: password,
+        }),
+      });
+
+      if (resposta.ok) {
+        router.replace(ROTA_APOS_LOGIN);
+        return;
+      }
+
+      if (resposta.status === 401 || resposta.status === 403) {
+        setErro("E-mail ou senha incorretos.");
+      } else if (resposta.status === 400) {
+        setErro("Confira se o e-mail e a senha foram preenchidos corretamente.");
+      } else {
+        setErro("Não foi possível entrar agora. Tente novamente em instantes.");
+      }
+    } catch {
+      setErro(
+        "Não foi possível conectar ao servidor. Verifique se o backend está rodando."
+      );
+    } finally {
+      setCarregando(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-[#f1f5f9] text-gray-900 flex flex-col justify-between font-sans">
       {/* Cabeçalho */}
       <header className="w-full flex justify-between items-center px-6 sm:px-8 py-5">
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           className="flex items-center group transition-opacity hover:opacity-90"
         >
           <Image
@@ -66,6 +110,7 @@ export default function LoginPage() {
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 placeholder="exemplo@maua.br"
+                autoComplete="username"
                 className="w-full bg-[#b0b0b0] text-gray-800 placeholder-gray-600 px-4 py-2.5 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 required
               />
@@ -85,6 +130,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Digite sua senha"
+                autoComplete="current-password"
                 className="w-full bg-[#b0b0b0] text-gray-800 placeholder-gray-600 px-4 py-2.5 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 required
               />
@@ -100,12 +146,23 @@ export default function LoginPage() {
               </Link>
             </div>
 
+            {/* Mensagem de erro */}
+            {erro && (
+              <p
+                role="alert"
+                className="text-sm font-medium text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2"
+              >
+                {erro}
+              </p>
+            )}
+
             {/* Botão de Login */}
             <button
               type="submit"
-              className="w-full mt-2 bg-[#2f6ff7] hover:bg-[#255cd4] text-white font-semibold py-3 rounded-xl transition duration-150 shadow-sm text-lg cursor-pointer"
+              disabled={carregando}
+              className="w-full mt-2 bg-[#2f6ff7] hover:bg-[#255cd4] disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition duration-150 shadow-sm text-lg cursor-pointer"
             >
-              Login
+              {carregando ? "Entrando..." : "Login"}
             </button>
           </form>
 

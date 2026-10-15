@@ -3,7 +3,19 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { ChevronDown, X, Plus, Search, ChevronUp } from "lucide-react";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+
+// Endpoint de criação de perfil no backend (PerfilController: @RequestMapping("/perfis"))
+const ENDPOINT_PERFIL = "/perfis";
+
+// Rota do Hub depois de salvar o perfil (mesma usada no login)
+const ROTA_HUB = "/home_c/login";
+
+// Nome, curso e id do usuário gravados no Passo 1 (criar_conta)
+const CHAVE_DADOS_CADASTRO = "campushub:dadosCadastro";
 
 // Lista padronizada para facilitar o algoritmo de matching
 const LISTA_HABILIDADES_PADRAO = [
@@ -60,6 +72,11 @@ const AREAS_EXTRAS = [
 ];
 
 export default function CompletePerfilPage() {
+  const router = useRouter();
+  const [erro, setErro] = useState<string | null>(null);
+  const [faltouPasso1, setFaltouPasso1] = useState(false);
+  const [carregando, setCarregando] = useState(false);
+
   // Campos obrigatórios no banco (Tabela perfil)
   const [descricao, setDescricao] = useState("");
   const [anoIngresso, setAnoIngresso] = useState(new Date().getFullYear());
@@ -115,27 +132,97 @@ export default function CompletePerfilPage() {
     );
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (carregando) return;
+
+    setErro(null);
+    setFaltouPasso1(false);
+
+    // Nome e curso vêm do Passo 1 (a tabela perfil exige os dois)
+    let dadosCadastro: { nome?: string; curso?: string; usuarioId?: string } =
+      {};
+    try {
+      dadosCadastro = JSON.parse(
+        sessionStorage.getItem(CHAVE_DADOS_CADASTRO) ?? "{}"
+      );
+    } catch {
+      // segue com objeto vazio
+    }
+
+    if (!dadosCadastro.nome || !dadosCadastro.curso || !dadosCadastro.usuarioId) {
+      setFaltouPasso1(true);
+      setErro(
+        "Não encontramos os dados do Passo 1. Volte e preencha novamente."
+      );
+      return;
+    }
 
     // Consolida áreas selecionadas + especificação se houver
     const especializacoesFinais = [...interesses];
     if (outroEspecifico.trim()) {
       especializacoesFinais.push(outroEspecifico.trim());
     }
+    const especializacao = especializacoesFinais.join(", ");
 
+    // A coluna especializacao aceita no máximo 100 caracteres
+    if (especializacao.length > 100) {
+      setErro(
+        "As áreas de interesse ficaram longas demais. Remova algumas ou encurte o texto."
+      );
+      return;
+    }
+
+    // Campos conforme PerfilCriarDTO do backend.
+    // Obs.: "habilidades" ainda não é enviado porque o backend não tem
+    // campo/tabela para elas; o estado "skills" segue na tela para quando existir.
     const perfilPayload = {
-      descricao,
-      ano_de_ingresso: Number(anoIngresso),
-      semestre_de_ingresso: Number(semestreIngresso),
+      usuarioId: dadosCadastro.usuarioId,
+      nome: dadosCadastro.nome,
+      curso: dadosCadastro.curso,
+      descricao: descricao.trim(),
+      anoDeIngresso: Number(anoIngresso),
+      semestreDeIngresso: Number(semestreIngresso),
       disponibilidade,
-      contato,
-      especializacao: especializacoesFinais.join(", "),
-      habilidades: skills,
+      contato: contato.trim(),
+      especializacao: especializacao || null,
     };
 
-    console.log("Enviando perfil para o banco:", perfilPayload);
-    // Chamada fetch/axios para o backend Java (ex: POST /api/perfil)
+    setCarregando(true);
+    try {
+      const resposta = await fetch(`${API_URL}${ENDPOINT_PERFIL}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", // envia o cookie com o JWT
+        body: JSON.stringify(perfilPayload),
+      });
+
+      if (resposta.ok) {
+        try {
+          sessionStorage.removeItem(CHAVE_DADOS_CADASTRO);
+        } catch {
+          // ignora
+        }
+        router.replace(ROTA_HUB);
+        return;
+      }
+
+      if (resposta.status === 401 || resposta.status === 403) {
+        setErro("Sua sessão expirou ou não é válida. Faça login novamente.");
+      } else if (resposta.status === 409) {
+        setErro("Você já tem um perfil cadastrado.");
+      } else if (resposta.status === 400) {
+        setErro("Alguns dados do perfil estão inválidos. Confira os campos.");
+      } else {
+        setErro("Não foi possível salvar o perfil agora. Tente novamente.");
+      }
+    } catch {
+      setErro(
+        "Não foi possível conectar ao servidor. Verifique se o backend está rodando."
+      );
+    } finally {
+      setCarregando(false);
+    }
   };
 
   return (
@@ -262,6 +349,7 @@ export default function CompletePerfilPage() {
                 value={contato}
                 onChange={(e) => setContato(e.target.value)}
                 placeholder="Ex: (11) 99999-9999 ou @usuario"
+                maxLength={100}
                 className="w-full bg-[#dedede] text-gray-800 placeholder-gray-500 px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 required
               />
@@ -457,6 +545,7 @@ export default function CompletePerfilPage() {
                       value={outroEspecifico}
                       onChange={(e) => setOutroEspecifico(e.target.value)}
                       placeholder="Ex: Energias Renováveis, Nanotecnologia..."
+                      maxLength={60}
                       className="mt-1 w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-blue-500"
                     />
                   </div>
@@ -500,12 +589,31 @@ export default function CompletePerfilPage() {
               </div>
             </div>
 
+            {/* Mensagem de erro */}
+            {erro && (
+              <div
+                role="alert"
+                className="text-sm font-medium text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2"
+              >
+                <p>{erro}</p>
+                {faltouPasso1 && (
+                  <Link
+                    href="/criar_conta"
+                    className="inline-block mt-1 font-semibold underline"
+                  >
+                    Voltar ao Passo 1
+                  </Link>
+                )}
+              </div>
+            )}
+
             {/* Botão Salvar Perfil */}
             <button
               type="submit"
-              className="w-full mt-3 bg-[#2f6ff7] hover:bg-[#255cd4] text-white font-semibold py-3 rounded-xl transition duration-150 shadow-sm text-sm cursor-pointer"
+              disabled={carregando}
+              className="w-full mt-3 bg-[#2f6ff7] hover:bg-[#255cd4] disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition duration-150 shadow-sm text-sm cursor-pointer"
             >
-              Salvar Perfil e Acessar o Hub
+              {carregando ? "Salvando..." : "Salvar Perfil e Acessar o Hub"}
             </button>
           </form>
 
