@@ -50,4 +50,11 @@ public class PerfilController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(perfilSalvo);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<PerfilRespostaDTO> obterMeu(){
+        PerfilRespostaDTO perfilEncontrado = perfilService.obterMeu();
+
+        return ResponseEntity.status(HttpStatus.OK).body(perfilEncontrado);
+    }
 }

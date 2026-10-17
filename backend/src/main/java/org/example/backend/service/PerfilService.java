@@ -86,4 +86,10 @@ public class PerfilService {
 
         return new PerfilRespostaDTO(perfilSalvo);
     }
+
+    public PerfilRespostaDTO obterMeu(){
+        Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
+
+        return new PerfilRespostaDTO(garantirQueUsuarioTemPerfil(usuarioLogado));
+    }
 }
