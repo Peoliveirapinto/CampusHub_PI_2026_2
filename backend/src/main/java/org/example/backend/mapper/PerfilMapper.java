@@ -1,5 +1,6 @@
 package org.example.backend.mapper;
 
+import org.example.backend.dto.PerfilCriarDTO;
 import org.example.backend.dto.PerfilCriarMeuDTO;
 import org.example.backend.dto.PerfilPatchDTO;
 import org.example.backend.model.Perfil;
@@ -14,4 +15,5 @@ public interface PerfilMapper {
     void atualizaEntidadePeloDTO(PerfilPatchDTO dto, @MappingTarget Perfil entity);
 
     Perfil criaEntidadePeloDTO(PerfilCriarMeuDTO perfilCriarMeuDTO);
+    Perfil criaEntidadePeloDTO(PerfilCriarDTO perfilCriarDTO);
 }

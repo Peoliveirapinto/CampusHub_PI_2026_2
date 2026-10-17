@@ -38,7 +38,10 @@ public class PerfilService {
 
         garanteQueUsuarioNaoTemPerfil(usuario);
 
-        Perfil perfilSalvo = perfilRepository.save(new Perfil(perfilCriarDTO, usuario));
+        Perfil perfilNovo = perfilMapper.criaEntidadePeloDTO(perfilCriarDTO);
+        perfilNovo.setUsuario(usuario);
+
+        Perfil perfilSalvo = perfilRepository.save(perfilNovo);
 
         return new PerfilRespostaDTO(perfilSalvo);
     }

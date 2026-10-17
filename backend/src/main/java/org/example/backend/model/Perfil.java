@@ -56,16 +56,4 @@ public class Perfil {
 
     @Column(name = "contato", nullable = false, length = 100)
     private String contato;
-
-    public Perfil(PerfilCriarDTO perfilCriarDTO, Usuario usuario){
-        this.usuario = usuario;
-        this.nome = perfilCriarDTO.nome();
-        this.descricao = perfilCriarDTO.descricao();
-        this.curso = perfilCriarDTO.curso();
-        this.especializacao = perfilCriarDTO.especializacao();
-        this.anoDeIngresso = perfilCriarDTO.anoDeIngresso();
-        this.semestreDeIngresso = perfilCriarDTO.semestreDeIngresso();
-        this.disponibilidade = perfilCriarDTO.disponibilidade();
-        this.contato = perfilCriarDTO.contato();
-    }
 }
