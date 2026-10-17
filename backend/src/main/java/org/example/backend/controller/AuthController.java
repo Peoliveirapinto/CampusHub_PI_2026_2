@@ -27,7 +27,7 @@ public class AuthController {
         this.cookieService = cookieService;
     }
 
-    @PostMapping("/cadastro/admin")
+    @PostMapping("/admin/cadastro/admin")
     public ResponseEntity<UsuarioRespostaDTO> cadastrarAdmin(@RequestBody @Valid UsuarioCadastroDTO usuarioCadastroDTO){
         UsuarioRespostaDTO usuarioRespostaDTO = authService.cadastrarAdmin(usuarioCadastroDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRespostaDTO);

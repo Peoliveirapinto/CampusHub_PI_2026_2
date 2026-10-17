@@ -19,21 +19,21 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/admin/{id}")
     public ResponseEntity<UsuarioRespostaDTO> getById(@PathVariable UUID id){
         UsuarioRespostaDTO usuarioEncontrado = usuarioService.getById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(usuarioEncontrado);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<Void> deletar(@PathVariable UUID id){
         usuarioService.deletarPorId(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/admin/{id}")
     public ResponseEntity<UsuarioRespostaDTO> atualizar(@PathVariable UUID id, @RequestBody @Valid UsuarioPatchDTO usuarioPatchDTO){
         UsuarioRespostaDTO usuarioAtualizado = usuarioService.atualizarPorId(id, usuarioPatchDTO);
 

@@ -27,21 +27,21 @@ public class PerfilController {
         return ResponseEntity.status(HttpStatus.CREATED).body(perfilSalvo);
     }
 
-    @GetMapping("/{usuarioId}")
+    @GetMapping("/admin/{usuarioId}")
     public ResponseEntity<PerfilRespostaDTO> obterPorUsuarioId(@PathVariable UUID usuarioId){
         PerfilRespostaDTO perfilDoUsuario = perfilService.obterPorUsuarioid(usuarioId);
 
         return ResponseEntity.status(HttpStatus.OK).body(perfilDoUsuario);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<Void> deletar(@PathVariable UUID id){
         perfilService.deletar(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PatchMapping("/{usuarioId}")
+    @PatchMapping("/admin/{usuarioId}")
     public ResponseEntity<PerfilRespostaDTO> atualizarPorUsuarioId(@PathVariable UUID usuarioId, @RequestBody PerfilPatchDTO perfilPatchDTO){
         PerfilRespostaDTO perfilAtualizado =  perfilService.atualizarPorUsuarioId(usuarioId, perfilPatchDTO);
 
