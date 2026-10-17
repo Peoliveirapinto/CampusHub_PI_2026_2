@@ -20,7 +20,7 @@ public class PerfilController {
         this.perfilService = perfilService;
     }
 
-    @PostMapping()
+    @PostMapping("/admin")
     public ResponseEntity<PerfilRespostaDTO> criar(@RequestBody @Valid PerfilCriarDTO perfilCriarDTO){
         PerfilRespostaDTO perfilSalvo = perfilService.criar(perfilCriarDTO);
 
