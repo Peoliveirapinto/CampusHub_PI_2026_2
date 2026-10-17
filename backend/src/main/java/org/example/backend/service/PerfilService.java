@@ -92,4 +92,14 @@ public class PerfilService {
 
         return new PerfilRespostaDTO(garantirQueUsuarioTemPerfil(usuarioLogado));
     }
+
+    public PerfilRespostaDTO atualizarMeu(PerfilPatchDTO perfilPatchDTO){
+        Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
+
+        Perfil perfilParaAtualizar = garantirQueUsuarioTemPerfil(usuarioLogado);
+
+        perfilMapper.atualizaEntidadePeloDTO(perfilPatchDTO, perfilParaAtualizar);
+
+        return new PerfilRespostaDTO(perfilRepository.save(perfilParaAtualizar));
+    }
 }

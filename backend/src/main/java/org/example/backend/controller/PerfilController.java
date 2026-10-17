@@ -57,4 +57,11 @@ public class PerfilController {
 
         return ResponseEntity.status(HttpStatus.OK).body(perfilEncontrado);
     }
+
+    @PatchMapping("/me")
+    public ResponseEntity<PerfilRespostaDTO> atualizarMeu(@RequestBody PerfilPatchDTO perfilPatchDTO){
+        PerfilRespostaDTO perfilAtualizado = perfilService.atualizarMeu(perfilPatchDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(perfilAtualizado);
+    }
 }

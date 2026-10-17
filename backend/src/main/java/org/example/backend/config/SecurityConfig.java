@@ -50,6 +50,7 @@ public class SecurityConfig {
                         // 2. Rotas protegidas
                         .requestMatchers(HttpMethod.POST, "/perfis/me").authenticated()
                         .requestMatchers(HttpMethod.GET, "/perfis/me").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/perfis/me").authenticated()
 
                         // 3. Rotas restritas
                         .requestMatchers("/*/admin/**").hasRole(Role.ADMIN.name())
