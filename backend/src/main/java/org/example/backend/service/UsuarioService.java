@@ -24,7 +24,7 @@ public class UsuarioService {
         );
     }
 
-    public UsuarioRespostaDTO getById(UUID id){
+    public UsuarioRespostaDTO obterPorId(UUID id){
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("usuario.nao-encontrado", "ID", id)
         );

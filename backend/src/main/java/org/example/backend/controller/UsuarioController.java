@@ -21,7 +21,7 @@ public class UsuarioController {
 
     @GetMapping("/admin/{id}")
     public ResponseEntity<UsuarioRespostaDTO> getById(@PathVariable UUID id){
-        UsuarioRespostaDTO usuarioEncontrado = usuarioService.getById(id);
+        UsuarioRespostaDTO usuarioEncontrado = usuarioService.obterPorId(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(usuarioEncontrado);
     }
