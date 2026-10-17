@@ -7,9 +7,7 @@ import org.example.backend.dto.PerfilRespostaDTO;
 import org.example.backend.service.PerfilService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
@@ -22,13 +20,11 @@ public class PerfilController {
         this.perfilService = perfilService;
     }
 
-    @PostMapping
-    public ResponseEntity<PerfilRespostaDTO> criar(
-            @RequestBody @Valid PerfilCriarDTO perfilCriarDTO,
-           Authentication authentication) {
-       garantirDonoOuAdmin(authentication, perfilCriarDTO.usuarioId());
-       PerfilRespostaDTO perfilSalvo = perfilService.criar(perfilCriarDTO);
-      return ResponseEntity.status(HttpStatus.CREATED).body(perfilSalvo);
+    @PostMapping()
+    public ResponseEntity<PerfilRespostaDTO> criar(@RequestBody @Valid PerfilCriarDTO perfilCriarDTO){
+        PerfilRespostaDTO perfilSalvo = perfilService.criar(perfilCriarDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(perfilSalvo);
     }
 
     @GetMapping("/{usuarioId}")
@@ -46,20 +42,9 @@ public class PerfilController {
     }
 
     @PatchMapping("/{usuarioId}")
-    public ResponseEntity<PerfilRespostaDTO> atualizarPorUsuarioId(
-            @PathVariable UUID usuarioId,
-            @RequestBody PerfilPatchDTO perfilPatchDTO,
-            Authentication authentication) {
-        garantirDonoOuAdmin(authentication, usuarioId);
-       return ResponseEntity.ok(perfilService.atualizarPorUsuarioId(usuarioId, perfilPatchDTO));
-    }
+    public ResponseEntity<PerfilRespostaDTO> atualizarPorUsuarioId(@PathVariable UUID usuarioId, @RequestBody PerfilPatchDTO perfilPatchDTO){
+        PerfilRespostaDTO perfilAtualizado =  perfilService.atualizarPorUsuarioId(usuarioId, perfilPatchDTO);
 
-        private void garantirDonoOuAdmin(Authentication authentication, UUID usuarioId) {
-        boolean admin = authentication.getAuthorities().stream()
-             .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-     boolean dono = authentication.getName().equals(usuarioId.toString());
-     if (!admin && !dono) {
-         throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-     }
+        return ResponseEntity.status(HttpStatus.OK).body(perfilAtualizado);
     }
 }

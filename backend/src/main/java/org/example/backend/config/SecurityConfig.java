@@ -5,7 +5,6 @@ import org.example.backend.security.JwtCookieFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -13,8 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.*;
-import java.util.List;
 
 @Configuration
 public class SecurityConfig {
@@ -32,7 +29,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
         http
-                .cors(Customizer.withDefaults()) 
                 // 1. Desabilita o CSRF nativo (já prevenido pelo cookie SameSite=Strict)
                 .csrf(AbstractHttpConfigurer::disable)
                 // 2. Define que a API é Stateless (sem sessão no servidor)
@@ -45,38 +41,24 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/logout").permitAll()
 
                         // 2. Rotas protegidas
-                        .requestMatchers(HttpMethod.POST, "/perfis").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/perfis/{usuarioId}").authenticated()
-                        .requestMatchers(HttpMethod.PATCH, "/perfis/{usuarioId}").authenticated()
+
 
                         // 3. Rotas restritas
                         .requestMatchers(HttpMethod.POST, "/auth/cadastro/admin").hasRole(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, "/usuarios/{id}").hasRole(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.DELETE, "/usuarios/{id}").hasRole(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PATCH, "/usuarios/{id}").hasRole(Role.ADMIN.name())
-                        // .requestMatchers(HttpMethod.POST, "/perfis").hasRole(Role.ADMIN.name())
-                        // .requestMatchers(HttpMethod.GET, "/perfis/{usuarioId}").hasRole(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, "/perfis").hasRole(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "/perfis/{usuarioId}").hasRole(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.DELETE, "/perfis/{id}").hasRole(Role.ADMIN.name())
-                        // .requestMatchers(HttpMethod.PATCH, "/perfis/{usuarioId}").hasRole(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.PATCH, "/perfis/{usuarioId}").hasRole(Role.ADMIN.name())
 
                         // 4. Outras rotas requerem estar logado
-                        .anyRequest().authenticated()
+                        .anyRequest().hasRole(Role.ADMIN.name())
                 )
                 // 4. Injeta o filtro de Cookie ANTES do filtro padrão de autenticação do Spring
                 .addFilterBefore(jwtCookieFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-    }
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
     }
 }
