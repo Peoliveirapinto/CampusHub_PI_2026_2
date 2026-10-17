@@ -12,6 +12,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
@@ -29,11 +34,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
         http
-                // 1. Desabilita o CSRF nativo (já prevenido pelo cookie SameSite=Strict)
+                // 1. Configura o CORS
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                // 2. Desabilita o CSRF nativo (já prevenido pelo cookie SameSite=Strict)
                 .csrf(AbstractHttpConfigurer::disable)
-                // 2. Define que a API é Stateless (sem sessão no servidor)
+                // 3. Define que a API é Stateless (sem sessão no servidor)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // 3. Regras de autorização de rotas
+                // 4. Regras de autorização de rotas
                 .authorizeHttpRequests(auth -> auth
                         // 1. Rotas públicas
                         .requestMatchers(HttpMethod.POST, "/auth/cadastro").permitAll()
@@ -56,9 +63,22 @@ public class SecurityConfig {
                         // 4. Outras rotas requerem estar logado
                         .anyRequest().hasRole(Role.ADMIN.name())
                 )
-                // 4. Injeta o filtro de Cookie ANTES do filtro padrão de autenticação do Spring
+                // 5. Injeta o filtro de Cookie ANTES do filtro padrão de autenticação do Spring
                 .addFilterBefore(jwtCookieFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
