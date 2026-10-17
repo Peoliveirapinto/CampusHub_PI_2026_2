@@ -8,7 +8,6 @@ import org.example.backend.mapper.PerfilMapper;
 import org.example.backend.model.Perfil;
 import org.example.backend.model.Usuario;
 import org.example.backend.repository.PerfilRepository;
-import org.example.backend.repository.UsuarioRepository;
 import org.example.backend.security.SecurityFacade;
 import org.springframework.stereotype.Service;
 
