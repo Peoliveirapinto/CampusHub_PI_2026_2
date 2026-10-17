@@ -18,6 +18,12 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
 
+    public Usuario garantirQueUsuarioExiste(UUID id){
+        return usuarioRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("usuario.nao-encontrado", "ID", id)
+        );
+    }
+
     public UsuarioRespostaDTO getById(UUID id){
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("usuario.nao-encontrado", "ID", id)

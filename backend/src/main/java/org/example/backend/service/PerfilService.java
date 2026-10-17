@@ -19,21 +19,26 @@ import java.util.UUID;
 public class PerfilService {
     private final PerfilRepository perfilRepository;
     private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
     private final PerfilMapper perfilMapper;
     private final SecurityFacade securityFacade;
 
-    private void garanteQueUsuarioNaoTemPerfil(Usuario usuario){
+    private Perfil garantirQueUsuarioTemPerfil(Usuario usuario){
+        return perfilRepository.findFirstByUsuario(usuario).orElseThrow(
+                () -> new ResourceNotFoundException("perfil.nao-encontrado-para-esse-usuario")
+        );
+    }
+
+    private void garantirQueUsuarioNaoTemPerfil(Usuario usuario){
         if(perfilRepository.existsByUsuario(usuario)){
             throw new JaExisteException("perfil.esse-usuario-ja-possui-perfil");
         }
     }
 
     public PerfilRespostaDTO criar(PerfilCriarDTO perfilCriarDTO){
-        Usuario usuario = usuarioRepository.findById(perfilCriarDTO.usuarioId()).orElseThrow(
-                () -> new ResourceNotFoundException("usuario.nao-encontrado", "ID", perfilCriarDTO.usuarioId())
-        );
+        Usuario usuario = usuarioService.garantirQueUsuarioExiste(perfilCriarDTO.usuarioId());
 
-        garanteQueUsuarioNaoTemPerfil(usuario);
+        garantirQueUsuarioNaoTemPerfil(usuario);
 
         Perfil perfilNovo = perfilMapper.criaEntidadePeloDTO(perfilCriarDTO);
         perfilNovo.setUsuario(usuario);
@@ -44,39 +49,26 @@ public class PerfilService {
     }
 
     public PerfilRespostaDTO obterPorUsuarioid(UUID usuarioId){
-        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(
-                () -> new ResourceNotFoundException("usuario.nao-encontrado", "ID", usuarioId)
-        );
+        Usuario usuario = usuarioService.garantirQueUsuarioExiste(usuarioId);
 
-        var perfisEncontrados = perfilRepository.findByUsuario(usuario);
+        Perfil perfilDoUsuario = garantirQueUsuarioTemPerfil(usuario);
 
-        if(perfisEncontrados == null || perfisEncontrados.isEmpty()){
-            throw new ResourceNotFoundException("perfil.nao-encontrado-para-esse-usuario");
-        }
-
-        return new PerfilRespostaDTO(perfisEncontrados.getFirst());
+        return new PerfilRespostaDTO(perfilDoUsuario);
     }
 
-    public void deletar(UUID id){
-        if(!perfilRepository.existsById(id)){
-            throw new ResourceNotFoundException("perfil.nao-encontrado", "ID", id);
-        }
+    public void deletarPorUsuarioId(UUID usuarioId){
+        Usuario usuario = usuarioService.garantirQueUsuarioExiste(usuarioId);
 
-        perfilRepository.deleteById(id);
+        Perfil perfilParaDeletar = garantirQueUsuarioTemPerfil(usuario);
+
+        perfilRepository.deleteById(perfilParaDeletar.getId());
     }
 
     public PerfilRespostaDTO atualizarPorUsuarioId(UUID usuarioId, PerfilPatchDTO perfilPatchDTO){
-        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(
-                () -> new ResourceNotFoundException("usuario.nao-encontrado", "ID", usuarioId)
-        );
+        Usuario usuario = usuarioService.garantirQueUsuarioExiste(usuarioId);
 
-        var perfisEncontrados = perfilRepository.findByUsuario(usuario);
+        Perfil perfilParaAtualizar = garantirQueUsuarioTemPerfil(usuario);
 
-        if(perfisEncontrados == null || perfisEncontrados.isEmpty()){
-            throw new ResourceNotFoundException("perfil.nao-encontrado-para-esse-usuario");
-        }
-
-        Perfil perfilParaAtualizar = perfisEncontrados.getFirst();
         perfilMapper.atualizaEntidadePeloDTO(perfilPatchDTO, perfilParaAtualizar);
 
         return new PerfilRespostaDTO(perfilRepository.save(perfilParaAtualizar));
@@ -85,7 +77,7 @@ public class PerfilService {
     public PerfilRespostaDTO criarMeu(PerfilCriarMeuDTO perfilCriarMeuDTO){
         Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
 
-        garanteQueUsuarioNaoTemPerfil(usuarioLogado);
+        garantirQueUsuarioNaoTemPerfil(usuarioLogado);
 
         Perfil perfilNovo = perfilMapper.criaEntidadePeloDTO(perfilCriarMeuDTO);
         perfilNovo.setUsuario(usuarioLogado);

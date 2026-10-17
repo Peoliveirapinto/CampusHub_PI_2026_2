@@ -30,9 +30,9 @@ public class PerfilController {
         return ResponseEntity.status(HttpStatus.OK).body(perfilDoUsuario);
     }
 
-    @DeleteMapping("/admin/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable UUID id){
-        perfilService.deletar(id);
+    @DeleteMapping("/admin/{usuarioId}")
+    public ResponseEntity<Void> deletarPorUsuarioId(@PathVariable UUID usuarioId){
+        perfilService.deletarPorUsuarioId(usuarioId);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
