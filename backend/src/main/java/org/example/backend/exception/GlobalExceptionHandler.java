@@ -73,4 +73,40 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
     }
+
+    @ExceptionHandler(UsuarioNaoAutenticadoException.class)
+    public ResponseEntity<Map<String, Object>> handleUsuarioNaoAutenticado(UsuarioNaoAutenticadoException ex){
+        String translatedMessage = messageSource.getMessage(
+                ex.getMessage(),
+                null,
+                ex.getMessage(),
+                this.locale
+        );
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.UNAUTHORIZED.value());
+        body.put("error", "Unauthorized");
+        body.put("message", translatedMessage);
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+    }
+
+    @ExceptionHandler(TokenPayloadInvalidoException.class)
+    public ResponseEntity<Map<String, Object>> handleTokenPayloadInvalido(TokenPayloadInvalidoException ex){
+        String translatedMessage = messageSource.getMessage(
+                ex.getMessage(),
+                null,
+                ex.getMessage(),
+                this.locale
+        );
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Bad Request");
+        body.put("message", translatedMessage);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
 }

@@ -1,7 +1,9 @@
 package org.example.backend.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.PerfilCriarDTO;
+import org.example.backend.dto.PerfilCriarMeuDTO;
 import org.example.backend.dto.PerfilPatchDTO;
 import org.example.backend.dto.PerfilRespostaDTO;
 import org.example.backend.service.PerfilService;
@@ -11,14 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/perfis")
 public class PerfilController {
     private final PerfilService perfilService;
-
-    public PerfilController(PerfilService perfilService){
-        this.perfilService = perfilService;
-    }
 
     @PostMapping("/admin")
     public ResponseEntity<PerfilRespostaDTO> criar(@RequestBody @Valid PerfilCriarDTO perfilCriarDTO){
@@ -46,5 +45,12 @@ public class PerfilController {
         PerfilRespostaDTO perfilAtualizado =  perfilService.atualizarPorUsuarioId(usuarioId, perfilPatchDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(perfilAtualizado);
+    }
+
+    @PostMapping("/me")
+    public ResponseEntity<PerfilRespostaDTO> criarMeu(@RequestBody @Valid PerfilCriarMeuDTO perfilCriarMeuDTO){
+        PerfilRespostaDTO perfilSalvo = perfilService.criarMeu(perfilCriarMeuDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(perfilSalvo);
     }
 }
