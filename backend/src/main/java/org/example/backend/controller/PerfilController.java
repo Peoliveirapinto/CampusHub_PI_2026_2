@@ -2,10 +2,7 @@ package org.example.backend.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.backend.dto.PerfilCriarDTO;
-import org.example.backend.dto.PerfilCriarMeuDTO;
-import org.example.backend.dto.PerfilPatchDTO;
-import org.example.backend.dto.PerfilRespostaDTO;
+import org.example.backend.dto.perfil.*;
 import org.example.backend.service.PerfilService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

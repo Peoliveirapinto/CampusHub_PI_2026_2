@@ -1,13 +1,9 @@
-package org.example.backend.dto;
+package org.example.backend.dto.perfil;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.UUID;
-
-public record PerfilCriarDTO(
-        @NotNull
-        UUID usuarioId,
+public record PerfilCriarMeuDTO(
         @NotBlank
         String nome,
         @NotBlank

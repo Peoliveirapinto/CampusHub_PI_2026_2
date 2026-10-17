@@ -1,6 +1,6 @@
 package org.example.backend.mapper;
 
-import org.example.backend.dto.UsuarioPatchDTO;
+import org.example.backend.dto.usuario.UsuarioPatchDTO;
 import org.example.backend.model.Usuario;
 import org.mapstruct.*;
 

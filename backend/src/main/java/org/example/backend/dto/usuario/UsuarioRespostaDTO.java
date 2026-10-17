@@ -1,4 +1,4 @@
-package org.example.backend.dto;
+package org.example.backend.dto.usuario;
 
 import org.example.backend.model.Usuario;
 import org.example.backend.model.enums.Role;

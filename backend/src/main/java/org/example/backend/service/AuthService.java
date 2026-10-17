@@ -1,9 +1,9 @@
 package org.example.backend.service;
 
-import org.example.backend.dto.UsuarioCadastroDTO;
-import org.example.backend.dto.UsuarioETokenDTO;
-import org.example.backend.dto.UsuarioLoginDTO;
-import org.example.backend.dto.UsuarioRespostaDTO;
+import org.example.backend.dto.auth.*;
+import org.example.backend.dto.usuario.UsuarioCadastroDTO;
+import org.example.backend.dto.usuario.UsuarioLoginDTO;
+import org.example.backend.dto.usuario.UsuarioRespostaDTO;
 import org.example.backend.exception.CredenciaisInvalidasException;
 import org.example.backend.exception.JaExisteException;
 import org.example.backend.model.Usuario;

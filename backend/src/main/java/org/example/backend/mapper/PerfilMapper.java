@@ -1,8 +1,8 @@
 package org.example.backend.mapper;
 
-import org.example.backend.dto.PerfilCriarDTO;
-import org.example.backend.dto.PerfilCriarMeuDTO;
-import org.example.backend.dto.PerfilPatchDTO;
+import org.example.backend.dto.perfil.PerfilCriarDTO;
+import org.example.backend.dto.perfil.PerfilCriarMeuDTO;
+import org.example.backend.dto.perfil.PerfilPatchDTO;
 import org.example.backend.model.Perfil;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

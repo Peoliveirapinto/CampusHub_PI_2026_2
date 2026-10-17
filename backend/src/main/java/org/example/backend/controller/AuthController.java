@@ -1,10 +1,10 @@
 package org.example.backend.controller;
 
 import jakarta.validation.Valid;
-import org.example.backend.dto.UsuarioCadastroDTO;
-import org.example.backend.dto.UsuarioETokenDTO;
-import org.example.backend.dto.UsuarioLoginDTO;
-import org.example.backend.dto.UsuarioRespostaDTO;
+import org.example.backend.dto.auth.*;
+import org.example.backend.dto.usuario.UsuarioCadastroDTO;
+import org.example.backend.dto.usuario.UsuarioLoginDTO;
+import org.example.backend.dto.usuario.UsuarioRespostaDTO;
 import org.example.backend.service.AuthService;
 import org.example.backend.service.CookieService;
 import org.springframework.http.HttpHeaders;

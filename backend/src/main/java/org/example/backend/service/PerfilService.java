@@ -1,10 +1,7 @@
 package org.example.backend.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.backend.dto.PerfilCriarDTO;
-import org.example.backend.dto.PerfilCriarMeuDTO;
-import org.example.backend.dto.PerfilPatchDTO;
-import org.example.backend.dto.PerfilRespostaDTO;
+import org.example.backend.dto.perfil.*;
 import org.example.backend.exception.JaExisteException;
 import org.example.backend.exception.ResourceNotFoundException;
 import org.example.backend.mapper.PerfilMapper;

@@ -1,8 +1,8 @@
 package org.example.backend.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.backend.dto.UsuarioPatchDTO;
-import org.example.backend.dto.UsuarioRespostaDTO;
+import org.example.backend.dto.usuario.UsuarioPatchDTO;
+import org.example.backend.dto.usuario.UsuarioRespostaDTO;
 import org.example.backend.exception.JaExisteException;
 import org.example.backend.exception.ResourceNotFoundException;
 import org.example.backend.mapper.UsuarioMapper;

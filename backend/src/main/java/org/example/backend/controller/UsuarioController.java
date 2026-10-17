@@ -1,8 +1,8 @@
 package org.example.backend.controller;
 
 import jakarta.validation.Valid;
-import org.example.backend.dto.UsuarioPatchDTO;
-import org.example.backend.dto.UsuarioRespostaDTO;
+import org.example.backend.dto.usuario.UsuarioPatchDTO;
+import org.example.backend.dto.usuario.UsuarioRespostaDTO;
 import org.example.backend.service.UsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

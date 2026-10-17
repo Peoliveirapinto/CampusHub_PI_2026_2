@@ -1,4 +1,4 @@
-package org.example.backend.dto;
+package org.example.backend.dto.auth;
 
 import org.example.backend.model.Usuario;
 

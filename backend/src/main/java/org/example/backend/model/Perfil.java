@@ -2,7 +2,6 @@ package org.example.backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.backend.dto.PerfilCriarDTO;
 
 import java.util.UUID;
 

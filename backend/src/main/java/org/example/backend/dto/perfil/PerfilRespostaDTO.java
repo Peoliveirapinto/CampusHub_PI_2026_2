@@ -1,5 +1,6 @@
-package org.example.backend.dto;
+package org.example.backend.dto.perfil;
 
+import org.example.backend.dto.usuario.UsuarioRespostaDTO;
 import org.example.backend.model.Perfil;
 
 import java.util.UUID;
