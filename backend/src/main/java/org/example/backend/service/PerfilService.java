@@ -18,7 +18,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PerfilService {
     private final PerfilRepository perfilRepository;
-    private final UsuarioRepository usuarioRepository;
     private final UsuarioService usuarioService;
     private final PerfilMapper perfilMapper;
     private final SecurityFacade securityFacade;
