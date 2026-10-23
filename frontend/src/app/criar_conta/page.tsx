@@ -78,7 +78,7 @@ export default function CriarContaPage() {
       try {
         sessionStorage.setItem(
           CHAVE_DADOS_CADASTRO,
-          JSON.stringify({ nome: nome.trim(), curso, usuarioId })
+          JSON.stringify({ nome: nome.trim(), curso, usuarioId }),
         );
       } catch {
         // sessionStorage indisponível: o Passo 2 simplesmente não vem pré-preenchido
@@ -86,9 +86,7 @@ export default function CriarContaPage() {
 
       router.push("/criar_perfil");
     } catch {
-      setErro(
-        "Não foi possível conectar ao servidor. Verifique se o backend está rodando."
-      );
+      setErro("Não foi possível conectar ao servidor. Verifique se o backend está rodando.");
     } finally {
       setCarregando(false);
     }
@@ -98,10 +96,7 @@ export default function CriarContaPage() {
     <div className="min-h-screen bg-[#f1f5f9] text-gray-900 flex flex-col justify-between font-sans">
       {/* Cabeçalho */}
       <header className="w-full flex justify-between items-center px-6 sm:px-8 py-5">
-        <Link
-          href="/"
-          className="flex items-center group transition-opacity hover:opacity-90"
-        >
+        <Link href="/" className="flex items-center group transition-opacity hover:opacity-90">
           <Image
             src="/logo_CampusHub_sem_fundo.png"
             alt="Logo CampusHub"
@@ -111,9 +106,7 @@ export default function CriarContaPage() {
             priority
           />
         </Link>
-        <span className="text-gray-900 text-sm font-medium">
-          Instituto Mauá de Tecnologia
-        </span>
+        <span className="text-gray-900 text-sm font-medium">Instituto Mauá de Tecnologia</span>
       </header>
 
       {/* Conteúdo Central / Card de Cadastro */}
@@ -138,10 +131,7 @@ export default function CriarContaPage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* Nome Completo */}
             <div className="flex flex-col gap-1">
-              <label
-                htmlFor="nome"
-                className="text-xs font-semibold text-gray-800 tracking-wider"
-              >
+              <label htmlFor="nome" className="text-xs font-semibold text-gray-800 tracking-wider">
                 NOME COMPLETO
               </label>
               <input
@@ -158,10 +148,7 @@ export default function CriarContaPage() {
 
             {/* E-mail Institucional */}
             <div className="flex flex-col gap-1">
-              <label
-                htmlFor="email"
-                className="text-xs font-semibold text-gray-800 tracking-wider"
-              >
+              <label htmlFor="email" className="text-xs font-semibold text-gray-800 tracking-wider">
                 E-MAIL INSTITUCIONAL
               </label>
               <input
@@ -178,10 +165,7 @@ export default function CriarContaPage() {
 
             {/* Curso */}
             <div className="flex flex-col gap-1">
-              <label
-                htmlFor="curso"
-                className="text-xs font-semibold text-gray-800 tracking-wider"
-              >
+              <label htmlFor="curso" className="text-xs font-semibold text-gray-800 tracking-wider">
                 CURSO
               </label>
               <div className="relative">
@@ -195,21 +179,11 @@ export default function CriarContaPage() {
                   <option value="" disabled>
                     Selecione seu curso
                   </option>
-                  <option value="ciencia-da-computacao">
-                    Ciência da Computação
-                  </option>
-                  <option value="sistemas-de-informacao">
-                    Sistemas de Informação
-                  </option>
-                  <option value="engenharia-de-computacao">
-                    Engenharia de Computação
-                  </option>
-                  <option value="engenharia-mecanica">
-                    Engenharia Mecânica
-                  </option>
-                  <option value="engenharia-eletrica">
-                    Engenharia Elétrica
-                  </option>
+                  <option value="ciencia-da-computacao">Ciência da Computação</option>
+                  <option value="sistemas-de-informacao">Sistemas de Informação</option>
+                  <option value="engenharia-de-computacao">Engenharia de Computação</option>
+                  <option value="engenharia-mecanica">Engenharia Mecânica</option>
+                  <option value="engenharia-eletrica">Engenharia Elétrica</option>
                   <option value="engenharia-civil">Engenharia Civil</option>
                   <option value="design">Design</option>
                   <option value="administracao">Administração</option>
@@ -223,10 +197,7 @@ export default function CriarContaPage() {
 
             {/* Senha */}
             <div className="flex flex-col gap-1">
-              <label
-                htmlFor="senha"
-                className="text-xs font-semibold text-gray-800 tracking-wider"
-              >
+              <label htmlFor="senha" className="text-xs font-semibold text-gray-800 tracking-wider">
                 SENHA
               </label>
               <input
@@ -264,13 +235,8 @@ export default function CriarContaPage() {
 
           {/* Link para Login */}
           <div className="text-center mt-4">
-            <span className="text-xs text-gray-700 font-medium">
-              Já tem uma conta?{" "}
-            </span>
-            <Link
-              href="/login"
-              className="text-xs font-semibold text-[#1e2b58] hover:underline"
-            >
+            <span className="text-xs text-gray-700 font-medium">Já tem uma conta? </span>
+            <Link href="/login" className="text-xs font-semibold text-[#1e2b58] hover:underline">
               Fazer Login
             </Link>
           </div>

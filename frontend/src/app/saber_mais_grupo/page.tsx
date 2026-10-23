@@ -30,10 +30,7 @@ export default function DetalhesVagaPage() {
     <div className="min-h-screen bg-[#F0F4F8] flex flex-col font-sans text-slate-800">
       {/* 1. Header Superior Institucional */}
       <header className="w-full px-6 sm:px-10 py-5 flex items-center justify-between">
-        <Link
-          href="/"
-          className="flex items-center group transition-opacity hover:opacity-90"
-        >
+        <Link href="/" className="flex items-center group transition-opacity hover:opacity-90">
           <Image
             src="/logo_CampusHub_sem_fundo.png"
             alt="Logo CampusHub"
@@ -43,15 +40,12 @@ export default function DetalhesVagaPage() {
             priority
           />
         </Link>
-        <span className="text-sm font-medium text-slate-900">
-          Instituto Mauá de Tecnologia
-        </span>
+        <span className="text-sm font-medium text-slate-900">Instituto Mauá de Tecnologia</span>
       </header>
 
       {/* 2. Container Central */}
       <main className="flex-1 flex items-center justify-center p-4 pb-16">
         <div className="w-full max-w-2xl bg-white rounded-3xl border border-slate-300 shadow-sm p-7 sm:p-10 relative">
-          
           {/* Topo do Card / Navegação de Volta */}
           <div className="flex justify-between items-start pb-4 border-b border-slate-200">
             <div>
@@ -78,7 +72,6 @@ export default function DetalhesVagaPage() {
 
           {/* Dados do Grupo / Projeto */}
           <div className="mt-6 space-y-6">
-            
             {/* Bloco Resumo do Projeto */}
             <div className="w-full bg-[#E5E7EB]/80 rounded-2xl p-5 space-y-3">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-300/60 pb-3">
@@ -123,7 +116,11 @@ export default function DetalhesVagaPage() {
                 Sobre o Projeto e o Escopo
               </h3>
               <div className="bg-[#E5E7EB]/50 rounded-2xl p-4 text-xs sm:text-sm text-slate-700 leading-relaxed border border-slate-200/60">
-                Nosso trabalho interdisciplinar de PI foca no desenvolvimento de um sistema de sensores para captação de métricas de ocupação nos laboratórios da Mauá. Já possuímos a infraestrutura mecânica, modelagem e firmware em andamento, mas precisamos de um colega focado em construir o painel web responsivo (dashboard) em React e Tailwind CSS para apresentação nas bancas.
+                Nosso trabalho interdisciplinar de PI foca no desenvolvimento de um sistema de
+                sensores para captação de métricas de ocupação nos laboratórios da Mauá. Já
+                possuímos a infraestrutura mecânica, modelagem e firmware em andamento, mas
+                precisamos de um colega focado em construir o painel web responsivo (dashboard) em
+                React e Tailwind CSS para apresentação nas bancas.
               </div>
             </div>
 
@@ -180,12 +177,8 @@ export default function DetalhesVagaPage() {
                       <User size={16} />
                     </div>
                     <div className="truncate">
-                      <p className="text-xs font-bold text-slate-900 truncate">
-                        {membro.nome}
-                      </p>
-                      <p className="text-[10px] text-slate-500 truncate">
-                        {membro.curso}
-                      </p>
+                      <p className="text-xs font-bold text-slate-900 truncate">{membro.nome}</p>
+                      <p className="text-[10px] text-slate-500 truncate">{membro.curso}</p>
                     </div>
                   </div>
                 ))}
@@ -203,7 +196,8 @@ export default function DetalhesVagaPage() {
                     Solicitação enviada com sucesso!
                   </h4>
                   <p className="text-xs text-emerald-800 max-w-sm mx-auto">
-                    O líder do grupo (Pedro) recebeu seu interesse com os dados do seu perfil base. Fique atento às suas notificações!
+                    O líder do grupo (Pedro) recebeu seu interesse com os dados do seu perfil base.
+                    Fique atento às suas notificações!
                   </p>
                   <button
                     type="button"
@@ -248,7 +242,6 @@ export default function DetalhesVagaPage() {
                 </form>
               )}
             </div>
-
           </div>
         </div>
       </main>

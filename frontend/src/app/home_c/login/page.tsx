@@ -155,10 +155,7 @@ export default function HubPage() {
     return () => document.removeEventListener("mousedown", handleClickFora);
   }, []);
 
-  const totalNaoLidas = useMemo(
-    () => notificacoes.filter((n) => !n.lida).length,
-    [notificacoes]
-  );
+  const totalNaoLidas = useMemo(() => notificacoes.filter((n) => !n.lida).length, [notificacoes]);
 
   const marcarTodasComoLidas = () => {
     setNotificacoes((prev) => prev.map((item) => ({ ...item, lida: true })));
@@ -181,31 +178,25 @@ export default function HubPage() {
       (vaga) =>
         vaga.titulo.toLowerCase().includes(termo) ||
         vaga.descricao.toLowerCase().includes(termo) ||
-        vaga.habilidadesRequeridas.some((h) => h.toLowerCase().includes(termo))
+        vaga.habilidadesRequeridas.some((h) => h.toLowerCase().includes(termo)),
     );
   }, [vagas, busca]);
 
   // Cálculo da compatibilidade com o perfil
   const verificarCompatibilidade = (habilidadesVaga: string[]) => {
     const correspondencias = habilidadesVaga.filter((hab) =>
-      usuario.habilidades.some(
-        (uHab) => uHab.toLowerCase() === hab.toLowerCase()
-      )
+      usuario.habilidades.some((uHab) => uHab.toLowerCase() === hab.toLowerCase()),
     );
-    const percentual = Math.round(
-      (correspondencias.length / habilidadesVaga.length) * 100
-    );
+    const percentual = Math.round((correspondencias.length / habilidadesVaga.length) * 100);
 
     if (correspondencias.length > 0) {
       alert(
         `Compatibilidade: ${percentual}%\nCompetências coincidentes: ${correspondencias.join(
-          ", "
-        )}`
+          ", ",
+        )}`,
       );
     } else {
-      alert(
-        "Ainda não possui as competências solicitadas por este grupo no seu perfil base."
-      );
+      alert("Ainda não possui as competências solicitadas por este grupo no seu perfil base.");
     }
   };
 
@@ -215,10 +206,7 @@ export default function HubPage() {
       <nav className="sticky top-0 z-40 bg-white border-b border-slate-200 px-4 sm:px-8 h-16 flex items-center justify-between gap-4">
         {/* Lado Esquerdo: Logótipo PNG */}
         <div className="flex items-center shrink-0">
-          <Link
-            href="/"
-            className="flex items-center transition-opacity hover:opacity-90"
-          >
+          <Link href="/" className="flex items-center transition-opacity hover:opacity-90">
             <Image
               src="/logo_CampusHub_sem_fundo.png"
               alt="CampusHub Logo"
@@ -233,10 +221,7 @@ export default function HubPage() {
         {/* Centro: Barra de Pesquisa */}
         <div className="flex-1 max-w-xl mx-2 sm:mx-4">
           <div className="relative flex items-center w-full">
-            <Search
-              size={18}
-              className="absolute left-3.5 text-slate-400 pointer-events-none"
-            />
+            <Search size={18} className="absolute left-3.5 text-slate-400 pointer-events-none" />
             <input
               type="text"
               value={busca}
@@ -249,7 +234,6 @@ export default function HubPage() {
 
         {/* Lado Direito: Notificações + Perfil do Aluno */}
         <div className="flex items-center gap-3 sm:gap-6 shrink-0">
-          
           {/* Sino de Notificações com Dropdown Flutuante */}
           <div className="relative" ref={popoverNotificacoesRef}>
             <button
@@ -273,9 +257,7 @@ export default function HubPage() {
               <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-slate-200 p-4 z-50 animate-in fade-in zoom-in-95 duration-150">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-sm text-slate-900">
-                      Notificações
-                    </span>
+                    <span className="font-bold text-sm text-slate-900">Notificações</span>
                     {totalNaoLidas > 0 && (
                       <span className="bg-blue-100 text-blue-700 text-[11px] font-bold px-2 py-0.5 rounded-full">
                         {totalNaoLidas} nova{totalNaoLidas > 1 ? "s" : ""}
@@ -304,12 +286,8 @@ export default function HubPage() {
                         }`}
                       >
                         <div className="flex justify-between items-start gap-2">
-                          <h4 className="text-xs font-bold text-slate-900">
-                            {item.titulo}
-                          </h4>
-                          <span className="text-[10px] text-slate-400 shrink-0">
-                            {item.tempo}
-                          </span>
+                          <h4 className="text-xs font-bold text-slate-900">{item.titulo}</h4>
+                          <span className="text-[10px] text-slate-400 shrink-0">{item.tempo}</span>
                         </div>
                         <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">
                           {item.descricao}
@@ -339,10 +317,7 @@ export default function HubPage() {
           <div className="h-7 w-px bg-slate-200 hidden sm:block"></div>
 
           {/* Card do Perfil do Aluno */}
-          <Link
-            href="/editar_perfil"
-            className="flex items-center gap-3 group cursor-pointer"
-          >
+          <Link href="/editar_perfil" className="flex items-center gap-3 group cursor-pointer">
             <div className="w-10 h-10 rounded-full bg-[#2563EB] text-white flex items-center justify-center shrink-0 group-hover:ring-2 group-hover:ring-blue-400 transition">
               <User size={24} />
             </div>
@@ -350,9 +325,7 @@ export default function HubPage() {
               <span className="text-sm font-bold text-slate-900 group-hover:text-blue-900 transition">
                 {usuario.nome}
               </span>
-              <span className="text-[11px] text-slate-500 font-medium">
-                {usuario.curso} - IMT
-              </span>
+              <span className="text-[11px] text-slate-500 font-medium">{usuario.curso} - IMT</span>
             </div>
           </Link>
         </div>
@@ -361,7 +334,6 @@ export default function HubPage() {
       {/* 2. CONTEÚDO PRINCIPAL (GRID 3 COLUNAS) */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          
           {/* =========================================
               COLUNA 1: MENU LATERAL & PERFIL BASE (3 cols)
              ========================================= */}
@@ -438,7 +410,6 @@ export default function HubPage() {
               COLUNA 2: FEED PRINCIPAL DE PI & VAGAS (6 cols)
              ========================================= */}
           <div className="lg:col-span-6 space-y-6">
-            
             {/* Banner Chamada PI */}
             <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="max-w-xs">
@@ -446,7 +417,8 @@ export default function HubPage() {
                   Procurando grupo para PI?
                 </h2>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  Crie o seu grupo definindo as competências em falta ou procure matches complementares.
+                  Crie o seu grupo definindo as competências em falta ou procure matches
+                  complementares.
                 </p>
               </div>
 
@@ -471,9 +443,7 @@ export default function HubPage() {
             {/* Meus Grupos Ativos */}
             <div className="space-y-3">
               <div className="flex justify-between items-center px-1">
-                <h3 className="font-bold text-base text-slate-900">
-                  Meus Grupos Ativos
-                </h3>
+                <h3 className="font-bold text-base text-slate-900">Meus Grupos Ativos</h3>
                 <Link
                   href="/meus_grupos"
                   className="text-xs font-semibold text-blue-600 hover:text-blue-800 transition"
@@ -496,12 +466,8 @@ export default function HubPage() {
                     </span>
                   </div>
 
-                  <h4 className="font-bold text-lg text-slate-900 mt-2">
-                    {grupo.nome}
-                  </h4>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    {grupo.descricao}
-                  </p>
+                  <h4 className="font-bold text-lg text-slate-900 mt-2">{grupo.nome}</h4>
+                  <p className="text-xs text-slate-500 mt-0.5">{grupo.descricao}</p>
 
                   <div className="h-px bg-slate-100 my-4"></div>
 
@@ -532,9 +498,7 @@ export default function HubPage() {
             {/* Mural de Vagas em Grupos */}
             <div className="space-y-3">
               <div className="flex justify-between items-center px-1">
-                <h3 className="font-bold text-base text-slate-900">
-                  Mural de Vagas em Grupos
-                </h3>
+                <h3 className="font-bold text-base text-slate-900">Mural de Vagas em Grupos</h3>
                 <span className="text-xs text-slate-400">
                   {vagasFiltradas.length} vaga(s) disponível(eis)
                 </span>
@@ -554,18 +518,14 @@ export default function HubPage() {
                       <span className="font-bold text-slate-800">
                         {vaga.autorGrupo} - {vaga.cursoLider}
                       </span>
-                      <span className="text-slate-400 text-[11px]">
-                        {vaga.tempoPublicacao}
-                      </span>
+                      <span className="text-slate-400 text-[11px]">{vaga.tempoPublicacao}</span>
                     </div>
 
                     <h4 className="font-bold text-base text-slate-900 leading-snug">
                       {vaga.titulo}
                     </h4>
 
-                    <p className="text-xs text-slate-500 leading-relaxed">
-                      {vaga.descricao}
-                    </p>
+                    <p className="text-xs text-slate-500 leading-relaxed">{vaga.descricao}</p>
 
                     <div className="flex flex-wrap gap-1.5 pt-1">
                       {vaga.habilidadesRequeridas.map((tag) => (
@@ -588,9 +548,7 @@ export default function HubPage() {
                       </button>
                       <button
                         type="button"
-                        onClick={() =>
-                          verificarCompatibilidade(vaga.habilidadesRequeridas)
-                        }
+                        onClick={() => verificarCompatibilidade(vaga.habilidadesRequeridas)}
                         className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition cursor-pointer"
                       >
                         Ver Compatibilidade
@@ -600,7 +558,6 @@ export default function HubPage() {
                 ))
               )}
             </div>
-
           </div>
 
           {/* =========================================
@@ -635,7 +592,6 @@ export default function HubPage() {
               </div>
             </div>
           </div>
-
         </div>
       </main>
     </div>

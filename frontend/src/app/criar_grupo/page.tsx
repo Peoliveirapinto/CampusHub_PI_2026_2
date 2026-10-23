@@ -56,26 +56,14 @@ export default function CriarGrupoPage() {
 
   // Estados dos campos de texto
   const [nomeProjeto, setNomeProjeto] = useState<string>("");
-  const [disciplina, setDisciplina] = useState<string>(
-    "Projeto Integrador Interdisciplinar (PI)",
-  );
-  const [maxIntegrantes, setMaxIntegrantes] = useState<string>(
-    "4 Integrantes (Padrão PI)",
-  );
-  const [disponibilidade, setDisponibilidade] = useState<string>(
-    OPCOES_DISPONIBILIDADE[0],
-  );
+  const [disciplina, setDisciplina] = useState<string>("Projeto Integrador Interdisciplinar (PI)");
+  const [maxIntegrantes, setMaxIntegrantes] = useState<string>("4 Integrantes (Padrão PI)");
+  const [disponibilidade, setDisponibilidade] = useState<string>(OPCOES_DISPONIBILIDADE[0]);
   const [descricao, setDescricao] = useState<string>("");
 
   // Tags selecionadas
-  const [competenciasPossui, setCompetenciasPossui] = useState<string[]>([
-    "Python",
-    "React",
-  ]);
-  const [competenciasProcura, setCompetenciasProcura] = useState<string[]>([
-    "Python",
-    "React",
-  ]);
+  const [competenciasPossui, setCompetenciasPossui] = useState<string[]>(["Python", "React"]);
+  const [competenciasProcura, setCompetenciasProcura] = useState<string[]>(["Python", "React"]);
 
   // Controles dos Popovers/Dropdowns Flutuantes
   const [isAddingPossui, setIsAddingPossui] = useState<boolean>(false);
@@ -90,16 +78,10 @@ export default function CriarGrupoPage() {
   // Fecha menus ao clicar fora
   useEffect(() => {
     function handleClickFora(event: MouseEvent) {
-      if (
-        popoverPossuiRef.current &&
-        !popoverPossuiRef.current.contains(event.target as Node)
-      ) {
+      if (popoverPossuiRef.current && !popoverPossuiRef.current.contains(event.target as Node)) {
         setIsAddingPossui(false);
       }
-      if (
-        popoverProcuraRef.current &&
-        !popoverProcuraRef.current.contains(event.target as Node)
-      ) {
+      if (popoverProcuraRef.current && !popoverProcuraRef.current.contains(event.target as Node)) {
         setIsAddingProcura(false);
       }
     }
@@ -143,9 +125,7 @@ export default function CriarGrupoPage() {
   };
 
   const handleRemovePossui = (skillToRemove: string) => {
-    setCompetenciasPossui(
-      competenciasPossui.filter((s) => s !== skillToRemove),
-    );
+    setCompetenciasPossui(competenciasPossui.filter((s) => s !== skillToRemove));
   };
 
   // Handlers - Competências que PROCURA (Vagas)
@@ -167,9 +147,7 @@ export default function CriarGrupoPage() {
   };
 
   const handleRemoveProcura = (skillToRemove: string) => {
-    setCompetenciasProcura(
-      competenciasProcura.filter((s) => s !== skillToRemove),
-    );
+    setCompetenciasProcura(competenciasProcura.filter((s) => s !== skillToRemove));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -198,10 +176,7 @@ export default function CriarGrupoPage() {
     <div className="min-h-screen bg-[#F0F4F8] flex flex-col font-sans text-slate-800">
       {/* 1. Topo / Header Institucional */}
       <header className="w-full px-6 sm:px-10 py-5 flex items-center justify-between">
-        <Link
-          href="/"
-          className="flex items-center group transition-opacity hover:opacity-90"
-        >
+        <Link href="/" className="flex items-center group transition-opacity hover:opacity-90">
           <Image
             src="/logo_CampusHub_transparente_e_recortado (1).png"
             alt="Logo CampusHub"
@@ -211,9 +186,7 @@ export default function CriarGrupoPage() {
             priority
           />
         </Link>
-        <span className="text-sm font-medium text-slate-900">
-          Instituto Mauá de Tecnologia
-        </span>
+        <span className="text-sm font-medium text-slate-900">Instituto Mauá de Tecnologia</span>
       </header>
 
       {/* 2. Container Central */}
@@ -222,12 +195,9 @@ export default function CriarGrupoPage() {
           {/* Cabeçalho do Card */}
           <div className="flex justify-between items-start pb-4 border-b border-slate-200">
             <div>
-              <h1 className="text-2xl font-bold text-slate-950">
-                Criar Grupo de Projeto
-              </h1>
+              <h1 className="text-2xl font-bold text-slate-950">Criar Grupo de Projeto</h1>
               <p className="text-xs text-slate-600 mt-1">
-                Abra vagas e encontre integrantes com habilidades
-                complementares.
+                Abra vagas e encontre integrantes com habilidades complementares.
               </p>
             </div>
             <button
@@ -281,9 +251,7 @@ export default function CriarGrupoPage() {
                   className="w-full appearance-none bg-[#E5E7EB]/80 text-slate-800 rounded-2xl px-5 py-3.5 text-sm outline-none border border-transparent focus:border-slate-400 focus:bg-white transition cursor-pointer pr-10"
                 >
                   <option value="3 Integrantes">3 Integrantes</option>
-                  <option value="4 Integrantes (Padrão PI)">
-                    4 Integrantes (Padrão PI)
-                  </option>
+                  <option value="4 Integrantes (Padrão PI)">4 Integrantes (Padrão PI)</option>
                   <option value="5 Integrantes">5 Integrantes</option>
                   <option value="6 Integrantes">6 Integrantes</option>
                 </select>
@@ -374,8 +342,7 @@ export default function CriarGrupoPage() {
                           ))
                         ) : (
                           <span className="text-xs text-gray-400 italic px-1">
-                            Pressione &quot;+ Adicionar&quot; para incluir
-                            &quot;{buscaPossui}&quot;
+                            Pressione &quot;+ Adicionar&quot; para incluir &quot;{buscaPossui}&quot;
                           </span>
                         )}
                       </div>
@@ -465,8 +432,8 @@ export default function CriarGrupoPage() {
                           ))
                         ) : (
                           <span className="text-xs text-gray-400 italic px-1">
-                            Pressione &quot;+ Adicionar&quot; para incluir
-                            &quot;{buscaProcura}&quot;
+                            Pressione &quot;+ Adicionar&quot; para incluir &quot;{buscaProcura}
+                            &quot;
                           </span>
                         )}
                       </div>

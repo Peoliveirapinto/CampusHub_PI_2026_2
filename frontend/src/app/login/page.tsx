@@ -51,9 +51,7 @@ export default function LoginPage() {
         setErro("Não foi possível entrar agora. Tente novamente em instantes.");
       }
     } catch {
-      setErro(
-        "Não foi possível conectar ao servidor. Verifique se o backend está rodando."
-      );
+      setErro("Não foi possível conectar ao servidor. Verifique se o backend está rodando.");
     } finally {
       setCarregando(false);
     }
@@ -63,10 +61,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-[#f1f5f9] text-gray-900 flex flex-col justify-between font-sans">
       {/* Cabeçalho */}
       <header className="w-full flex justify-between items-center px-6 sm:px-8 py-5">
-        <Link
-          href="/"
-          className="flex items-center group transition-opacity hover:opacity-90"
-        >
+        <Link href="/" className="flex items-center group transition-opacity hover:opacity-90">
           <Image
             src="/logo_CampusHub_sem_fundo.png"
             alt="Logo CampusHub"
@@ -76,9 +71,7 @@ export default function LoginPage() {
             priority
           />
         </Link>
-        <span className="text-gray-900 text-sm font-medium">
-          Instituto Mauá de Tecnologia
-        </span>
+        <span className="text-gray-900 text-sm font-medium">Instituto Mauá de Tecnologia</span>
       </header>
 
       {/* Conteúdo Central / Card de Login */}
@@ -98,10 +91,7 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
             {/* Campo E-mail / RA */}
             <div className="flex flex-col gap-1.5">
-              <label
-                htmlFor="identifier"
-                className="text-base font-semibold text-gray-900"
-              >
+              <label htmlFor="identifier" className="text-base font-semibold text-gray-900">
                 Email
               </label>
               <input
@@ -118,10 +108,7 @@ export default function LoginPage() {
 
             {/* Campo Senha */}
             <div className="flex flex-col gap-1.5">
-              <label
-                htmlFor="password"
-                className="text-base font-semibold text-gray-900"
-              >
+              <label htmlFor="password" className="text-base font-semibold text-gray-900">
                 Senha
               </label>
               <input
@@ -174,10 +161,7 @@ export default function LoginPage() {
           </div>
 
           {/* Link para Criar Conta */}
-          <Link
-            href="/criar_conta"
-            className="text-base font-bold text-[#0c1b40] hover:underline"
-          >
+          <Link href="/criar_conta" className="text-base font-bold text-[#0c1b40] hover:underline">
             Criar Conta
           </Link>
         </div>

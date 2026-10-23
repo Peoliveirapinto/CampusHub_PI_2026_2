@@ -82,9 +82,7 @@ export default function CompletePerfilPage() {
   const [anoIngresso, setAnoIngresso] = useState(new Date().getFullYear());
   const [semestreIngresso, setSemestreIngresso] = useState("1");
   const [contato, setContato] = useState("");
-  const [disponibilidade, setDisponibilidade] = useState(
-    "Período Noturno (Após 18h/ EAD)"
-  );
+  const [disponibilidade, setDisponibilidade] = useState("Período Noturno (Após 18h/ EAD)");
 
   // Habilidades e Dropdown de seleção
   const [skills, setSkills] = useState<string[]>(["Python", "React"]);
@@ -99,9 +97,7 @@ export default function CompletePerfilPage() {
   // Filtragem de habilidades disponíveis que ainda não foram adicionadas
   const habilidadesFiltradas = useMemo(() => {
     return LISTA_HABILIDADES_PADRAO.filter(
-      (item) =>
-        !skills.includes(item) &&
-        item.toLowerCase().includes(skillSearch.toLowerCase())
+      (item) => !skills.includes(item) && item.toLowerCase().includes(skillSearch.toLowerCase()),
     );
   }, [skills, skillSearch]);
 
@@ -128,7 +124,7 @@ export default function CompletePerfilPage() {
 
   const toggleInteresse = (item: string) => {
     setInteresses((prev) =>
-      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
+      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item],
     );
   };
 
@@ -140,21 +136,16 @@ export default function CompletePerfilPage() {
     setFaltouPasso1(false);
 
     // Nome e curso vêm do Passo 1 (a tabela perfil exige os dois)
-    let dadosCadastro: { nome?: string; curso?: string; usuarioId?: string } =
-      {};
+    let dadosCadastro: { nome?: string; curso?: string; usuarioId?: string } = {};
     try {
-      dadosCadastro = JSON.parse(
-        sessionStorage.getItem(CHAVE_DADOS_CADASTRO) ?? "{}"
-      );
+      dadosCadastro = JSON.parse(sessionStorage.getItem(CHAVE_DADOS_CADASTRO) ?? "{}");
     } catch {
       // segue com objeto vazio
     }
 
     if (!dadosCadastro.nome || !dadosCadastro.curso || !dadosCadastro.usuarioId) {
       setFaltouPasso1(true);
-      setErro(
-        "Não encontramos os dados do Passo 1. Volte e preencha novamente."
-      );
+      setErro("Não encontramos os dados do Passo 1. Volte e preencha novamente.");
       return;
     }
 
@@ -167,9 +158,7 @@ export default function CompletePerfilPage() {
 
     // A coluna especializacao aceita no máximo 100 caracteres
     if (especializacao.length > 100) {
-      setErro(
-        "As áreas de interesse ficaram longas demais. Remova algumas ou encurte o texto."
-      );
+      setErro("As áreas de interesse ficaram longas demais. Remova algumas ou encurte o texto.");
       return;
     }
 
@@ -217,9 +206,7 @@ export default function CompletePerfilPage() {
         setErro("Não foi possível salvar o perfil agora. Tente novamente.");
       }
     } catch {
-      setErro(
-        "Não foi possível conectar ao servidor. Verifique se o backend está rodando."
-      );
+      setErro("Não foi possível conectar ao servidor. Verifique se o backend está rodando.");
     } finally {
       setCarregando(false);
     }
@@ -229,10 +216,7 @@ export default function CompletePerfilPage() {
     <div className="min-h-screen bg-[#f1f5f9] text-gray-900 flex flex-col justify-between font-sans">
       {/* Cabeçalho */}
       <header className="w-full flex justify-between items-center px-6 sm:px-8 py-5">
-        <Link
-          href="/"
-          className="flex items-center group transition-opacity hover:opacity-90"
-        >
+        <Link href="/" className="flex items-center group transition-opacity hover:opacity-90">
           <Image
             src="/logo_CampusHub_sem_fundo.png"
             alt="Logo CampusHub"
@@ -242,9 +226,7 @@ export default function CompletePerfilPage() {
             priority
           />
         </Link>
-        <span className="text-gray-900 text-sm font-medium">
-          Instituto Mauá de Tecnologia
-        </span>
+        <span className="text-gray-900 text-sm font-medium">Instituto Mauá de Tecnologia</span>
       </header>
 
       {/* Conteúdo Central / Card Passo 2 */}
@@ -253,9 +235,7 @@ export default function CompletePerfilPage() {
           {/* Topo do Card */}
           <div className="flex justify-between items-start mb-2">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                Complete seu Perfil
-              </h1>
+              <h1 className="text-2xl font-bold text-gray-900">Complete seu Perfil</h1>
               <p className="text-xs text-gray-600 mt-0.5">
                 Isso ajuda outros alunos a encontrarem você para trabalhos
               </p>
@@ -437,7 +417,8 @@ export default function CompletePerfilPage() {
                       ))
                     ) : (
                       <span className="text-xs text-gray-400 italic">
-                        Nenhuma correspondência padrão. Pressione &quot;+ Adicionar&quot; acima para incluir.
+                        Nenhuma correspondência padrão. Pressione &quot;+ Adicionar&quot; acima para
+                        incluir.
                       </span>
                     )}
                   </div>
@@ -522,9 +503,7 @@ export default function CompletePerfilPage() {
                         >
                           <div
                             className={`h-3.5 w-3.5 rounded flex items-center justify-center border transition ${
-                              selected
-                                ? "bg-blue-600 border-blue-600"
-                                : "border-gray-400 bg-white"
+                              selected ? "bg-blue-600 border-blue-600" : "border-gray-400 bg-white"
                             }`}
                           >
                             {selected && <div className="h-1.5 w-1.5 bg-white rounded-xs" />}
@@ -572,12 +551,8 @@ export default function CompletePerfilPage() {
                   <option value="Período Noturno (Após 18h/ EAD)">
                     Período Noturno (Após 18h/ EAD)
                   </option>
-                  <option value="Período Matutino (Manhã)">
-                    Período Matutino (Manhã)
-                  </option>
-                  <option value="Período Vespertino (Tarde)">
-                    Período Vespertino (Tarde)
-                  </option>
+                  <option value="Período Matutino (Manhã)">Período Matutino (Manhã)</option>
+                  <option value="Período Vespertino (Tarde)">Período Vespertino (Tarde)</option>
                   <option value="Finais de Semana e Horários Livres">
                     Finais de Semana e Horários Livres
                   </option>
@@ -597,10 +572,7 @@ export default function CompletePerfilPage() {
               >
                 <p>{erro}</p>
                 {faltouPasso1 && (
-                  <Link
-                    href="/criar_conta"
-                    className="inline-block mt-1 font-semibold underline"
-                  >
+                  <Link href="/criar_conta" className="inline-block mt-1 font-semibold underline">
                     Voltar ao Passo 1
                   </Link>
                 )}

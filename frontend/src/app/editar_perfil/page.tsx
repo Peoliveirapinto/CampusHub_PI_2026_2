@@ -4,15 +4,7 @@ import React, { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import {
-  ArrowLeft,
-  User,
-  ChevronDown,
-  X,
-  Plus,
-  Search,
-  Check,
-} from "lucide-react";
+import { ArrowLeft, User, ChevronDown, X, Plus, Search, Check } from "lucide-react";
 
 // Lista padronizada para busca rápida de habilidades
 const LISTA_HABILIDADES_PADRAO = [
@@ -53,15 +45,11 @@ export default function EditarPerfilPage() {
 
   // Estados com dados iniciais de exemplo (mock data)
   const [bio, setBio] = useState<string>(
-    "Aluno dedicado focado em programação, banco de dados e pipeline automatizado para testes"
+    "Aluno dedicado focado em programação, banco de dados e pipeline automatizado para testes",
   );
   const [skills, setSkills] = useState<string[]>(["Python", "React"]);
-  const [interesses, setInteresses] = useState<string[]>([
-    "Inteligência Artificial",
-  ]);
-  const [disponibilidade, setDisponibilidade] = useState<string>(
-    "Período Noturno (Após 18h/ EAD)"
-  );
+  const [interesses, setInteresses] = useState<string[]>(["Inteligência Artificial"]);
+  const [disponibilidade, setDisponibilidade] = useState<string>("Período Noturno (Após 18h/ EAD)");
 
   // Controle da janelinha flutuante para adicionar habilidades
   const [isAddingSkill, setIsAddingSkill] = useState<boolean>(false);
@@ -71,10 +59,7 @@ export default function EditarPerfilPage() {
   // Fecha o dropdown flutuante ao clicar fora
   useEffect(() => {
     function handleClickFora(event: MouseEvent) {
-      if (
-        popoverSkillRef.current &&
-        !popoverSkillRef.current.contains(event.target as Node)
-      ) {
+      if (popoverSkillRef.current && !popoverSkillRef.current.contains(event.target as Node)) {
         setIsAddingSkill(false);
       }
     }
@@ -85,9 +70,7 @@ export default function EditarPerfilPage() {
   // Filtragem de habilidades
   const habilidadesFiltradas = useMemo(() => {
     return LISTA_HABILIDADES_PADRAO.filter(
-      (item) =>
-        !skills.includes(item) &&
-        item.toLowerCase().includes(skillSearch.toLowerCase())
+      (item) => !skills.includes(item) && item.toLowerCase().includes(skillSearch.toLowerCase()),
     );
   }, [skills, skillSearch]);
 
@@ -114,7 +97,7 @@ export default function EditarPerfilPage() {
 
   const toggleInteresse = (area: string) => {
     setInteresses((prev) =>
-      prev.includes(area) ? prev.filter((a) => a !== area) : [...prev, area]
+      prev.includes(area) ? prev.filter((a) => a !== area) : [...prev, area],
     );
   };
 
@@ -142,10 +125,7 @@ export default function EditarPerfilPage() {
     <div className="min-h-screen bg-[#F0F4F8] flex flex-col font-sans text-slate-800">
       {/* 1. Cabeçalho Superior Institucional */}
       <header className="w-full px-6 sm:px-10 py-5 flex items-center justify-between">
-        <Link
-          href="/"
-          className="flex items-center group transition-opacity hover:opacity-90"
-        >
+        <Link href="/" className="flex items-center group transition-opacity hover:opacity-90">
           <Image
             src="/logo_CampusHub_sem_fundo.png"
             alt="Logo CampusHub"
@@ -155,9 +135,7 @@ export default function EditarPerfilPage() {
             priority
           />
         </Link>
-        <span className="text-sm font-medium text-slate-900">
-          Instituto Mauá de Tecnologia
-        </span>
+        <span className="text-sm font-medium text-slate-900">Instituto Mauá de Tecnologia</span>
       </header>
 
       {/* 2. Conteúdo Central / Card de Edição */}
@@ -166,9 +144,7 @@ export default function EditarPerfilPage() {
           {/* Topo do Formulário */}
           <div className="flex justify-between items-start pb-4 border-b border-slate-200">
             <div>
-              <h1 className="text-2xl font-bold text-slate-950">
-                Editar Perfil
-              </h1>
+              <h1 className="text-2xl font-bold text-slate-950">Editar Perfil</h1>
               <p className="text-xs text-slate-600 mt-1">
                 Mantenha suas competências atualizadas para melhores recomendações
               </p>
@@ -192,9 +168,7 @@ export default function EditarPerfilPage() {
               </div>
               <div>
                 <h2 className="text-lg font-bold text-slate-900">Mario Bros</h2>
-                <p className="text-sm text-slate-600 font-normal">
-                  Engenharia - IMT
-                </p>
+                <p className="text-sm text-slate-600 font-normal">Engenharia - IMT</p>
               </div>
             </div>
 
@@ -338,9 +312,7 @@ export default function EditarPerfilPage() {
                       >
                         {isChecked && <Check size={14} strokeWidth={3} />}
                       </div>
-                      <span className="text-xs sm:text-sm font-medium text-slate-800">
-                        {area}
-                      </span>
+                      <span className="text-xs sm:text-sm font-medium text-slate-800">{area}</span>
                     </button>
                   );
                 })}

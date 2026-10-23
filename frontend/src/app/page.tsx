@@ -57,8 +57,8 @@ export default function Home() {
               href="/login"
               className="inline-flex items-center gap-2 rounded-lg bg-blue-950 px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-900 hover:shadow-sm"
             >
-
-              <LogIn size={15} />Entrar
+              <LogIn size={15} />
+              Entrar
             </Link>
           </div>
         </div>
@@ -91,10 +91,9 @@ export default function Home() {
             </h1>
 
             <p className="mx-auto mt-7 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-              Chega de improvisar na formação de equipes no WhatsApp. O
-              CampusHub conecta estudantes do Instituto Mauá por competências
-              técnicas, disponibilidade de horários e afinidade temática para
-              projetos e TCCs.
+              Chega de improvisar na formação de equipes no WhatsApp. O CampusHub conecta estudantes
+              do Instituto Mauá por competências técnicas, disponibilidade de horários e afinidade
+              temática para projetos e TCCs.
             </p>
           </div>
 
@@ -102,36 +101,24 @@ export default function Home() {
             <div className="flex items-center justify-center gap-3 px-5 py-5 sm:border-r sm:border-slate-200">
               <Users size={20} className="text-blue-900" />
               <div className="text-left">
-                <p className="text-sm font-bold text-slate-900">
-                  Perfis Verificados
-                </p>
-                <p className="text-xs text-slate-500">
-                  Apenas alunos da comunidade Mauá
-                </p>
+                <p className="text-sm font-bold text-slate-900">Perfis Verificados</p>
+                <p className="text-xs text-slate-500">Apenas alunos da comunidade Mauá</p>
               </div>
             </div>
 
             <div className="flex items-center justify-center gap-3 border-t border-slate-200 px-5 py-5 sm:border-r sm:border-t-0 sm:border-slate-200">
               <Boxes size={20} className="text-lime-600" />
               <div className="text-left">
-                <p className="text-sm font-bold text-slate-900">
-                  Stack de Habilidades
-                </p>
-                <p className="text-xs text-slate-500">
-                  Soft e hard skills catalogadas
-                </p>
+                <p className="text-sm font-bold text-slate-900">Stack de Habilidades</p>
+                <p className="text-xs text-slate-500">Soft e hard skills catalogadas</p>
               </div>
             </div>
 
             <div className="flex items-center justify-center gap-3 border-t border-slate-200 px-5 py-5 sm:border-t-0">
               <Network size={20} className="text-amber-600" />
               <div className="text-left">
-                <p className="text-sm font-bold text-slate-900">
-                  Multidisciplinar
-                </p>
-                <p className="text-xs text-slate-500">
-                  Equipes integrando vários cursos
-                </p>
+                <p className="text-sm font-bold text-slate-900">Multidisciplinar</p>
+                <p className="text-xs text-slate-500">Equipes integrando vários cursos</p>
               </div>
             </div>
           </div>
@@ -139,10 +126,7 @@ export default function Home() {
       </section>
 
       {/* 3. CONTEXTO E O PROBLEMA (SEM BOXES) */}
-      <section
-        id="proposito"
-        className="border-b border-slate-200 bg-white py-24"
-      >
+      <section id="proposito" className="border-b border-slate-200 bg-white py-24">
         <div className="mx-auto max-w-7xl px-6 sm:px-8">
           <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-16">
             {/* Coluna da Esquerda: O Desafio */}
@@ -154,15 +138,13 @@ export default function Home() {
                 Trabalhos em grupo não deveriam depender apenas de sorte.
               </h2>
               <p className="mt-6 text-base leading-relaxed text-slate-600">
-                Todo semestre o ciclo se repete: prazos apertados para registrar
-                grupos, amigos que têm boa convivência mas que dominam
-                exatamente as mesmas áreas, ou alunos dedicados que ficam sem
-                equipe por falta de rede de contatos no campus.
+                Todo semestre o ciclo se repete: prazos apertados para registrar grupos, amigos que
+                têm boa convivência mas que dominam exatamente as mesmas áreas, ou alunos dedicados
+                que ficam sem equipe por falta de rede de contatos no campus.
               </p>
               <p className="mt-4 text-base leading-relaxed text-slate-600">
-                O CampusHub foi desenhado para eliminar essa fricção,
-                transformando a formação de squads em um processo baseado em
-                afinidade de projeto e complementariedade técnica.
+                O CampusHub foi desenhado para eliminar essa fricção, transformando a formação de
+                squads em um processo baseado em afinidade de projeto e complementariedade técnica.
               </p>
             </div>
 
@@ -171,16 +153,14 @@ export default function Home() {
               {/* Antes */}
               <div className="border-t border-slate-200 pt-6">
                 <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-rose-700">
-                  <span className="font-mono text-sm">✕</span>O modelo
-                  improvisado
+                  <span className="font-mono text-sm">✕</span>O modelo improvisado
                 </div>
                 <h3 className="mt-2 text-lg font-bold text-slate-950">
                   Grupos montados às pressas
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                  Mensagens perdidas em grupos gerais de WhatsApp, equipes com
-                  competências repetidas e sobrecarga de trabalho concentrada
-                  nos mesmos integrantes.
+                  Mensagens perdidas em grupos gerais de WhatsApp, equipes com competências
+                  repetidas e sobrecarga de trabalho concentrada nos mesmos integrantes.
                 </p>
               </div>
 
@@ -194,9 +174,8 @@ export default function Home() {
                   Conexão orientada a habilidades
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                  Filtros por curso, ano e domínio técnico. Você descobre quem
-                  precisa da sua habilidade e convida pessoas que complementam
-                  suas lacunas de forma equilibrada.
+                  Filtros por curso, ano e domínio técnico. Você descobre quem precisa da sua
+                  habilidade e convida pessoas que complementam suas lacunas de forma equilibrada.
                 </p>
               </div>
             </div>
@@ -205,10 +184,7 @@ export default function Home() {
       </section>
 
       {/* 4. RECURSOS PRINCIPAIS */}
-      <section
-        id="recursos"
-        className="border-b border-slate-200 bg-white py-24"
-      >
+      <section id="recursos" className="border-b border-slate-200 bg-white py-24">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <div className="mb-14 max-w-2xl">
             <span className="text-xs font-bold uppercase tracking-[0.18em] text-blue-900">
@@ -218,9 +194,8 @@ export default function Home() {
               Tudo o que você precisa para estruturar projetos de sucesso.
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-6 text-slate-600">
-              Uma ferramenta pensada de ponta a ponta para a dinâmica de
-              trabalhos práticos, atividades de laboratório e projetos
-              integradores.
+              Uma ferramenta pensada de ponta a ponta para a dinâmica de trabalhos práticos,
+              atividades de laboratório e projetos integradores.
             </p>
           </div>
 
@@ -236,9 +211,8 @@ export default function Home() {
                 Equipes Balanceadas
               </h3>
               <p className="mt-3 text-sm leading-6 text-slate-500 group-hover:text-blue-100">
-                O algoritmo aponta sinergias entre quem manja de software,
-                hardware, negócios e prototipagem física para evitar grupos
-                desiguais.
+                O algoritmo aponta sinergias entre quem manja de software, hardware, negócios e
+                prototipagem física para evitar grupos desiguais.
               </p>
               <div className="mt-7 flex items-center gap-2 text-xs font-bold text-blue-900 group-hover:text-lime-400">
                 Descobrir compatibilidade
@@ -257,9 +231,8 @@ export default function Home() {
                 Vagas e Convites Abertos
               </h3>
               <p className="mt-3 text-sm leading-6 text-slate-500 group-hover:text-blue-100">
-                Tem uma ideia de TCC ou desafio extracurricular mas falta alguém
-                de Design ou Elétrica? Publique a vaga e receba solicitações
-                diretas.
+                Tem uma ideia de TCC ou desafio extracurricular mas falta alguém de Design ou
+                Elétrica? Publique a vaga e receba solicitações diretas.
               </p>
               <div className="mt-7 flex items-center gap-2 text-xs font-bold text-blue-900 group-hover:text-lime-400">
                 Ver quadro de avisos
@@ -278,9 +251,8 @@ export default function Home() {
                 Histórico & Portfólio
               </h3>
               <p className="mt-3 text-sm leading-6 text-slate-500 group-hover:text-blue-100">
-                Cada usuário pode anexar links do GitHub, Behance e LinkedIn,
-                facilitando avaliar o nível técnico e dedicação antes de selar o
-                grupo.
+                Cada usuário pode anexar links do GitHub, Behance e LinkedIn, facilitando avaliar o
+                nível técnico e dedicação antes de selar o grupo.
               </p>
               <div className="mt-7 flex items-center gap-2 text-xs font-bold text-blue-900 group-hover:text-lime-400">
                 Conhecer perfis
@@ -292,10 +264,7 @@ export default function Home() {
       </section>
 
       {/* 5. COMO FUNCIONA (PASSO A PASSO) */}
-      <section
-        id="como-funciona"
-        className="border-b border-slate-200 bg-slate-50 py-24"
-      >
+      <section id="como-funciona" className="border-b border-slate-200 bg-slate-50 py-24">
         <div className="mx-auto max-w-7xl px-6 sm:px-8">
           <div className="mb-16 max-w-2xl">
             <span className="text-xs font-bold uppercase tracking-[0.18em] text-blue-900">
@@ -307,8 +276,7 @@ export default function Home() {
               Sem complicação.
             </h2>
             <p className="mt-4 text-sm leading-6 text-slate-600">
-              Etapas diretas para você encontrar colegas compatíveis
-              rapidamente.
+              Etapas diretas para você encontrar colegas compatíveis rapidamente.
             </p>
           </div>
 
@@ -322,13 +290,11 @@ export default function Home() {
                   </span>
                 </div>
 
-                <h3 className="mt-6 text-lg font-bold text-slate-950">
-                  Autenticação
-                </h3>
+                <h3 className="mt-6 text-lg font-bold text-slate-950">Autenticação</h3>
 
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                  Acesso com credencial acadêmica, assegurando que todos os
-                  membros são colegas matriculados.
+                  Acesso com credencial acadêmica, assegurando que todos os membros são colegas
+                  matriculados.
                 </p>
               </div>
             </div>
@@ -342,13 +308,11 @@ export default function Home() {
                   </span>
                 </div>
 
-                <h3 className="mt-6 text-lg font-bold text-slate-950">
-                  Mapeamento
-                </h3>
+                <h3 className="mt-6 text-lg font-bold text-slate-950">Mapeamento</h3>
 
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                  Preenchimento rápido de skills principais, disciplinas
-                  cursadas e ferramentas que domina.
+                  Preenchimento rápido de skills principais, disciplinas cursadas e ferramentas que
+                  domina.
                 </p>
               </div>
             </div>
@@ -362,13 +326,11 @@ export default function Home() {
                   </span>
                 </div>
 
-                <h3 className="mt-6 text-lg font-bold text-slate-950">
-                  Descoberta
-                </h3>
+                <h3 className="mt-6 text-lg font-bold text-slate-950">Descoberta</h3>
 
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                  Pesquise squads que buscam seu perfil ou monte um novo grupo
-                  convidando integrantes por afinidade.
+                  Pesquise squads que buscam seu perfil ou monte um novo grupo convidando
+                  integrantes por afinidade.
                 </p>
               </div>
             </div>
@@ -382,13 +344,11 @@ export default function Home() {
                   </span>
                 </div>
 
-                <h3 className="mt-6 text-lg font-bold text-slate-950">
-                  Execução
-                </h3>
+                <h3 className="mt-6 text-lg font-bold text-slate-950">Execução</h3>
 
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                  Grupo montado com canal direto de comunicação e clareza do
-                  papel de cada participante.
+                  Grupo montado com canal direto de comunicação e clareza do papel de cada
+                  participante.
                 </p>
               </div>
             </div>
@@ -405,8 +365,8 @@ export default function Home() {
               Conexão entre as diversas frentes do campus
             </h2>
             <p className="mt-3 text-sm text-slate-600">
-              O ecossistema universitário se torna mais forte quando áreas
-              complementares somam forças em laboratórios e bancadas.
+              O ecossistema universitário se torna mais forte quando áreas complementares somam
+              forças em laboratórios e bancadas.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-2.5">
@@ -445,8 +405,8 @@ export default function Home() {
               Perguntas Frequentes
             </h2>
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-500">
-              Respostas diretas sobre regras de acesso, tipos de projetos e
-              funcionamento da plataforma.
+              Respostas diretas sobre regras de acesso, tipos de projetos e funcionamento da
+              plataforma.
             </p>
           </div>
 
@@ -460,9 +420,8 @@ export default function Home() {
               </div>
               <div className="md:col-span-7">
                 <p className="text-sm leading-relaxed text-slate-600">
-                  A plataforma é restrita à comunidade acadêmica do Instituto
-                  Mauá de Tecnologia. O acesso é validado pelo e-mail
-                  institucional do estudante.
+                  A plataforma é restrita à comunidade acadêmica do Instituto Mauá de Tecnologia. O
+                  acesso é validado pelo e-mail institucional do estudante.
                 </p>
               </div>
             </div>
@@ -476,9 +435,9 @@ export default function Home() {
               </div>
               <div className="md:col-span-7">
                 <p className="text-sm leading-relaxed text-slate-600">
-                  Serve para ambos! Você pode sinalizar se está buscando
-                  integrantes para um Trabalho de Conclusão de Curso de longa
-                  duração ou para uma matéria específica do semestre.
+                  Serve para ambos! Você pode sinalizar se está buscando integrantes para um
+                  Trabalho de Conclusão de Curso de longa duração ou para uma matéria específica do
+                  semestre.
                 </p>
               </div>
             </div>
@@ -492,9 +451,8 @@ export default function Home() {
               </div>
               <div className="md:col-span-7">
                 <p className="text-sm leading-relaxed text-slate-600">
-                  Após aceitar o convite e fechar a equipe, o CampusHub libera
-                  os contatos diretos (como WhatsApp, Teams ou Discord)
-                  cadastrados pelos integrantes.
+                  Após aceitar o convite e fechar a equipe, o CampusHub libera os contatos diretos
+                  (como WhatsApp, Teams ou Discord) cadastrados pelos integrantes.
                 </p>
               </div>
             </div>
@@ -508,9 +466,8 @@ export default function Home() {
               </div>
               <div className="md:col-span-7">
                 <p className="text-sm leading-relaxed text-slate-600">
-                  Não. O CampusHub é um projeto sem fins lucrativos desenvolvido
-                  por estudantes e para estudantes no âmbito do Projeto
-                  Integrador Interdisciplinar.
+                  Não. O CampusHub é um projeto sem fins lucrativos desenvolvido por estudantes e
+                  para estudantes no âmbito do Projeto Integrador Interdisciplinar.
                 </p>
               </div>
             </div>
