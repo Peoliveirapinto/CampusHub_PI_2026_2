@@ -178,7 +178,7 @@ export default function CriarGrupoPage() {
       <header className="w-full px-6 sm:px-10 py-5 flex items-center justify-between">
         <Link href="/" className="flex items-center group transition-opacity hover:opacity-90">
           <Image
-            src="/logo_CampusHub_transparente_e_recortado (1).png"
+            src="/logo_CampusHub1.jpg"
             alt="Logo CampusHub"
             width={160}
             height={40}
