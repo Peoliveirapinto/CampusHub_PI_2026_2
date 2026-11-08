@@ -1,0 +1,2 @@
+ALTER TABLE perfil
+ADD COLUMN areasDeInteresse TEXT NOT NULL;
