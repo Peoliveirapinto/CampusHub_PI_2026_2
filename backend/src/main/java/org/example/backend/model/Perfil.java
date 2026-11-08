@@ -56,6 +56,6 @@ public class Perfil {
     @Column(name = "contato", nullable = false, length = 100)
     private String contato;
 
-    @Column(name = "areasDeInteresse", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "areas_de_interesse", nullable = false, columnDefinition = "TEXT")
     private String areasDeInteresse;
 }

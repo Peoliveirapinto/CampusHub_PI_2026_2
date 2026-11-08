@@ -43,7 +43,7 @@ public class PerfilService {
 
         Perfil perfilSalvo = perfilRepository.save(perfilNovo);
 
-        return new PerfilRespostaDTO(perfilSalvo);
+        return perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfilSalvo);
     }
 
     public PerfilRespostaDTO obterPorUsuarioid(UUID usuarioId){
@@ -51,7 +51,7 @@ public class PerfilService {
 
         Perfil perfilDoUsuario = garantirQueUsuarioTemPerfil(usuario);
 
-        return new PerfilRespostaDTO(perfilDoUsuario);
+        return perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfilDoUsuario);
     }
 
     public void deletarPorUsuarioId(UUID usuarioId){
@@ -69,12 +69,15 @@ public class PerfilService {
 
         perfilMapper.atualizaEntidadePeloDTO(perfilPatchDTO, perfilParaAtualizar);
 
-        return new PerfilRespostaDTO(perfilRepository.save(perfilParaAtualizar));
+        Perfil perfilAtualizado = perfilRepository.save(perfilParaAtualizar);
+
+        return perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfilAtualizado);
     }
 
     public PerfilRespostaDTO criarMeu(PerfilCriarMeuDTO perfilCriarMeuDTO){
         Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
 
+        usuarioService.garantirQueUsuarioExiste(usuarioLogado.getId());
         garantirQueUsuarioNaoTemPerfil(usuarioLogado);
 
         Perfil perfilNovo = perfilMapper.criaEntidadePeloDTO(perfilCriarMeuDTO);
@@ -82,22 +85,27 @@ public class PerfilService {
 
         Perfil perfilSalvo = perfilRepository.save(perfilNovo);
 
-        return new PerfilRespostaDTO(perfilSalvo);
+        return perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfilSalvo);
     }
 
     public PerfilRespostaDTO obterMeu(){
         Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
 
-        return new PerfilRespostaDTO(garantirQueUsuarioTemPerfil(usuarioLogado));
+        usuarioService.garantirQueUsuarioExiste(usuarioLogado.getId());
+
+        return perfilMapper.criaPerfilRespostaDTOPelaEntidade(garantirQueUsuarioTemPerfil(usuarioLogado));
     }
 
     public PerfilRespostaDTO atualizarMeu(PerfilPatchDTO perfilPatchDTO){
         Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
 
+        usuarioService.garantirQueUsuarioExiste(usuarioLogado.getId());
         Perfil perfilParaAtualizar = garantirQueUsuarioTemPerfil(usuarioLogado);
 
         perfilMapper.atualizaEntidadePeloDTO(perfilPatchDTO, perfilParaAtualizar);
 
-        return new PerfilRespostaDTO(perfilRepository.save(perfilParaAtualizar));
+        Perfil perfilAtualizado = perfilRepository.save(perfilParaAtualizar);
+
+        return perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfilAtualizado);
     }
 }

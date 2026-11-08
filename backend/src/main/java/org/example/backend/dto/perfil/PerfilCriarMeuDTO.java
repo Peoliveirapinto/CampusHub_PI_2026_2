@@ -18,5 +18,7 @@ public record PerfilCriarMeuDTO(
         @NotBlank
         String disponibilidade,
         @NotBlank
-        String contato
+        String contato,
+        @NotBlank
+        String areasDeInteresse
 ) {}

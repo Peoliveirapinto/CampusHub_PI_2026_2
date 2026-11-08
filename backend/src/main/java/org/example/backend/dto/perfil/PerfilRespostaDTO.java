@@ -15,20 +15,6 @@ public record PerfilRespostaDTO(
         int anoDeIngresso,
         int semestreDeIngresso,
         String disponibilidade,
-        String contato
-) {
-    public PerfilRespostaDTO(Perfil perfil){
-        this(
-            perfil.getId(),
-            new UsuarioRespostaDTO(perfil.getUsuario()),
-            perfil.getNome(),
-            perfil.getDescricao(),
-            perfil.getCurso(),
-            perfil.getEspecializacao(),
-            perfil.getAnoDeIngresso(),
-            perfil.getSemestreDeIngresso(),
-            perfil.getDisponibilidade(),
-            perfil.getContato()
-        );
-    }
-}
+        String contato,
+        String areasDeInteresse
+) {}

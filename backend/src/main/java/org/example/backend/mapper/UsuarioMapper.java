@@ -1,6 +1,7 @@
 package org.example.backend.mapper;
 
 import org.example.backend.dto.usuario.UsuarioPatchDTO;
+import org.example.backend.dto.usuario.UsuarioRespostaDTO;
 import org.example.backend.model.Usuario;
 import org.mapstruct.*;
 
@@ -9,4 +10,6 @@ public interface UsuarioMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "email", ignore = true)
     void atualizaEntidadePeloDTO(UsuarioPatchDTO dto, @MappingTarget Usuario entity);
+
+    UsuarioRespostaDTO criaUsuarioRespostaDTOPelaEntidade(Usuario usuario);
 }

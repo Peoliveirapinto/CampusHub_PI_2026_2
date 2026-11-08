@@ -8,5 +8,6 @@ public record PerfilPatchDTO(
         Integer anoDeIngresso,
         Integer semestreDeIngresso,
         String disponibilidade,
-        String contato
+        String contato,
+        String areasDeInteresse
 ) {}
