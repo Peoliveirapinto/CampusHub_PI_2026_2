@@ -9,8 +9,4 @@ public record UsuarioRespostaDTO(
         UUID id,
         String email,
         Role role
-) {
-    public UsuarioRespostaDTO(Usuario usuario){
-        this(usuario.getId(), usuario.getEmail(), usuario.getRole());
-    }
-}
+) {}

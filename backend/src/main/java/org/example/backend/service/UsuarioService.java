@@ -25,25 +25,19 @@ public class UsuarioService {
     }
 
     public UsuarioRespostaDTO obterPorId(UUID id){
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("usuario.nao-encontrado", "ID", id)
-        );
+        Usuario usuario = garantirQueUsuarioExiste(id);
 
-        return new UsuarioRespostaDTO(usuario);
+        return usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuario);
     }
 
     public void deletarPorId(UUID id){
-        if(!usuarioRepository.existsById(id)){
-            throw new ResourceNotFoundException("usuario.nao-encontrado", "ID", id);
-        }
+        garantirQueUsuarioExiste(id);
 
         usuarioRepository.deleteById(id);
     }
 
     public UsuarioRespostaDTO atualizarPorId(UUID id, UsuarioPatchDTO usuarioPatchDTO){
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("usuario.nao-encontrado", "ID", id)
-        );
+        Usuario usuario = garantirQueUsuarioExiste(id);
 
         usuarioMapper.atualizaEntidadePeloDTO(usuarioPatchDTO, usuario);
 
@@ -56,6 +50,8 @@ public class UsuarioService {
             usuario.setEmail(usuarioPatchDTO.email());
         }
 
-        return new UsuarioRespostaDTO(usuarioRepository.save(usuario));
+        Usuario usuarioSalvo = usuarioRepository.save(usuario);
+
+        return usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuarioSalvo);
     }
 }

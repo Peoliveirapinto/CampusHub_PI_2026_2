@@ -1,27 +1,25 @@
 package org.example.backend.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.auth.*;
 import org.example.backend.dto.usuario.UsuarioCadastroDTO;
 import org.example.backend.dto.usuario.UsuarioLoginDTO;
 import org.example.backend.dto.usuario.UsuarioRespostaDTO;
 import org.example.backend.exception.CredenciaisInvalidasException;
 import org.example.backend.exception.JaExisteException;
+import org.example.backend.mapper.UsuarioMapper;
 import org.example.backend.model.Usuario;
 import org.example.backend.model.enums.Role;
 import org.example.backend.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
 @Service
 public class AuthService {
     private final UsuarioRepository usuarioRepository;
     private final SenhaService senhaService;
     private final JwtService jwtService;
-
-    public AuthService(UsuarioRepository usuarioRepository, SenhaService senhaService, JwtService jwtService) {
-        this.usuarioRepository = usuarioRepository;
-        this.senhaService = senhaService;
-        this.jwtService = jwtService;
-    }
+    private final UsuarioMapper usuarioMapper;
 
     public UsuarioRespostaDTO cadastrarAdmin(UsuarioCadastroDTO usuarioCadastroDTO){
         if(usuarioRepository.existsByEmail(usuarioCadastroDTO.email())){
@@ -32,7 +30,7 @@ public class AuthService {
 
         Usuario usuarioSalvo = usuarioRepository.save(new Usuario(usuarioCadastroDTO.email(), senhaHasheada, Role.ADMIN));
 
-        return new UsuarioRespostaDTO(usuarioSalvo);
+        return usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuarioSalvo);
     }
 
     public UsuarioRespostaDTO cadastrarUsuario(UsuarioCadastroDTO usuarioCadastroDTO){
@@ -44,7 +42,7 @@ public class AuthService {
 
         Usuario usuarioSalvo = usuarioRepository.save(new Usuario(usuarioCadastroDTO.email(), senhaHasheada));
 
-        return new UsuarioRespostaDTO(usuarioSalvo);
+        return usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuarioSalvo);
     }
 
     public UsuarioETokenDTO autenticarUsuario(UsuarioLoginDTO usuarioLoginDTO){

@@ -1,10 +1,12 @@
 package org.example.backend.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.auth.*;
 import org.example.backend.dto.usuario.UsuarioCadastroDTO;
 import org.example.backend.dto.usuario.UsuarioLoginDTO;
 import org.example.backend.dto.usuario.UsuarioRespostaDTO;
+import org.example.backend.mapper.UsuarioMapper;
 import org.example.backend.service.AuthService;
 import org.example.backend.service.CookieService;
 import org.springframework.http.HttpHeaders;
@@ -16,16 +18,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
     private final CookieService cookieService;
-
-    public AuthController(AuthService authService, CookieService cookieService) {
-        this.authService = authService;
-        this.cookieService = cookieService;
-    }
+    private final UsuarioMapper usuarioMapper;
 
     @PostMapping("/admin/cadastro/admin")
     public ResponseEntity<UsuarioRespostaDTO> cadastrarAdmin(@RequestBody @Valid UsuarioCadastroDTO usuarioCadastroDTO){
@@ -50,7 +49,7 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(new UsuarioRespostaDTO(usuarioETokenDTO.usuario()));
+                .body(usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuarioETokenDTO.usuario()));
     }
 
     @PostMapping("/logout")
