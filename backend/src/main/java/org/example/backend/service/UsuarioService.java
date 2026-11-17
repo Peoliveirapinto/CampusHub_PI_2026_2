@@ -62,4 +62,21 @@ public class UsuarioService {
 
         return usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuarioLogado);
     }
+
+    public UsuarioRespostaDTO atualizarMeu(UsuarioPatchDTO usuarioPatchDTO){
+        Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
+
+        usuarioMapper.atualizaEntidadePeloDTO(usuarioPatchDTO, usuarioLogado);
+
+        if(usuarioPatchDTO.email() != null){
+            if(usuarioRepository.existsByEmail(usuarioPatchDTO.email())){
+                throw new JaExisteException("usuario.email.ja-existe");
+            }
+            usuarioLogado.setEmail(usuarioPatchDTO.email());
+        }
+
+        Usuario usuarioSalvo = usuarioRepository.save(usuarioLogado);
+
+        return usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuarioSalvo);
+    }
 }

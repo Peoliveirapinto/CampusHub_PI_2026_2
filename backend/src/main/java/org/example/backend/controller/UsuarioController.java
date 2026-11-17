@@ -46,4 +46,11 @@ public class UsuarioController {
 
         return ResponseEntity.status(HttpStatus.OK).body(usuarioEncontrado);
     }
+
+    @PatchMapping("/me")
+    public ResponseEntity<UsuarioRespostaDTO> atualizarMeu(@RequestBody @Valid UsuarioPatchDTO usuarioPatchDTO){
+        UsuarioRespostaDTO usuarioAtualizado = usuarioService.atualizarMeu(usuarioPatchDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
+    }
 }
