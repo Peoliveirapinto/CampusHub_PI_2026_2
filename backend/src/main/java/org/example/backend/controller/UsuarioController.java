@@ -39,4 +39,11 @@ public class UsuarioController {
 
         return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<UsuarioRespostaDTO> obterMeu(){
+        UsuarioRespostaDTO usuarioEncontrado = usuarioService.obterMeu();
+
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioEncontrado);
+    }
 }

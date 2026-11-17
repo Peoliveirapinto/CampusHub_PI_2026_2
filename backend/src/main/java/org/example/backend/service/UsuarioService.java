@@ -8,6 +8,7 @@ import org.example.backend.exception.ResourceNotFoundException;
 import org.example.backend.mapper.UsuarioMapper;
 import org.example.backend.model.Usuario;
 import org.example.backend.repository.UsuarioRepository;
+import org.example.backend.security.SecurityFacade;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
+    private final SecurityFacade securityFacade;
 
     public Usuario garantirQueUsuarioExiste(UUID id){
         return usuarioRepository.findById(id).orElseThrow(
@@ -53,5 +55,11 @@ public class UsuarioService {
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
 
         return usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuarioSalvo);
+    }
+
+    public UsuarioRespostaDTO obterMeu(){
+        Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
+
+        return usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuarioLogado);
     }
 }
