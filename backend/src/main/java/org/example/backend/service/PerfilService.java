@@ -108,4 +108,12 @@ public class PerfilService {
 
         return perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfilAtualizado);
     }
+
+    public void deletarMeu(){
+        Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
+
+        Perfil perfilParaDeletar = garantirQueUsuarioTemPerfil(usuarioLogado);
+
+        perfilRepository.deleteById(perfilParaDeletar.getId());
+    }
 }

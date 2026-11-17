@@ -64,4 +64,11 @@ public class PerfilController {
 
         return ResponseEntity.status(HttpStatus.OK).body(perfilAtualizado);
     }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deletarMeu(){
+        perfilService.deletarMeu();
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
