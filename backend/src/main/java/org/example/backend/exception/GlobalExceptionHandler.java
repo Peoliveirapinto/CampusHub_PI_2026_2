@@ -1,26 +1,21 @@
 package org.example.backend.exception;
 
+import lombok.RequiredArgsConstructor;
 import org.example.backend.dto.ResponseMessageErrorDTO;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
 import java.util.Locale;
-import java.util.Map;
 
+@RequiredArgsConstructor
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     private final MessageSource messageSource;
     private final Locale locale = Locale.getDefault();
-
-    public GlobalExceptionHandler(MessageSource messageSource){
-        this.messageSource = messageSource;
-    }
 
     private ResponseEntity<ResponseMessageErrorDTO> construirResposta(HttpStatus httpStatus, String mensagem, Object[] args){
         String translatedMessage = messageSource.getMessage(
@@ -45,93 +40,28 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleResourceNotFound(ResourceNotFoundException ex){
-        String translatedMessage = messageSource.getMessage(
-                ex.getMessage(),
-                ex.getArgs(),
-                ex.getMessage(),
-                this.locale
-        );
-
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.NOT_FOUND.value());
-        body.put("error", "Not Found");
-        body.put("message", translatedMessage);
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    public ResponseEntity<ResponseMessageErrorDTO> handleResourceNotFound(ResourceNotFoundException ex){
+        return construirResposta(HttpStatus.NOT_FOUND, ex.getMessage(), ex.getArgs());
     }
 
     @ExceptionHandler(JaExisteException.class)
-    public ResponseEntity<Map<String, Object>> handleJaExiste(JaExisteException ex){
-        String translatedMessage = messageSource.getMessage(
-                ex.getMessage(),
-                null,
-                ex.getMessage(),
-                this.locale
-        );
-
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.CONFLICT.value());
-        body.put("error", "Conflict");
-        body.put("message", translatedMessage);
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    public ResponseEntity<ResponseMessageErrorDTO> handleJaExiste(JaExisteException ex){
+        return construirResposta(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     @ExceptionHandler(CredenciaisInvalidasException.class)
-    public ResponseEntity<Map<String, Object>> handleCredenciaisInvalidas(CredenciaisInvalidasException ex){
-        String translatedMessage = messageSource.getMessage(
-                ex.getMessage(),
-                null,
-                ex.getMessage(),
-                this.locale
-        );
-
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.UNAUTHORIZED.value());
-        body.put("error", "Unauthorized");
-        body.put("message", translatedMessage);
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+    public ResponseEntity<ResponseMessageErrorDTO> handleCredenciaisInvalidas(CredenciaisInvalidasException ex){
+        return construirResposta(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
     @ExceptionHandler(UsuarioNaoAutenticadoException.class)
-    public ResponseEntity<Map<String, Object>> handleUsuarioNaoAutenticado(UsuarioNaoAutenticadoException ex){
-        String translatedMessage = messageSource.getMessage(
-                ex.getMessage(),
-                null,
-                ex.getMessage(),
-                this.locale
-        );
-
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.UNAUTHORIZED.value());
-        body.put("error", "Unauthorized");
-        body.put("message", translatedMessage);
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+    public ResponseEntity<ResponseMessageErrorDTO> handleUsuarioNaoAutenticado(UsuarioNaoAutenticadoException ex){
+        return construirResposta(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
     @ExceptionHandler(TokenPayloadInvalidoException.class)
-    public ResponseEntity<Map<String, Object>> handleTokenPayloadInvalido(TokenPayloadInvalidoException ex){
-        String translatedMessage = messageSource.getMessage(
-                ex.getMessage(),
-                null,
-                ex.getMessage(),
-                this.locale
-        );
-
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("error", "Bad Request");
-        body.put("message", translatedMessage);
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    public ResponseEntity<ResponseMessageErrorDTO> handleTokenPayloadInvalido(TokenPayloadInvalidoException ex){
+        return construirResposta(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ExceptionHandler(BadRequestException.class)
