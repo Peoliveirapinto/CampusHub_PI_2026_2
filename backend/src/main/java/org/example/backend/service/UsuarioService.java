@@ -1,8 +1,10 @@
 package org.example.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.backend.dto.usuario.AlterarSenhaDTO;
 import org.example.backend.dto.usuario.UsuarioPatchDTO;
 import org.example.backend.dto.usuario.UsuarioRespostaDTO;
+import org.example.backend.exception.BadRequestException;
 import org.example.backend.exception.JaExisteException;
 import org.example.backend.exception.ResourceNotFoundException;
 import org.example.backend.mapper.UsuarioMapper;
@@ -19,6 +21,7 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
     private final SecurityFacade securityFacade;
+    private final SenhaService senhaService;
 
     public Usuario garantirQueUsuarioExiste(UUID id){
         return usuarioRepository.findById(id).orElseThrow(
@@ -84,5 +87,20 @@ public class UsuarioService {
         Usuario usuarioParaDeletar = securityFacade.obterUsuarioLogado();
 
         usuarioRepository.deleteById(usuarioParaDeletar.getId());
+    }
+
+    public void alterarMinhaSenha(AlterarSenhaDTO alterarSenhaDTO){
+        if(!alterarSenhaDTO.novaSenha().equals(alterarSenhaDTO.confirmacaoNovaSenha())){
+            throw new BadRequestException("usuario.senha-nova.nao-sao-iguais");
+        }
+
+        Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
+
+        senhaService.garantirQueASenhaEstaCerta(alterarSenhaDTO.senhaAtual(), usuarioLogado.getSenha());
+
+        String senhaHasheada = senhaService.hash(alterarSenhaDTO.novaSenha());
+        usuarioLogado.setSenha(senhaHasheada);
+
+        usuarioRepository.save(usuarioLogado);
     }
 }

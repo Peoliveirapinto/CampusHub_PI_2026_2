@@ -1,8 +1,10 @@
 package org.example.backend.exception;
 
+import org.example.backend.dto.ResponseMessageErrorDTO;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -18,6 +20,28 @@ public class GlobalExceptionHandler {
 
     public GlobalExceptionHandler(MessageSource messageSource){
         this.messageSource = messageSource;
+    }
+
+    private ResponseEntity<ResponseMessageErrorDTO> construirResposta(HttpStatus httpStatus, String mensagem, Object[] args){
+        String translatedMessage = messageSource.getMessage(
+                mensagem,
+                args,
+                mensagem,
+                this.locale
+        );
+
+        ResponseMessageErrorDTO corpoDaResposta = new ResponseMessageErrorDTO(
+                LocalDateTime.now(),
+                httpStatus.value(),
+                httpStatus.getReasonPhrase(),
+                translatedMessage
+        );
+
+        return ResponseEntity.status(httpStatus).body(corpoDaResposta);
+    }
+
+    private ResponseEntity<ResponseMessageErrorDTO> construirResposta(HttpStatus httpStatus, String mensagem){
+        return this.construirResposta(httpStatus, mensagem, null);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -108,5 +132,10 @@ public class GlobalExceptionHandler {
         body.put("message", translatedMessage);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ResponseMessageErrorDTO> handleBadRequest(BadRequestException ex){
+        return construirResposta(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 }

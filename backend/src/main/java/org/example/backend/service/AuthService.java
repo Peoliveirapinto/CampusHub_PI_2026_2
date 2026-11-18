@@ -49,9 +49,7 @@ public class AuthService {
         Usuario usuario = usuarioRepository.findByEmail(usuarioLoginDTO.email())
                 .orElseThrow(() -> new CredenciaisInvalidasException("auth.credenciais-invalidas"));
 
-        if (!senhaService.matchesTheHash(usuarioLoginDTO.senha(), usuario.getSenha())) {
-            throw new CredenciaisInvalidasException("auth.credenciais-invalidas");
-        }
+        senhaService.garantirQueASenhaEstaCerta(usuarioLoginDTO.senha(), usuario.getSenha());
 
         // Retorna o usuario e o token gerado pelo JwtService
         return new UsuarioETokenDTO(usuario, jwtService.gerarToken(usuario));

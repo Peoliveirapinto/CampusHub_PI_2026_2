@@ -2,6 +2,7 @@ package org.example.backend.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.backend.dto.usuario.AlterarSenhaDTO;
 import org.example.backend.dto.usuario.UsuarioPatchDTO;
 import org.example.backend.dto.usuario.UsuarioRespostaDTO;
 import org.example.backend.service.CookieService;
@@ -67,5 +68,12 @@ public class UsuarioController {
                 .status(HttpStatus.NO_CONTENT)
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .build();
+    }
+
+    @PutMapping("/me/senha")
+    public ResponseEntity<Void> alterarMinhaSenha(@RequestBody @Valid AlterarSenhaDTO alterarSenhaDTO){
+        usuarioService.alterarMinhaSenha(alterarSenhaDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

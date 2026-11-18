@@ -1,15 +1,14 @@
 package org.example.backend.service;
 
+import lombok.RequiredArgsConstructor;
+import org.example.backend.exception.CredenciaisInvalidasException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
 @Service
 public class SenhaService {
     private final PasswordEncoder passwordEncoder;
-
-    public SenhaService(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public boolean ehValida(String senha){
         if(senha == null || senha.isBlank()){
@@ -25,5 +24,11 @@ public class SenhaService {
 
     public boolean matchesTheHash(String senhaLimpa, String senhaHasheada){
         return passwordEncoder.matches(senhaLimpa, senhaHasheada);
+    }
+
+    public void garantirQueASenhaEstaCerta(String senhaLimpa, String senhaHasheada){
+        if(!this.matchesTheHash(senhaLimpa, senhaHasheada)){
+            throw new CredenciaisInvalidasException("auth.credenciais-invalidas");
+        }
     }
 }
