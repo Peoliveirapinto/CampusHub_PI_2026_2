@@ -79,4 +79,10 @@ public class UsuarioService {
 
         return usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuarioSalvo);
     }
+
+    public void deletarMeu(){
+        Usuario usuarioParaDeletar = securityFacade.obterUsuarioLogado();
+
+        usuarioRepository.deleteById(usuarioParaDeletar.getId());
+    }
 }
