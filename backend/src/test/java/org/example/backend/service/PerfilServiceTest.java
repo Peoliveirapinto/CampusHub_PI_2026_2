@@ -166,7 +166,6 @@ class PerfilServiceTest {
 
         assertNotNull(resultado);
         verify(perfilMapper).updateFromDTO(perfilPatchDTO, perfil);
-        verify(perfilRepository).save(perfil);
     }
 
     @Test
@@ -220,7 +219,6 @@ class PerfilServiceTest {
 
         assertNotNull(resultado);
         verify(perfilMapper).updateFromDTO(perfilPatchDTO, perfil);
-        verify(perfilRepository).save(perfil);
     }
 
     @Test

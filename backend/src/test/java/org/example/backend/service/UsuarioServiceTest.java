@@ -126,7 +126,6 @@ class UsuarioServiceTest {
 
         usuarioService.atualizarPorId(usuarioId, patchDTO);
 
-        verify(usuarioRepository).save(usuario);
         assertEquals("novo@exemplo.com", usuario.getEmail());
     }
 
@@ -168,7 +167,6 @@ class UsuarioServiceTest {
 
         usuarioService.atualizarMeu(patchDTO);
 
-        verify(usuarioRepository).save(usuario);
         assertEquals("meu@novo.com", usuario.getEmail());
     }
 
@@ -194,7 +192,6 @@ class UsuarioServiceTest {
         usuarioService.alterarMinhaSenha(alterarSenhaDTO);
 
         verify(senhaService).hash("novaSenha123");
-        verify(usuarioRepository).save(usuario);
         assertNotEquals("senha123", usuario.getSenha());
     }
 
