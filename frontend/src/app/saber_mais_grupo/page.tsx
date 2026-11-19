@@ -16,6 +16,8 @@ import {
   Sparkles,
 } from "lucide-react";
 
+const ROTA_HUB = "/home_c/login";
+
 export default function DetalhesVagaPage() {
   const router = useRouter();
   const [candidaturaEnviada, setCandidaturaEnviada] = useState(false);
@@ -30,7 +32,10 @@ export default function DetalhesVagaPage() {
     <div className="min-h-screen bg-[#F0F4F8] flex flex-col font-sans text-slate-800">
       {/* 1. Header Superior Institucional */}
       <header className="w-full px-6 sm:px-10 py-5 flex items-center justify-between">
-        <Link href="/" className="flex items-center group transition-opacity hover:opacity-90">
+        <Link
+          href={ROTA_HUB}
+          className="flex items-center group transition-opacity hover:opacity-90"
+        >
           <Image
             src="/logo_CampusHub_sem_fundo.png"
             alt="Logo CampusHub"
@@ -62,7 +67,7 @@ export default function DetalhesVagaPage() {
 
             <button
               type="button"
-              onClick={() => router.back()}
+              onClick={() => router.push(ROTA_HUB)}
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-sky-400 bg-sky-50 text-sky-700 hover:bg-sky-100 text-xs font-semibold transition cursor-pointer"
             >
               <ArrowLeft size={13} />
@@ -201,7 +206,7 @@ export default function DetalhesVagaPage() {
                   </p>
                   <button
                     type="button"
-                    onClick={() => router.push("/")}
+                    onClick={() => router.push(ROTA_HUB)}
                     className="mt-3 text-xs font-bold text-emerald-900 underline hover:text-emerald-700 cursor-pointer"
                   >
                     Voltar ao Hub inicial

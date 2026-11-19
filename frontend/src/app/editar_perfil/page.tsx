@@ -40,6 +40,9 @@ const OPCOES_DISPONIBILIDADE = [
   "Finais de Semana e Horários Livres",
 ];
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+const ROTA_HUB = "/home_c/login";
+
 export default function EditarPerfilPage() {
   const router = useRouter();
 
@@ -118,14 +121,17 @@ export default function EditarPerfilPage() {
     }
 
     alert("Alterações salvas com sucesso!");
-    router.push("/");
+    router.push(ROTA_HUB);
   };
 
   return (
     <div className="min-h-screen bg-[#F0F4F8] flex flex-col font-sans text-slate-800">
       {/* 1. Cabeçalho Superior Institucional */}
       <header className="w-full px-6 sm:px-10 py-5 flex items-center justify-between">
-        <Link href="/" className="flex items-center group transition-opacity hover:opacity-90">
+        <Link
+          href={ROTA_HUB}
+          className="flex items-center group transition-opacity hover:opacity-90"
+        >
           <Image
             src="/logo_CampusHub_sem_fundo.png"
             alt="Logo CampusHub"
@@ -152,7 +158,7 @@ export default function EditarPerfilPage() {
 
             {/* Botão Pílula "Voltar ao hub" */}
             <Link
-              href="/"
+              href={ROTA_HUB}
               className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-sky-400 bg-sky-50 text-sky-700 hover:bg-sky-100 text-xs font-semibold transition shadow-2xs"
             >
               <ArrowLeft size={13} />
@@ -368,10 +374,18 @@ export default function EditarPerfilPage() {
             </Link>
             <button
               type="button"
-              onClick={() => {
-                if (window.confirm("Deseja realmente sair da conta?")) {
-                  router.push("/login");
+              onClick={async () => {
+                if (!window.confirm("Deseja realmente sair da conta?")) return;
+                try {
+                  // Pede ao backend para limpar o cookie com o JWT
+                  await fetch(`${API_URL}/auth/logout`, {
+                    method: "POST",
+                    credentials: "include",
+                  });
+                } catch {
+                  // Mesmo sem resposta do servidor, leva o usuário para o login
                 }
+                router.replace("/login");
               }}
               className="text-red-500 hover:text-red-700 hover:underline transition-colors cursor-pointer"
             >

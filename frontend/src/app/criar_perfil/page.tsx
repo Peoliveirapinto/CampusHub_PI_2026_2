@@ -9,7 +9,7 @@ import { ChevronDown, X, Plus, Search, ChevronUp } from "lucide-react";
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
 
 // Endpoint de criação de perfil no backend (PerfilController: @RequestMapping("/perfis"))
-const ENDPOINT_PERFIL = "/perfis";
+const ENDPOINT_PERFIL = "/perfis/me";
 
 // Rota do Hub depois de salvar o perfil (mesma usada no login)
 const ROTA_HUB = "/home_c/login";

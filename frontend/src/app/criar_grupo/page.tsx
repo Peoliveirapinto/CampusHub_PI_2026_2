@@ -51,6 +51,8 @@ const OPCOES_DISPONIBILIDADE = [
   "Finais de Semana e Horários Livres",
 ];
 
+const ROTA_HUB = "/home_c/login";
+
 export default function CriarGrupoPage() {
   const router = useRouter();
 
@@ -169,14 +171,17 @@ export default function CriarGrupoPage() {
 
     console.log("Grupo Criado:", payload);
     alert(`Grupo "${nomeProjeto}" publicado com sucesso!`);
-    router.push("/");
+    router.push(ROTA_HUB);
   };
 
   return (
     <div className="min-h-screen bg-[#F0F4F8] flex flex-col font-sans text-slate-800">
       {/* 1. Topo / Header Institucional */}
       <header className="w-full px-6 sm:px-10 py-5 flex items-center justify-between">
-        <Link href="/" className="flex items-center group transition-opacity hover:opacity-90">
+        <Link
+          href={ROTA_HUB}
+          className="flex items-center group transition-opacity hover:opacity-90"
+        >
           <Image
             src="/logo_CampusHub1.jpg"
             alt="Logo CampusHub"
@@ -202,7 +207,7 @@ export default function CriarGrupoPage() {
             </div>
             <button
               type="button"
-              onClick={() => router.back()}
+              onClick={() => router.push(ROTA_HUB)}
               className="text-sm text-slate-600 hover:text-slate-950 font-medium transition-colors cursor-pointer"
             >
               Cancelar

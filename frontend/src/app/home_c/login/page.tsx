@@ -206,7 +206,10 @@ export default function HubPage() {
       <nav className="sticky top-0 z-40 bg-white border-b border-slate-200 px-4 sm:px-8 h-16 flex items-center justify-between gap-4">
         {/* Lado Esquerdo: Logótipo PNG */}
         <div className="flex items-center shrink-0">
-          <Link href="/" className="flex items-center transition-opacity hover:opacity-90">
+          <Link
+            href="/home_c/login"
+            className="flex items-center transition-opacity hover:opacity-90"
+          >
             <Image
               src="/logo_CampusHub_sem_fundo.png"
               alt="CampusHub Logo"
@@ -541,7 +544,7 @@ export default function HubPage() {
                     <div className="pt-2 flex items-center justify-end gap-2.5">
                       <button
                         type="button"
-                        onClick={() => router.push(`/detalhes_vaga?id=${vaga.id}`)}
+                        onClick={() => router.push(`/saber_mais_grupo?id=${vaga.id}`)}
                         className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition cursor-pointer"
                       >
                         Saber Mais
