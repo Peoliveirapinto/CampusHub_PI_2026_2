@@ -109,6 +109,7 @@ class AuthControllerTest {
         cadastroDTO = new UsuarioCadastroDTO("teste@exemplo.com", "senha123");
         loginDTO = new UsuarioLoginDTO("teste@exemplo.com", "senha123");
 
+        lenient().when(senhaService.ehValida(anyString())).thenReturn(true);
         lenient().when(messageSource.getMessage(anyString(), any(), anyString(), any(Locale.class)))
                 .thenAnswer(invocation -> invocation.getArgument(2));
     }
