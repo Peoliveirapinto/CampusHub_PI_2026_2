@@ -38,7 +38,7 @@ public class PerfilController {
     }
 
     @PatchMapping("/admin/{usuarioId}")
-    public ResponseEntity<PerfilRespostaDTO> atualizarPorUsuarioId(@PathVariable UUID usuarioId, @RequestBody PerfilPatchDTO perfilPatchDTO){
+    public ResponseEntity<PerfilRespostaDTO> atualizarPorUsuarioId(@PathVariable UUID usuarioId, @RequestBody @Valid PerfilPatchDTO perfilPatchDTO){
         PerfilRespostaDTO perfilAtualizado =  perfilService.atualizarPorUsuarioId(usuarioId, perfilPatchDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(perfilAtualizado);
@@ -59,7 +59,7 @@ public class PerfilController {
     }
 
     @PatchMapping("/me")
-    public ResponseEntity<PerfilRespostaDTO> atualizarMeu(@RequestBody PerfilPatchDTO perfilPatchDTO){
+    public ResponseEntity<PerfilRespostaDTO> atualizarMeu(@RequestBody @Valid PerfilPatchDTO perfilPatchDTO){
         PerfilRespostaDTO perfilAtualizado = perfilService.atualizarMeu(perfilPatchDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(perfilAtualizado);
