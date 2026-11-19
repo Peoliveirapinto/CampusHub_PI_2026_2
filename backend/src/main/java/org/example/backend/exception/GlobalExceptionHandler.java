@@ -5,10 +5,12 @@ import org.example.backend.dto.ResponseMessageErrorDTO;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Locale;
 
 @RequiredArgsConstructor
@@ -67,5 +69,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ResponseMessageErrorDTO> handleBadRequest(BadRequestException ex){
         return construirResposta(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ResponseMessageErrorDTO> handleMethodArgumentNotValid(MethodArgumentNotValidException ex){
+        ArrayList<String> mensagensDeErro = new ArrayList<>();
+
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                mensagensDeErro.add(error.getDefaultMessage())
+        );
+
+        return construirResposta(HttpStatus.BAD_REQUEST, mensagensDeErro.toString());
     }
 }

@@ -15,7 +15,10 @@ public class SenhaService {
             return false;
         }
 
-        return senha.length() >= 8; // Aqui a espaço para melhoria na validação da senha
+        // Aqui a espaço para melhoria na validação da senha
+        // Caso os requisitos para validação da senha sejam alterados, altere também a seguinte mensagem:
+        // usuario.senha.invalida no arquivo backend/src/main/resources/messages.properties
+        return senha.length() >= 8;
     }
 
     public String hash(String senhaOriginal){
