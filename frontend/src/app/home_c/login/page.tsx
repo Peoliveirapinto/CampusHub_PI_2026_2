@@ -17,13 +17,49 @@ import {
   CheckCheck,
 } from "lucide-react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+
 // Tipagens dos contratos de dados (DTOs)
 interface PerfilUsuario {
-  id: number;
   nome: string;
   curso: string;
   semestre: number;
   habilidades: string[];
+}
+
+// Resposta de GET /perfis/me (PerfilRespostaDTO do backend)
+interface PerfilRespostaApi {
+  nome: string;
+  curso: string;
+  anoDeIngresso: number;
+  semestreDeIngresso: number;
+}
+
+// O cadastro guarda o curso como código (value do select em criar_conta).
+// Aqui convertemos para o nome exibido; códigos desconhecidos aparecem como vieram.
+const NOMES_CURSOS: Record<string, string> = {
+  "ciencia-da-computacao": "Ciência da Computação",
+  "sistemas-de-informacao": "Sistemas de Informação",
+  "engenharia-de-computacao": "Engenharia de Computação",
+  "engenharia-mecanica": "Engenharia Mecânica",
+  "engenharia-eletrica": "Engenharia Elétrica",
+  "engenharia-civil": "Engenharia Civil",
+  design: "Design",
+  administracao: "Administração",
+};
+
+function nomeDoCurso(codigo: string): string {
+  return NOMES_CURSOS[codigo] ?? codigo;
+}
+
+// O backend guarda só o ano e o semestre (1 ou 2) de ingresso,
+// então o semestre atual do aluno é calculado a partir da data de hoje.
+function calcularSemestreAtual(anoDeIngresso: number, semestreDeIngresso: number): number {
+  const hoje = new Date();
+  const semestreDoAnoAtual = hoje.getMonth() < 6 ? 1 : 2;
+  const semestre =
+    (hoje.getFullYear() - anoDeIngresso) * 2 + (semestreDoAnoAtual - semestreDeIngresso) + 1;
+  return Math.max(semestre, 1);
 }
 
 interface Integrante {
@@ -62,14 +98,57 @@ interface NotificacaoItem {
 export default function HubPage() {
   const router = useRouter();
 
-  // Estados com dados iniciais (Mock)
+  // Dados do usuário logado, carregados do backend (GET /perfis/me)
+  // Obs.: o backend ainda não guarda habilidades, por isso a lista começa vazia.
   const [usuario, setUsuario] = useState<PerfilUsuario>({
-    id: 1,
-    nome: "Mario Bros",
-    curso: "Engenharia",
-    semestre: 5,
-    habilidades: ["Python", "Docker", "MongoDB"],
+    nome: "",
+    curso: "",
+    semestre: 1,
+    habilidades: [],
   });
+  const [carregandoPerfil, setCarregandoPerfil] = useState(true);
+
+  useEffect(() => {
+    let cancelado = false;
+
+    async function carregarPerfil() {
+      try {
+        const resposta = await fetch(`${API_URL}/perfis/me`, {
+          credentials: "include", // envia o cookie com o JWT
+        });
+
+        if (cancelado) return;
+
+        if (resposta.ok) {
+          const perfil: PerfilRespostaApi = await resposta.json();
+          if (cancelado) return;
+          setUsuario((anterior) => ({
+            ...anterior,
+            nome: perfil.nome,
+            curso: nomeDoCurso(perfil.curso),
+            semestre: calcularSemestreAtual(perfil.anoDeIngresso, perfil.semestreDeIngresso),
+          }));
+        } else if (resposta.status === 401 || resposta.status === 403) {
+          // Sem sessão válida: volta para o login
+          router.replace("/login");
+          return;
+        } else if (resposta.status === 404) {
+          // Conta criada, mas ainda sem perfil: leva para completar o perfil
+          router.replace("/criar_perfil");
+          return;
+        }
+      } catch {
+        // Backend fora do ar: mantém a tela, sem os dados do usuário
+      } finally {
+        if (!cancelado) setCarregandoPerfil(false);
+      }
+    }
+
+    carregarPerfil();
+    return () => {
+      cancelado = true;
+    };
+  }, [router]);
 
   const [gruposAtivos, setGruposAtivos] = useState<GrupoAtivo[]>([
     {
@@ -326,9 +405,11 @@ export default function HubPage() {
             </div>
             <div className="hidden md:flex flex-col text-left">
               <span className="text-sm font-bold text-slate-900 group-hover:text-blue-900 transition">
-                {usuario.nome}
+                {carregandoPerfil ? "Carregando..." : usuario.nome}
               </span>
-              <span className="text-[11px] text-slate-500 font-medium">{usuario.curso} - IMT</span>
+              <span className="text-[11px] text-slate-500 font-medium">
+                {carregandoPerfil ? "" : `${usuario.curso} - IMT`}
+              </span>
             </div>
           </Link>
         </div>
@@ -388,15 +469,20 @@ export default function HubPage() {
                 Seu Perfil Base
               </p>
               <div>
-                <h3 className="font-bold text-base">{usuario.nome}</h3>
+                <h3 className="font-bold text-base">
+                  {carregandoPerfil ? "Carregando..." : usuario.nome}
+                </h3>
                 <p className="text-xs text-blue-200 mt-0.5">
-                  {usuario.curso} - {usuario.semestre}º Semestre
+                  {carregandoPerfil ? "" : `${usuario.curso} - ${usuario.semestre}º Semestre`}
                 </p>
               </div>
 
               <div className="h-px bg-white/15 my-2"></div>
 
               <div className="flex flex-wrap gap-1.5 pt-1">
+                {usuario.habilidades.length === 0 && !carregandoPerfil && (
+                  <span className="text-[11px] text-blue-200">Nenhuma habilidade cadastrada.</span>
+                )}
                 {usuario.habilidades.map((tech) => (
                   <span
                     key={tech}

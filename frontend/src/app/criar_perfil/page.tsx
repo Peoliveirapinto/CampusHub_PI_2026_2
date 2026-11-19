@@ -8,7 +8,8 @@ import { ChevronDown, X, Plus, Search, ChevronUp } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
 
-// Endpoint de criação de perfil no backend (PerfilController: @RequestMapping("/perfis"))
+// Endpoint de criação do perfil do usuário logado (PerfilController: POST /perfis/me).
+// O backend identifica o usuário pelo cookie com o JWT, então não enviamos o usuarioId.
 const ENDPOINT_PERFIL = "/perfis/me";
 
 // Rota do Hub depois de salvar o perfil (mesma usada no login)
@@ -136,37 +137,36 @@ export default function CompletePerfilPage() {
     setFaltouPasso1(false);
 
     // Nome e curso vêm do Passo 1 (a tabela perfil exige os dois)
-    let dadosCadastro: { nome?: string; curso?: string; usuarioId?: string } = {};
+    let dadosCadastro: { nome?: string; curso?: string } = {};
     try {
       dadosCadastro = JSON.parse(sessionStorage.getItem(CHAVE_DADOS_CADASTRO) ?? "{}");
     } catch {
       // segue com objeto vazio
     }
 
-    if (!dadosCadastro.nome || !dadosCadastro.curso || !dadosCadastro.usuarioId) {
+    if (!dadosCadastro.nome || !dadosCadastro.curso) {
       setFaltouPasso1(true);
       setErro("Não encontramos os dados do Passo 1. Volte e preencha novamente.");
       return;
     }
 
     // Consolida áreas selecionadas + especificação se houver
-    const especializacoesFinais = [...interesses];
+    const areasFinais = [...interesses];
     if (outroEspecifico.trim()) {
-      especializacoesFinais.push(outroEspecifico.trim());
+      areasFinais.push(outroEspecifico.trim());
     }
-    const especializacao = especializacoesFinais.join(", ");
+    const areasDeInteresse = areasFinais.join(", ");
 
-    // A coluna especializacao aceita no máximo 100 caracteres
-    if (especializacao.length > 100) {
-      setErro("As áreas de interesse ficaram longas demais. Remova algumas ou encurte o texto.");
+    // O backend exige pelo menos uma área de interesse (areasDeInteresse é @NotBlank)
+    if (!areasDeInteresse) {
+      setErro("Selecione pelo menos uma área de interesse.");
       return;
     }
 
-    // Campos conforme PerfilCriarDTO do backend.
+    // Campos conforme PerfilCriarMeuDTO do backend.
     // Obs.: "habilidades" ainda não é enviado porque o backend não tem
     // campo/tabela para elas; o estado "skills" segue na tela para quando existir.
     const perfilPayload = {
-      usuarioId: dadosCadastro.usuarioId,
       nome: dadosCadastro.nome,
       curso: dadosCadastro.curso,
       descricao: descricao.trim(),
@@ -174,7 +174,7 @@ export default function CompletePerfilPage() {
       semestreDeIngresso: Number(semestreIngresso),
       disponibilidade,
       contato: contato.trim(),
-      especializacao: especializacao || null,
+      areasDeInteresse,
     };
 
     setCarregando(true);
