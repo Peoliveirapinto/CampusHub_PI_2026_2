@@ -12,10 +12,10 @@ public interface PerfilMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)           // Atualização de id não é permitida
     @Mapping(target = "usuario", ignore = true)      // Atualização de usuario não é permitida
-    void atualizaEntidadePeloDTO(PerfilPatchDTO dto, @MappingTarget Perfil entity);
+    void updateFromDTO(PerfilPatchDTO dto, @MappingTarget Perfil entity);
 
-    Perfil criaEntidadePeloDTO(PerfilCriarMeuDTO perfilCriarMeuDTO);
-    Perfil criaEntidadePeloDTO(PerfilCriarDTO perfilCriarDTO);
+    Perfil toEntity(PerfilCriarMeuDTO perfilCriarMeuDTO);
+    Perfil toEntity(PerfilCriarDTO perfilCriarDTO);
 
-    PerfilRespostaDTO criaPerfilRespostaDTOPelaEntidade(Perfil perfil);
+    PerfilRespostaDTO toPerfilRespostaDTO(Perfil perfil);
 }

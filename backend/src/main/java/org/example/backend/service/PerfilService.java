@@ -38,12 +38,12 @@ public class PerfilService {
 
         garantirQueUsuarioNaoTemPerfil(usuario);
 
-        Perfil perfilNovo = perfilMapper.criaEntidadePeloDTO(perfilCriarDTO);
+        Perfil perfilNovo = perfilMapper.toEntity(perfilCriarDTO);
         perfilNovo.setUsuario(usuario);
 
         Perfil perfilSalvo = perfilRepository.save(perfilNovo);
 
-        return perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfilSalvo);
+        return perfilMapper.toPerfilRespostaDTO(perfilSalvo);
     }
 
     public PerfilRespostaDTO obterPorUsuarioid(UUID usuarioId){
@@ -51,7 +51,7 @@ public class PerfilService {
 
         Perfil perfilDoUsuario = garantirQueUsuarioTemPerfil(usuario);
 
-        return perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfilDoUsuario);
+        return perfilMapper.toPerfilRespostaDTO(perfilDoUsuario);
     }
 
     public void deletarPorUsuarioId(UUID usuarioId){
@@ -67,11 +67,11 @@ public class PerfilService {
 
         Perfil perfilParaAtualizar = garantirQueUsuarioTemPerfil(usuario);
 
-        perfilMapper.atualizaEntidadePeloDTO(perfilPatchDTO, perfilParaAtualizar);
+        perfilMapper.updateFromDTO(perfilPatchDTO, perfilParaAtualizar);
 
         Perfil perfilAtualizado = perfilRepository.save(perfilParaAtualizar);
 
-        return perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfilAtualizado);
+        return perfilMapper.toPerfilRespostaDTO(perfilAtualizado);
     }
 
     public PerfilRespostaDTO criarMeu(PerfilCriarMeuDTO perfilCriarMeuDTO){
@@ -80,12 +80,12 @@ public class PerfilService {
         usuarioService.garantirQueUsuarioExiste(usuarioLogado.getId());
         garantirQueUsuarioNaoTemPerfil(usuarioLogado);
 
-        Perfil perfilNovo = perfilMapper.criaEntidadePeloDTO(perfilCriarMeuDTO);
+        Perfil perfilNovo = perfilMapper.toEntity(perfilCriarMeuDTO);
         perfilNovo.setUsuario(usuarioLogado);
 
         Perfil perfilSalvo = perfilRepository.save(perfilNovo);
 
-        return perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfilSalvo);
+        return perfilMapper.toPerfilRespostaDTO(perfilSalvo);
     }
 
     public PerfilRespostaDTO obterMeu(){
@@ -93,7 +93,7 @@ public class PerfilService {
 
         usuarioService.garantirQueUsuarioExiste(usuarioLogado.getId());
 
-        return perfilMapper.criaPerfilRespostaDTOPelaEntidade(garantirQueUsuarioTemPerfil(usuarioLogado));
+        return perfilMapper.toPerfilRespostaDTO(garantirQueUsuarioTemPerfil(usuarioLogado));
     }
 
     public PerfilRespostaDTO atualizarMeu(PerfilPatchDTO perfilPatchDTO){
@@ -102,11 +102,11 @@ public class PerfilService {
         usuarioService.garantirQueUsuarioExiste(usuarioLogado.getId());
         Perfil perfilParaAtualizar = garantirQueUsuarioTemPerfil(usuarioLogado);
 
-        perfilMapper.atualizaEntidadePeloDTO(perfilPatchDTO, perfilParaAtualizar);
+        perfilMapper.updateFromDTO(perfilPatchDTO, perfilParaAtualizar);
 
         Perfil perfilAtualizado = perfilRepository.save(perfilParaAtualizar);
 
-        return perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfilAtualizado);
+        return perfilMapper.toPerfilRespostaDTO(perfilAtualizado);
     }
 
     public void deletarMeu(){

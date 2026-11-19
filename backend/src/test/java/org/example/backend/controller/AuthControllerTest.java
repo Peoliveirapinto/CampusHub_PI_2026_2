@@ -170,7 +170,7 @@ class AuthControllerTest {
                     .build();
             
             when(cookieService.gerarCookieJwtLogin("token-jwt")).thenReturn(cookie);
-            when(usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuario)).thenReturn(usuarioRespostaDTO);
+            when(usuarioMapper.toUsuarioRespostaDTO(usuario)).thenReturn(usuarioRespostaDTO);
 
             mockMvc.perform(post("/auth/login")
                     .contentType("application/json")

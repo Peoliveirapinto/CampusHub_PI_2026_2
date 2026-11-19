@@ -49,7 +49,7 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuarioETokenDTO.usuario()));
+                .body(usuarioMapper.toUsuarioRespostaDTO(usuarioETokenDTO.usuario()));
     }
 
     @PostMapping("/logout")

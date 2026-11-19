@@ -5,8 +5,6 @@ import org.example.backend.dto.usuario.UsuarioRespostaDTO;
 import org.example.backend.model.Usuario;
 import org.example.backend.model.enums.Role;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
 
 import java.util.UUID;
 
@@ -26,7 +24,7 @@ class UsuarioMapperTest {
         Usuario usuario = new Usuario("teste@exemplo.com", "senha123", Role.USER);
         usuario.setId(UUID.randomUUID());
 
-        UsuarioRespostaDTO dto = mapper.criaUsuarioRespostaDTOPelaEntidade(usuario);
+        UsuarioRespostaDTO dto = mapper.toUsuarioRespostaDTO(usuario);
 
         assertNotNull(dto);
         assertEquals(usuario.getId(), dto.id());
@@ -43,7 +41,7 @@ class UsuarioMapperTest {
         // O DTO tem email e role. No entanto, o Mapper ignora email e role na atualização.
         UsuarioPatchDTO dto = new UsuarioPatchDTO("novo@exemplo.com", Role.ADMIN);
 
-        mapper.atualizaEntidadePeloDTO(dto, usuario);
+        mapper.updateFromDTO(dto, usuario);
 
         // Email e Role devem permanecer originais por causa do @Mapping(target = "...", ignore = true)
         assertEquals("original@exemplo.com", usuario.getEmail());

@@ -89,9 +89,9 @@ class PerfilServiceTest {
 
         when(usuarioService.garantirQueUsuarioExiste(usuarioId)).thenReturn(usuario);
         when(perfilRepository.existsByUsuario(usuario)).thenReturn(false);
-        when(perfilMapper.criaEntidadePeloDTO(perfilCriarDTO)).thenReturn(perfil);
+        when(perfilMapper.toEntity(perfilCriarDTO)).thenReturn(perfil);
         when(perfilRepository.save(any(Perfil.class))).thenReturn(perfil);
-        when(perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfil)).thenReturn(perfilRespostaDTO);
+        when(perfilMapper.toPerfilRespostaDTO(perfil)).thenReturn(perfilRespostaDTO);
 
         PerfilRespostaDTO resultado = perfilService.criar(perfilCriarDTO);
 
@@ -120,7 +120,7 @@ class PerfilServiceTest {
     void obterPorUsuarioid_DeveObterPerfilComSucesso() {
         when(usuarioService.garantirQueUsuarioExiste(usuarioId)).thenReturn(usuario);
         when(perfilRepository.findFirstByUsuario(usuario)).thenReturn(Optional.of(perfil));
-        when(perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfil)).thenReturn(perfilRespostaDTO);
+        when(perfilMapper.toPerfilRespostaDTO(perfil)).thenReturn(perfilRespostaDTO);
 
         PerfilRespostaDTO resultado = perfilService.obterPorUsuarioid(usuarioId);
 
@@ -160,12 +160,12 @@ class PerfilServiceTest {
         when(usuarioService.garantirQueUsuarioExiste(usuarioId)).thenReturn(usuario);
         when(perfilRepository.findFirstByUsuario(usuario)).thenReturn(Optional.of(perfil));
         when(perfilRepository.save(any(Perfil.class))).thenReturn(perfil);
-        when(perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfil)).thenReturn(perfilRespostaDTO);
+        when(perfilMapper.toPerfilRespostaDTO(perfil)).thenReturn(perfilRespostaDTO);
 
         PerfilRespostaDTO resultado = perfilService.atualizarPorUsuarioId(usuarioId, perfilPatchDTO);
 
         assertNotNull(resultado);
-        verify(perfilMapper).atualizaEntidadePeloDTO(perfilPatchDTO, perfil);
+        verify(perfilMapper).updateFromDTO(perfilPatchDTO, perfil);
         verify(perfilRepository).save(perfil);
     }
 
@@ -179,9 +179,9 @@ class PerfilServiceTest {
         when(securityFacade.obterUsuarioLogado()).thenReturn(usuario);
         when(usuarioService.garantirQueUsuarioExiste(usuario.getId())).thenReturn(usuario);
         when(perfilRepository.existsByUsuario(usuario)).thenReturn(false);
-        when(perfilMapper.criaEntidadePeloDTO(perfilCriarMeuDTO)).thenReturn(perfil);
+        when(perfilMapper.toEntity(perfilCriarMeuDTO)).thenReturn(perfil);
         when(perfilRepository.save(any(Perfil.class))).thenReturn(perfil);
-        when(perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfil)).thenReturn(perfilRespostaDTO);
+        when(perfilMapper.toPerfilRespostaDTO(perfil)).thenReturn(perfilRespostaDTO);
 
         PerfilRespostaDTO resultado = perfilService.criarMeu(perfilCriarMeuDTO);
 
@@ -195,7 +195,7 @@ class PerfilServiceTest {
         when(securityFacade.obterUsuarioLogado()).thenReturn(usuario);
         when(usuarioService.garantirQueUsuarioExiste(usuario.getId())).thenReturn(usuario);
         when(perfilRepository.findFirstByUsuario(usuario)).thenReturn(Optional.of(perfil));
-        when(perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfil)).thenReturn(perfilRespostaDTO);
+        when(perfilMapper.toPerfilRespostaDTO(perfil)).thenReturn(perfilRespostaDTO);
 
         PerfilRespostaDTO resultado = perfilService.obterMeu();
 
@@ -214,12 +214,12 @@ class PerfilServiceTest {
         when(usuarioService.garantirQueUsuarioExiste(usuario.getId())).thenReturn(usuario);
         when(perfilRepository.findFirstByUsuario(usuario)).thenReturn(Optional.of(perfil));
         when(perfilRepository.save(any(Perfil.class))).thenReturn(perfil);
-        when(perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfil)).thenReturn(perfilRespostaDTO);
+        when(perfilMapper.toPerfilRespostaDTO(perfil)).thenReturn(perfilRespostaDTO);
 
         PerfilRespostaDTO resultado = perfilService.atualizarMeu(perfilPatchDTO);
 
         assertNotNull(resultado);
-        verify(perfilMapper).atualizaEntidadePeloDTO(perfilPatchDTO, perfil);
+        verify(perfilMapper).updateFromDTO(perfilPatchDTO, perfil);
         verify(perfilRepository).save(perfil);
     }
 

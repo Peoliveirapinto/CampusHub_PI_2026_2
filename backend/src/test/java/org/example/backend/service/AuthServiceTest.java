@@ -64,7 +64,7 @@ class AuthServiceTest {
         when(usuarioRepository.existsByEmail(cadastroDTO.email())).thenReturn(false);
         when(senhaService.hash(cadastroDTO.senha())).thenReturn("senhaHasheada");
         when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
-        when(usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuario)).thenReturn(new UsuarioRespostaDTO(usuario.getId(), usuario.getEmail(), usuario.getRole()));
+        when(usuarioMapper.toUsuarioRespostaDTO(usuario)).thenReturn(new UsuarioRespostaDTO(usuario.getId(), usuario.getEmail(), usuario.getRole()));
 
         UsuarioRespostaDTO resultado = authService.cadastrarAdmin(cadastroDTO);
 
@@ -89,7 +89,7 @@ class AuthServiceTest {
         when(usuarioRepository.existsByEmail(cadastroDTO.email())).thenReturn(false);
         when(senhaService.hash(cadastroDTO.senha())).thenReturn("senhaHasheada");
         when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
-        when(usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuario)).thenReturn(new UsuarioRespostaDTO(usuario.getId(), usuario.getEmail(), usuario.getRole()));
+        when(usuarioMapper.toUsuarioRespostaDTO(usuario)).thenReturn(new UsuarioRespostaDTO(usuario.getId(), usuario.getEmail(), usuario.getRole()));
 
         UsuarioRespostaDTO resultado = authService.cadastrarUsuario(cadastroDTO);
 

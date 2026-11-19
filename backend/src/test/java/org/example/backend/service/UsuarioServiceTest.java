@@ -83,7 +83,7 @@ class UsuarioServiceTest {
     @DisplayName("Deve obter usuario por ID com sucesso")
     void obterPorId_DeveRetornarUsuarioDTO() {
         when(usuarioRepository.findById(usuarioId)).thenReturn(Optional.of(usuario));
-        when(usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuario)).thenReturn(usuarioRespostaDTO);
+        when(usuarioMapper.toUsuarioRespostaDTO(usuario)).thenReturn(usuarioRespostaDTO);
 
         UsuarioRespostaDTO resultado = usuarioService.obterPorId(usuarioId);
 
@@ -91,7 +91,7 @@ class UsuarioServiceTest {
         assertEquals(usuarioId, resultado.id());
         assertEquals(usuario.getEmail(), resultado.email());
         verify(usuarioRepository).findById(usuarioId);
-        verify(usuarioMapper).criaUsuarioRespostaDTOPelaEntidade(usuario);
+        verify(usuarioMapper).toUsuarioRespostaDTO(usuario);
     }
 
     @Test
@@ -122,7 +122,7 @@ class UsuarioServiceTest {
         when(usuarioRepository.findById(usuarioId)).thenReturn(Optional.of(usuario));
         when(usuarioRepository.existsByEmail("novo@exemplo.com")).thenReturn(false);
         when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
-        when(usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuario)).thenReturn(usuarioRespostaDTO);
+        when(usuarioMapper.toUsuarioRespostaDTO(usuario)).thenReturn(usuarioRespostaDTO);
 
         usuarioService.atualizarPorId(usuarioId, patchDTO);
 
@@ -147,7 +147,7 @@ class UsuarioServiceTest {
     @DisplayName("Deve obter dados do usuario logado")
     void obterMeu_DeveRetornarUsuarioLogado() {
         when(securityFacade.obterUsuarioLogado()).thenReturn(usuario);
-        when(usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuario)).thenReturn(usuarioRespostaDTO);
+        when(usuarioMapper.toUsuarioRespostaDTO(usuario)).thenReturn(usuarioRespostaDTO);
 
         UsuarioRespostaDTO resultado = usuarioService.obterMeu();
 
@@ -164,7 +164,7 @@ class UsuarioServiceTest {
         when(securityFacade.obterUsuarioLogado()).thenReturn(usuario);
         when(usuarioRepository.existsByEmail("meu@novo.com")).thenReturn(false);
         when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
-        when(usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuario)).thenReturn(usuarioRespostaDTO);
+        when(usuarioMapper.toUsuarioRespostaDTO(usuario)).thenReturn(usuarioRespostaDTO);
 
         usuarioService.atualizarMeu(patchDTO);
 

@@ -4,12 +4,10 @@ import org.example.backend.dto.perfil.PerfilCriarDTO;
 import org.example.backend.dto.perfil.PerfilCriarMeuDTO;
 import org.example.backend.dto.perfil.PerfilPatchDTO;
 import org.example.backend.dto.perfil.PerfilRespostaDTO;
-import org.example.backend.dto.usuario.UsuarioRespostaDTO;
 import org.example.backend.model.Perfil;
 import org.example.backend.model.Usuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.MappingTarget;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.UUID;
@@ -44,7 +42,7 @@ class PerfilMapperTest {
                 "Áreas Teste"
         );
 
-        Perfil perfil = perfilMapper.criaEntidadePeloDTO(dto);
+        Perfil perfil = perfilMapper.toEntity(dto);
 
         assertNotNull(perfil);
         assertEquals("Nome Teste", perfil.getNome());
@@ -68,7 +66,7 @@ class PerfilMapperTest {
                 "Áreas Meu"
         );
 
-        Perfil perfil = perfilMapper.criaEntidadePeloDTO(dto);
+        Perfil perfil = perfilMapper.toEntity(dto);
 
         assertNotNull(perfil);
         assertEquals("Nome Meu", perfil.getNome());
@@ -94,7 +92,7 @@ class PerfilMapperTest {
         perfil.setContato("123456789");
         perfil.setAreasDeInteresse("Tecnologia");
 
-        PerfilRespostaDTO dto = perfilMapper.criaPerfilRespostaDTOPelaEntidade(perfil);
+        PerfilRespostaDTO dto = perfilMapper.toPerfilRespostaDTO(perfil);
 
         assertNotNull(dto);
         assertEquals(perfil.getId(), dto.id());
@@ -136,7 +134,7 @@ class PerfilMapperTest {
                 "Novas Áreas"
         );
 
-        perfilMapper.atualizaEntidadePeloDTO(dto, perfil);
+        perfilMapper.updateFromDTO(dto, perfil);
 
         // Campos permitidos devem mudar
         assertEquals("Novo Nome", perfil.getNome());

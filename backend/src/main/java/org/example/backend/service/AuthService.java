@@ -30,7 +30,7 @@ public class AuthService {
 
         Usuario usuarioSalvo = usuarioRepository.save(new Usuario(usuarioCadastroDTO.email(), senhaHasheada, Role.ADMIN));
 
-        return usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuarioSalvo);
+        return usuarioMapper.toUsuarioRespostaDTO(usuarioSalvo);
     }
 
     public UsuarioRespostaDTO cadastrarUsuario(UsuarioCadastroDTO usuarioCadastroDTO){
@@ -42,7 +42,7 @@ public class AuthService {
 
         Usuario usuarioSalvo = usuarioRepository.save(new Usuario(usuarioCadastroDTO.email(), senhaHasheada));
 
-        return usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuarioSalvo);
+        return usuarioMapper.toUsuarioRespostaDTO(usuarioSalvo);
     }
 
     public UsuarioETokenDTO autenticarUsuario(UsuarioLoginDTO usuarioLoginDTO){

@@ -32,7 +32,7 @@ public class UsuarioService {
     public UsuarioRespostaDTO obterPorId(UUID id){
         Usuario usuario = garantirQueUsuarioExiste(id);
 
-        return usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuario);
+        return usuarioMapper.toUsuarioRespostaDTO(usuario);
     }
 
     public void deletarPorId(UUID id){
@@ -44,7 +44,7 @@ public class UsuarioService {
     public UsuarioRespostaDTO atualizarPorId(UUID id, UsuarioPatchDTO usuarioPatchDTO){
         Usuario usuario = garantirQueUsuarioExiste(id);
 
-        usuarioMapper.atualizaEntidadePeloDTO(usuarioPatchDTO, usuario);
+        usuarioMapper.updateFromDTO(usuarioPatchDTO, usuario);
 
         // Atualiza o email caso o campo tenha sido mandado e o email já não pertença a outro usuário
         // Atualização do email é feita manualmente (fora do mapper) pois precisa de uma validação que requer acesso ao banco de dados
@@ -57,19 +57,19 @@ public class UsuarioService {
 
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
 
-        return usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuarioSalvo);
+        return usuarioMapper.toUsuarioRespostaDTO(usuarioSalvo);
     }
 
     public UsuarioRespostaDTO obterMeu(){
         Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
 
-        return usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuarioLogado);
+        return usuarioMapper.toUsuarioRespostaDTO(usuarioLogado);
     }
 
     public UsuarioRespostaDTO atualizarMeu(UsuarioPatchDTO usuarioPatchDTO){
         Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
 
-        usuarioMapper.atualizaEntidadePeloDTO(usuarioPatchDTO, usuarioLogado);
+        usuarioMapper.updateFromDTO(usuarioPatchDTO, usuarioLogado);
 
         if(usuarioPatchDTO.email() != null){
             if(usuarioRepository.existsByEmail(usuarioPatchDTO.email())){
@@ -80,7 +80,7 @@ public class UsuarioService {
 
         Usuario usuarioSalvo = usuarioRepository.save(usuarioLogado);
 
-        return usuarioMapper.criaUsuarioRespostaDTOPelaEntidade(usuarioSalvo);
+        return usuarioMapper.toUsuarioRespostaDTO(usuarioSalvo);
     }
 
     public void deletarMeu(){
