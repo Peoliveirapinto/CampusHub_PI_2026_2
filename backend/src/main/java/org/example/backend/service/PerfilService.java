@@ -10,6 +10,7 @@ import org.example.backend.model.Usuario;
 import org.example.backend.repository.PerfilRepository;
 import org.example.backend.security.SecurityFacade;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -33,6 +34,7 @@ public class PerfilService {
         }
     }
 
+    @Transactional
     public PerfilRespostaDTO criar(PerfilCriarDTO perfilCriarDTO){
         Usuario usuario = usuarioService.garantirQueUsuarioExiste(perfilCriarDTO.usuarioId());
 
@@ -46,6 +48,7 @@ public class PerfilService {
         return perfilMapper.toPerfilRespostaDTO(perfilSalvo);
     }
 
+    @Transactional(readOnly = true)
     public PerfilRespostaDTO obterPorUsuarioid(UUID usuarioId){
         Usuario usuario = usuarioService.garantirQueUsuarioExiste(usuarioId);
 
@@ -54,6 +57,7 @@ public class PerfilService {
         return perfilMapper.toPerfilRespostaDTO(perfilDoUsuario);
     }
 
+    @Transactional
     public void deletarPorUsuarioId(UUID usuarioId){
         Usuario usuario = usuarioService.garantirQueUsuarioExiste(usuarioId);
 
@@ -62,6 +66,7 @@ public class PerfilService {
         perfilRepository.deleteById(perfilParaDeletar.getId());
     }
 
+    @Transactional
     public PerfilRespostaDTO atualizarPorUsuarioId(UUID usuarioId, PerfilPatchDTO perfilPatchDTO){
         Usuario usuario = usuarioService.garantirQueUsuarioExiste(usuarioId);
 
@@ -69,11 +74,13 @@ public class PerfilService {
 
         perfilMapper.updateFromDTO(perfilPatchDTO, perfilParaAtualizar);
 
-        Perfil perfilAtualizado = perfilRepository.save(perfilParaAtualizar);
+        // Não precisa fazer o save explicito pois o @Transactional ja atualiza automaticamente
+        // Perfil perfilAtualizado = perfilRepository.save(perfilParaAtualizar);
 
-        return perfilMapper.toPerfilRespostaDTO(perfilAtualizado);
+        return perfilMapper.toPerfilRespostaDTO(perfilParaAtualizar);
     }
 
+    @Transactional
     public PerfilRespostaDTO criarMeu(PerfilCriarMeuDTO perfilCriarMeuDTO){
         Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
 
@@ -88,27 +95,28 @@ public class PerfilService {
         return perfilMapper.toPerfilRespostaDTO(perfilSalvo);
     }
 
+    @Transactional(readOnly = true)
     public PerfilRespostaDTO obterMeu(){
         Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
-
-        usuarioService.garantirQueUsuarioExiste(usuarioLogado.getId());
 
         return perfilMapper.toPerfilRespostaDTO(garantirQueUsuarioTemPerfil(usuarioLogado));
     }
 
+    @Transactional
     public PerfilRespostaDTO atualizarMeu(PerfilPatchDTO perfilPatchDTO){
         Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
 
-        usuarioService.garantirQueUsuarioExiste(usuarioLogado.getId());
         Perfil perfilParaAtualizar = garantirQueUsuarioTemPerfil(usuarioLogado);
 
         perfilMapper.updateFromDTO(perfilPatchDTO, perfilParaAtualizar);
 
-        Perfil perfilAtualizado = perfilRepository.save(perfilParaAtualizar);
+        // Não precisa fazer o save explicito pois o @Transactional ja atualiza automaticamente
+        // Perfil perfilAtualizado = perfilRepository.save(perfilParaAtualizar);
 
-        return perfilMapper.toPerfilRespostaDTO(perfilAtualizado);
+        return perfilMapper.toPerfilRespostaDTO(perfilParaAtualizar);
     }
 
+    @Transactional
     public void deletarMeu(){
         Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
 

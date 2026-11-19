@@ -12,6 +12,7 @@ import org.example.backend.model.Usuario;
 import org.example.backend.repository.UsuarioRepository;
 import org.example.backend.security.SecurityFacade;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -29,18 +30,21 @@ public class UsuarioService {
         );
     }
 
+    @Transactional(readOnly = true)
     public UsuarioRespostaDTO obterPorId(UUID id){
         Usuario usuario = garantirQueUsuarioExiste(id);
 
         return usuarioMapper.toUsuarioRespostaDTO(usuario);
     }
 
+    @Transactional
     public void deletarPorId(UUID id){
         garantirQueUsuarioExiste(id);
 
         usuarioRepository.deleteById(id);
     }
 
+    @Transactional
     public UsuarioRespostaDTO atualizarPorId(UUID id, UsuarioPatchDTO usuarioPatchDTO){
         Usuario usuario = garantirQueUsuarioExiste(id);
 
@@ -55,17 +59,20 @@ public class UsuarioService {
             usuario.setEmail(usuarioPatchDTO.email());
         }
 
-        Usuario usuarioSalvo = usuarioRepository.save(usuario);
+        // Não precisa fazer o save explicito pois o @Transactional ja atualiza automaticamente
+        // Usuario usuarioSalvo = usuarioRepository.save(usuario);
 
-        return usuarioMapper.toUsuarioRespostaDTO(usuarioSalvo);
+        return usuarioMapper.toUsuarioRespostaDTO(usuario);
     }
 
+    @Transactional(readOnly = true)
     public UsuarioRespostaDTO obterMeu(){
         Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
 
         return usuarioMapper.toUsuarioRespostaDTO(usuarioLogado);
     }
 
+    @Transactional
     public UsuarioRespostaDTO atualizarMeu(UsuarioPatchDTO usuarioPatchDTO){
         Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
 
@@ -78,17 +85,20 @@ public class UsuarioService {
             usuarioLogado.setEmail(usuarioPatchDTO.email());
         }
 
-        Usuario usuarioSalvo = usuarioRepository.save(usuarioLogado);
+        // Não precisa fazer o save explicito pois o @Transactional ja atualiza automaticamente
+        // Usuario usuarioSalvo = usuarioRepository.save(usuarioLogado);
 
-        return usuarioMapper.toUsuarioRespostaDTO(usuarioSalvo);
+        return usuarioMapper.toUsuarioRespostaDTO(usuarioLogado);
     }
 
+    @Transactional
     public void deletarMeu(){
         Usuario usuarioParaDeletar = securityFacade.obterUsuarioLogado();
 
         usuarioRepository.deleteById(usuarioParaDeletar.getId());
     }
 
+    @Transactional
     public void alterarMinhaSenha(AlterarSenhaDTO alterarSenhaDTO){
         if(!alterarSenhaDTO.novaSenha().equals(alterarSenhaDTO.confirmacaoNovaSenha())){
             throw new BadRequestException("usuario.senha-nova.nao-sao-iguais");
@@ -101,6 +111,7 @@ public class UsuarioService {
         String senhaHasheada = senhaService.hash(alterarSenhaDTO.novaSenha());
         usuarioLogado.setSenha(senhaHasheada);
 
-        usuarioRepository.save(usuarioLogado);
+        // Não precisa fazer o save explicito pois o @Transactional ja atualiza automaticamente
+        // usuarioRepository.save(usuarioLogado);
     }
 }

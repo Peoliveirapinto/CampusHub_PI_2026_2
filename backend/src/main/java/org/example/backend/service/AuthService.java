@@ -12,6 +12,7 @@ import org.example.backend.model.Usuario;
 import org.example.backend.model.enums.Role;
 import org.example.backend.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -21,6 +22,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final UsuarioMapper usuarioMapper;
 
+    @Transactional
     public UsuarioRespostaDTO cadastrarAdmin(UsuarioCadastroDTO usuarioCadastroDTO){
         if(usuarioRepository.existsByEmail(usuarioCadastroDTO.email())){
             throw new JaExisteException("usuario.email.ja-existe");
@@ -33,6 +35,7 @@ public class AuthService {
         return usuarioMapper.toUsuarioRespostaDTO(usuarioSalvo);
     }
 
+    @Transactional
     public UsuarioRespostaDTO cadastrarUsuario(UsuarioCadastroDTO usuarioCadastroDTO){
         if(usuarioRepository.existsByEmail(usuarioCadastroDTO.email())){
             throw new JaExisteException("usuario.email.ja-existe");
@@ -45,6 +48,7 @@ public class AuthService {
         return usuarioMapper.toUsuarioRespostaDTO(usuarioSalvo);
     }
 
+    @Transactional(readOnly = true)
     public UsuarioETokenDTO autenticarUsuario(UsuarioLoginDTO usuarioLoginDTO){
         Usuario usuario = usuarioRepository.findByEmail(usuarioLoginDTO.email())
                 .orElseThrow(() -> new CredenciaisInvalidasException("auth.credenciais-invalidas"));
