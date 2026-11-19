@@ -286,7 +286,7 @@ export default function HubPage() {
         {/* Lado Esquerdo: Logótipo PNG */}
         <div className="flex items-center shrink-0">
           <Link
-            href="/home_c/login"
+            href="/"
             className="flex items-center transition-opacity hover:opacity-90"
           >
             <Image
