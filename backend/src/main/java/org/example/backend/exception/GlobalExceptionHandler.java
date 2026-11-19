@@ -5,6 +5,8 @@ import org.example.backend.dto.ResponseMessageErrorDTO;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -80,5 +82,15 @@ public class GlobalExceptionHandler {
         );
 
         return construirResposta(HttpStatus.BAD_REQUEST, mensagensDeErro.toString());
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ResponseMessageErrorDTO> handleAuthentication(AuthenticationException ex){
+        return construirResposta(HttpStatus.UNAUTHORIZED, "auth.sem-autenticacao");
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ResponseMessageErrorDTO> handleAccessDenied(AccessDeniedException ex){
+        return construirResposta(HttpStatus.FORBIDDEN, "auth.sem-autorizacao");
     }
 }

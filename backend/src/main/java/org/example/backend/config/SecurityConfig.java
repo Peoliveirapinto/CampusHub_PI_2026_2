@@ -2,6 +2,7 @@ package org.example.backend.config;
 
 import org.example.backend.model.enums.Role;
 import org.example.backend.security.JwtCookieFilter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,15 +16,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.util.List;
 
 @Configuration
 public class SecurityConfig {
     private final JwtCookieFilter jwtCookieFilter;
+    private final HandlerExceptionResolver resolver;
 
-    public SecurityConfig(JwtCookieFilter jwtCookieFilter){
+    public SecurityConfig(
+            JwtCookieFilter jwtCookieFilter,
+            @Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver
+    ){
         this.jwtCookieFilter = jwtCookieFilter;
+        this.resolver = resolver;
     }
 
     @Bean
@@ -55,8 +62,15 @@ public class SecurityConfig {
 
                         // 4. Outras rotas são restritas a admins
                         .anyRequest().hasRole(Role.ADMIN.name())
-                )
-                // 5. Injeta o filtro de Cookie ANTES do filtro padrão de autenticação do Spring
+                // 5. Redireciona os erros de sem autenticação e sem autorização pro GlobalExceptionHandler
+                ).exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) ->
+                                resolver.resolveException(request, response, null, authException)
+                        )
+                        .accessDeniedHandler((request, response, accessDeniedException) ->
+                                resolver.resolveException(request, response, null, accessDeniedException)
+                        ))
+                // 6. Injeta o filtro de Cookie ANTES do filtro padrão de autenticação do Spring
                 .addFilterBefore(jwtCookieFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
