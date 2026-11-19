@@ -121,7 +121,6 @@ class UsuarioServiceTest {
         
         when(usuarioRepository.findById(usuarioId)).thenReturn(Optional.of(usuario));
         when(usuarioRepository.existsByEmail("novo@exemplo.com")).thenReturn(false);
-        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
         when(usuarioMapper.toUsuarioRespostaDTO(usuario)).thenReturn(usuarioRespostaDTO);
 
         usuarioService.atualizarPorId(usuarioId, patchDTO);
@@ -162,7 +161,6 @@ class UsuarioServiceTest {
         
         when(securityFacade.obterUsuarioLogado()).thenReturn(usuario);
         when(usuarioRepository.existsByEmail("meu@novo.com")).thenReturn(false);
-        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
         when(usuarioMapper.toUsuarioRespostaDTO(usuario)).thenReturn(usuarioRespostaDTO);
 
         usuarioService.atualizarMeu(patchDTO);

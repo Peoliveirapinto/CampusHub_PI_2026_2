@@ -84,7 +84,6 @@ public class PerfilService {
     public PerfilRespostaDTO criarMeu(PerfilCriarMeuDTO perfilCriarMeuDTO){
         Usuario usuarioLogado = securityFacade.obterUsuarioLogado();
 
-        usuarioService.garantirQueUsuarioExiste(usuarioLogado.getId());
         garantirQueUsuarioNaoTemPerfil(usuarioLogado);
 
         Perfil perfilNovo = perfilMapper.toEntity(perfilCriarMeuDTO);

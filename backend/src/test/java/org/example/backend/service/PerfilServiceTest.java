@@ -159,7 +159,6 @@ class PerfilServiceTest {
 
         when(usuarioService.garantirQueUsuarioExiste(usuarioId)).thenReturn(usuario);
         when(perfilRepository.findFirstByUsuario(usuario)).thenReturn(Optional.of(perfil));
-        when(perfilRepository.save(any(Perfil.class))).thenReturn(perfil);
         when(perfilMapper.toPerfilRespostaDTO(perfil)).thenReturn(perfilRespostaDTO);
 
         PerfilRespostaDTO resultado = perfilService.atualizarPorUsuarioId(usuarioId, perfilPatchDTO);
@@ -176,7 +175,6 @@ class PerfilServiceTest {
         );
 
         when(securityFacade.obterUsuarioLogado()).thenReturn(usuario);
-        when(usuarioService.garantirQueUsuarioExiste(usuario.getId())).thenReturn(usuario);
         when(perfilRepository.existsByUsuario(usuario)).thenReturn(false);
         when(perfilMapper.toEntity(perfilCriarMeuDTO)).thenReturn(perfil);
         when(perfilRepository.save(any(Perfil.class))).thenReturn(perfil);
@@ -192,7 +190,6 @@ class PerfilServiceTest {
     @DisplayName("Deve obter meu perfil com sucesso")
     void obterMeu_DeveObterPerfilComSucesso() {
         when(securityFacade.obterUsuarioLogado()).thenReturn(usuario);
-        when(usuarioService.garantirQueUsuarioExiste(usuario.getId())).thenReturn(usuario);
         when(perfilRepository.findFirstByUsuario(usuario)).thenReturn(Optional.of(perfil));
         when(perfilMapper.toPerfilRespostaDTO(perfil)).thenReturn(perfilRespostaDTO);
 
@@ -210,9 +207,7 @@ class PerfilServiceTest {
         );
 
         when(securityFacade.obterUsuarioLogado()).thenReturn(usuario);
-        when(usuarioService.garantirQueUsuarioExiste(usuario.getId())).thenReturn(usuario);
         when(perfilRepository.findFirstByUsuario(usuario)).thenReturn(Optional.of(perfil));
-        when(perfilRepository.save(any(Perfil.class))).thenReturn(perfil);
         when(perfilMapper.toPerfilRespostaDTO(perfil)).thenReturn(perfilRespostaDTO);
 
         PerfilRespostaDTO resultado = perfilService.atualizarMeu(perfilPatchDTO);
