@@ -61,6 +61,8 @@ public class PerfilService {
     public void deletarPorUsuarioId(UUID usuarioId){
         Usuario usuario = usuarioService.garantirQueUsuarioExiste(usuarioId);
 
+        usuarioService.garantirQueOUsuarioLogadoTemPermissao(usuario);
+
         Perfil perfilParaDeletar = garantirQueUsuarioTemPerfil(usuario);
 
         perfilRepository.deleteById(perfilParaDeletar.getId());
@@ -69,6 +71,8 @@ public class PerfilService {
     @Transactional
     public PerfilRespostaDTO atualizarPorUsuarioId(UUID usuarioId, PerfilPatchDTO perfilPatchDTO){
         Usuario usuario = usuarioService.garantirQueUsuarioExiste(usuarioId);
+
+        usuarioService.garantirQueOUsuarioLogadoTemPermissao(usuario);
 
         Perfil perfilParaAtualizar = garantirQueUsuarioTemPerfil(usuario);
 

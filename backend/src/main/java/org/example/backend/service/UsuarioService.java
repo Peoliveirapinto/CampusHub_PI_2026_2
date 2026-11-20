@@ -7,8 +7,10 @@ import org.example.backend.dto.usuario.UsuarioRespostaDTO;
 import org.example.backend.exception.BadRequestException;
 import org.example.backend.exception.JaExisteException;
 import org.example.backend.exception.ResourceNotFoundException;
+import org.example.backend.exception.UsuarioSemPermissaoException;
 import org.example.backend.mapper.UsuarioMapper;
 import org.example.backend.model.Usuario;
+import org.example.backend.model.enums.Role;
 import org.example.backend.repository.UsuarioRepository;
 import org.example.backend.security.SecurityFacade;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,15 @@ public class UsuarioService {
         );
     }
 
+    public void garantirQueOUsuarioLogadoTemPermissao(Usuario donoDoRecurso){
+        boolean oUsuarioLogadoEhODonoDoRecurso = donoDoRecurso.getId() == securityFacade.obterIdDoUsuarioLogado();
+        boolean donoDoRecursoEhAdmin = donoDoRecurso.getRole() == Role.ADMIN;
+
+        if(donoDoRecursoEhAdmin && !oUsuarioLogadoEhODonoDoRecurso){
+            throw new UsuarioSemPermissaoException("auth.sem-autorizacao");
+        }
+    }
+
     @Transactional(readOnly = true)
     public UsuarioRespostaDTO obterPorId(UUID id){
         Usuario usuario = garantirQueUsuarioExiste(id);
@@ -39,7 +50,9 @@ public class UsuarioService {
 
     @Transactional
     public void deletarPorId(UUID id){
-        garantirQueUsuarioExiste(id);
+        Usuario usuarioParaDeletar = garantirQueUsuarioExiste(id);
+
+        garantirQueOUsuarioLogadoTemPermissao(usuarioParaDeletar);
 
         usuarioRepository.deleteById(id);
     }
@@ -47,6 +60,8 @@ public class UsuarioService {
     @Transactional
     public UsuarioRespostaDTO atualizarPorId(UUID id, UsuarioPatchDTO usuarioPatchDTO){
         Usuario usuario = garantirQueUsuarioExiste(id);
+
+        garantirQueOUsuarioLogadoTemPermissao(usuario);
 
         usuarioMapper.updateFromDTO(usuarioPatchDTO, usuario);
 

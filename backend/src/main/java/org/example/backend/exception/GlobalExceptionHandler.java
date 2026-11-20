@@ -63,6 +63,11 @@ public class GlobalExceptionHandler {
         return construirResposta(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
+    @ExceptionHandler(UsuarioSemPermissaoException.class)
+    public ResponseEntity<ResponseMessageErrorDTO> handleUsuarioSemPermissao(UsuarioSemPermissaoException ex){
+        return construirResposta(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
+
     @ExceptionHandler(TokenPayloadInvalidoException.class)
     public ResponseEntity<ResponseMessageErrorDTO> handleTokenPayloadInvalido(TokenPayloadInvalidoException ex){
         return construirResposta(HttpStatus.BAD_REQUEST, ex.getMessage());
