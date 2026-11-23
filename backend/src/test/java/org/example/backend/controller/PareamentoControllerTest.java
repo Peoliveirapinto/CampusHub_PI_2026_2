@@ -4,6 +4,7 @@ import org.example.backend.dto.pareamento.PareamentoFiltroDTO;
 import org.example.backend.dto.pareamento.PareamentoRespostaDTO;
 import org.example.backend.dto.perfil.PerfilRespostaDTO;
 import org.example.backend.exception.GlobalExceptionHandler;
+import org.example.backend.exception.ResourceNotFoundException;
 import org.example.backend.service.PareamentoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,10 +18,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -59,6 +62,9 @@ class PareamentoControllerTest {
                 perfilDTO,
                 4
         );
+
+        lenient().when(messageSource.getMessage(any(), any(), any(), any(Locale.class)))
+                .thenAnswer(inv -> inv.getArgument(2));
     }
 
     @Test
@@ -93,6 +99,16 @@ class PareamentoControllerTest {
     }
 
     @Test
+    @DisplayName("Deve retornar 404 NOT FOUND quando usuário logado não tem perfil")
+    void obterMeuPareamento_SemPerfil_DeveRetornar404() throws Exception {
+        when(pareamentoService.obterPareamentoMeu(any(PareamentoFiltroDTO.class)))
+                .thenThrow(new ResourceNotFoundException("perfil.nao-encontrado-para-esse-usuario"));
+
+        mockMvc.perform(get("/pareamento/me"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     @DisplayName("Deve retornar 200 OK na rota administrativa com usuarioId")
     void obterPareamentoPorUsuarioId_DeveRetornar200Ok() throws Exception {
         UUID usuarioId = UUID.randomUUID();
@@ -105,5 +121,16 @@ class PareamentoControllerTest {
                 .andExpect(jsonPath("$[0].pontuacaoMatch").value(4));
 
         verify(pareamentoService).obterPareamentoPorUsuarioId(eq(usuarioId), any(PareamentoFiltroDTO.class));
+    }
+
+    @Test
+    @DisplayName("Deve retornar 404 NOT FOUND na rota administrativa quando perfil do usuarioId não existir")
+    void obterPareamentoPorUsuarioId_SemPerfil_DeveRetornar404() throws Exception {
+        UUID usuarioId = UUID.randomUUID();
+        when(pareamentoService.obterPareamentoPorUsuarioId(eq(usuarioId), any(PareamentoFiltroDTO.class)))
+                .thenThrow(new ResourceNotFoundException("perfil.nao-encontrado-para-esse-usuario"));
+
+        mockMvc.perform(get("/pareamento/admin/{usuarioId}", usuarioId))
+                .andExpect(status().isNotFound());
     }
 }
