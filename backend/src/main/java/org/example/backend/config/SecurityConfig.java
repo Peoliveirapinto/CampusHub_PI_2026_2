@@ -55,10 +55,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/logout").permitAll()
 
                         // 2. Rotas protegidas
-                        .requestMatchers("/*/me/**").authenticated()
+                        .requestMatchers("/*/me", "/*/me/**").authenticated()
 
                         // 3. Rotas restritas
-                        .requestMatchers("/*/admin/**").hasRole(Role.ADMIN.name())
+                        .requestMatchers("/*/admin", "/*/admin/**").hasRole(Role.ADMIN.name())
 
                         // 4. Outras rotas são restritas a admins
                         .anyRequest().hasRole(Role.ADMIN.name())
